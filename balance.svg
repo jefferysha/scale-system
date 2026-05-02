@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Precision analytical balance</title>
+  <desc id="desc">Photorealistic laboratory analytical balance with glass draft shield, brushed metal pan, display, controls, and leveling feet.</desc>
+  <defs>
+    <linearGradient id="bodyGradient" x1="95" y1="345" x2="705" y2="565" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2d3135"/>
+      <stop offset="0.16" stop-color="#565d63"/>
+      <stop offset="0.42" stop-color="#aeb5ba"/>
+      <stop offset="0.65" stop-color="#737b82"/>
+      <stop offset="1" stop-color="#23272b"/>
+    </linearGradient>
+    <linearGradient id="frontGradient" x1="128" y1="404" x2="672" y2="548" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#171a1d"/>
+      <stop offset="0.08" stop-color="#50565b"/>
+      <stop offset="0.38" stop-color="#d3d6d8"/>
+      <stop offset="0.72" stop-color="#70777d"/>
+      <stop offset="1" stop-color="#15181b"/>
+    </linearGradient>
+    <linearGradient id="bevelGradient" x1="115" y1="365" x2="685" y2="430" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f0f3f4"/>
+      <stop offset="0.25" stop-color="#9fa7ad"/>
+      <stop offset="0.55" stop-color="#596168"/>
+      <stop offset="0.8" stop-color="#c5cacf"/>
+      <stop offset="1" stop-color="#2d3338"/>
+    </linearGradient>
+    <linearGradient id="glassGradient" x1="205" y1="92" x2="596" y2="366" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#eaf8ff" stop-opacity="0.58"/>
+      <stop offset="0.28" stop-color="#b8d8e7" stop-opacity="0.22"/>
+      <stop offset="0.58" stop-color="#7fa5b6" stop-opacity="0.11"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.34"/>
+    </linearGradient>
+    <linearGradient id="glassSideGradient" x1="190" y1="120" x2="630" y2="330" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.48"/>
+      <stop offset="0.4" stop-color="#89b3c4" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#d8f0fb" stop-opacity="0.36"/>
+    </linearGradient>
+    <radialGradient id="panRadial" cx="50%" cy="35%" r="68%">
+      <stop offset="0" stop-color="#fbfcfc"/>
+      <stop offset="0.2" stop-color="#c8ced2"/>
+      <stop offset="0.43" stop-color="#7e878d"/>
+      <stop offset="0.66" stop-color="#e1e4e6"/>
+      <stop offset="0.84" stop-color="#6d7479"/>
+      <stop offset="1" stop-color="#d5d8da"/>
+    </radialGradient>
+    <linearGradient id="panBrush" x1="255" y1="240" x2="545" y2="295" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6e767c" stop-opacity="0.55"/>
+      <stop offset="0.18" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="0.35" stop-color="#80888e" stop-opacity="0.52"/>
+      <stop offset="0.52" stop-color="#ffffff" stop-opacity="0.5"/>
+      <stop offset="0.75" stop-color="#6b7378" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#f7f8f8" stop-opacity="0.38"/>
+    </linearGradient>
+    <linearGradient id="displayGlass" x1="300" y1="426" x2="500" y2="490" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#031109"/>
+      <stop offset="0.5" stop-color="#061a0c"/>
+      <stop offset="1" stop-color="#000301"/>
+    </linearGradient>
+    <linearGradient id="buttonGradient" x1="170" y1="500" x2="635" y2="536" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#eef1f2"/>
+      <stop offset="0.35" stop-color="#90989e"/>
+      <stop offset="0.65" stop-color="#555d64"/>
+      <stop offset="1" stop-color="#cfd4d7"/>
+    </linearGradient>
+    <linearGradient id="buttonFace" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e2e6e8"/>
+      <stop offset="0.45" stop-color="#9aa2a8"/>
+      <stop offset="1" stop-color="#4c555c"/>
+    </linearGradient>
+    <radialGradient id="footGradient" cx="50%" cy="30%" r="70%">
+      <stop offset="0" stop-color="#e6eaec"/>
+      <stop offset="0.42" stop-color="#777f85"/>
+      <stop offset="1" stop-color="#1d2226"/>
+    </radialGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <filter id="panelShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <filter id="glassBlur" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="0.35"/>
+    </filter>
+    <filter id="digitGlow" x="-25%" y="-60%" width="150%" height="220%">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <ellipse cx="400" cy="558" rx="320" ry="26" fill="#000000" opacity="0.22" filter="url(#glassBlur)"/>
+  <g filter="url(#softShadow)">
+    <path d="M136 360 C155 330 198 315 255 315 L545 315 C602 315 645 330 664 360 L704 456 C716 484 697 526 660 536 L140 536 C103 526 84 484 96 456 Z" fill="url(#bodyGradient)"/>
+    <path d="M112 424 C125 394 159 376 210 376 L590 376 C641 376 675 394 688 424 L702 465 C711 492 692 519 657 526 L143 526 C108 519 89 492 98 465 Z" fill="url(#frontGradient)"/>
+    <path d="M128 374 C158 350 190 342 236 342 L564 342 C610 342 642 350 672 374 L688 414 L112 414 Z" fill="url(#bevelGradient)"/>
+    <path d="M162 385 C196 370 230 365 282 365 L518 365 C570 365 604 370 638 385" fill="none" stroke="#f4f6f7" stroke-width="3" stroke-opacity="0.42"/>
+    <path d="M127 474 C205 501 595 501 673 474" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.2"/>
+  </g>
+  <g opacity="0.96">
+    <ellipse cx="163" cy="540" rx="37" ry="17" fill="url(#footGradient)"/>
+    <rect x="132" y="515" width="62" height="28" rx="13" fill="#3b4248"/>
+    <ellipse cx="163" cy="516" rx="31" ry="12" fill="url(#footGradient)"/>
+    <ellipse cx="637" cy="540" rx="37" ry="17" fill="url(#footGradient)"/>
+    <rect x="606" y="515" width="62" height="28" rx="13" fill="#3b4248"/>
+    <ellipse cx="637" cy="516" rx="31" ry="12" fill="url(#footGradient)"/>
+    <ellipse cx="254" cy="536" rx="25" ry="11" fill="url(#footGradient)" opacity="0.72"/>
+    <ellipse cx="546" cy="536" rx="25" ry="11" fill="url(#footGradient)" opacity="0.72"/>
+  </g>
+  <g filter="url(#panelShadow)">
+    <rect x="278" y="422" width="244" height="72" rx="9" fill="#20272b"/>
+    <rect x="291" y="433" width="218" height="50" rx="5" fill="url(#displayGlass)"/>
+    <path d="M297 438 L503 438 L492 447 L306 447 Z" fill="#ffffff" opacity="0.11"/>
+    <text id="weight-display" x="400" y="468" text-anchor="middle" font-family="'Courier New', monospace" font-size="32" font-weight="700" letter-spacing="1.2" fill="#68ff8b" filter="url(#digitGlow)">0.0000 g</text>
+    <text x="306" y="487" font-family="Arial, sans-serif" font-size="8" fill="#8dbb98" opacity="0.65">STABLE</text>
+    <circle cx="495" cy="487" r="3" fill="#68ff8b" opacity="0.8"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" text-anchor="middle" fill="#172026">
+    <g filter="url(#panelShadow)">
+      <rect x="159" y="493" width="64" height="31" rx="5" fill="#2b3238"/>
+      <rect x="163" y="496" width="56" height="23" rx="4" fill="url(#buttonFace)"/>
+      <path d="M166 498 L216 498" stroke="#ffffff" stroke-width="1.2" stroke-opacity="0.54"/>
+      <text x="191" y="511">TARE</text>
+    </g>
+    <g filter="url(#panelShadow)">
+      <rect x="229" y="493" width="64" height="31" rx="5" fill="#2b3238"/>
+      <rect x="233" y="496" width="56" height="23" rx="4" fill="url(#buttonFace)"/>
+      <path d="M236 498 L286 498" stroke="#ffffff" stroke-width="1.2" stroke-opacity="0.54"/>
+      <text x="261" y="511">ON/OFF</text>
+    </g>
+    <g filter="url(#panelShadow)">
+      <rect x="507" y="493" width="64" height="31" rx="5" fill="#2b3238"/>
+      <rect x="511" y="496" width="56" height="23" rx="4" fill="url(#buttonFace)"/>
+      <path d="M514 498 L564 498" stroke="#ffffff" stroke-width="1.2" stroke-opacity="0.54"/>
+      <text x="539" y="511">PRINT</text>
+    </g>
+    <g filter="url(#panelShadow)">
+      <rect x="577" y="493" width="64" height="31" rx="5" fill="#2b3238"/>
+      <rect x="581" y="496" width="56" height="23" rx="4" fill="url(#buttonFace)"/>
+      <path d="M584 498 L634 498" stroke="#ffffff" stroke-width="1.2" stroke-opacity="0.54"/>
+      <text x="609" y="511">UNIT</text>
+    </g>
+    <g filter="url(#panelShadow)">
+      <rect x="322" y="501" width="76" height="28" rx="5" fill="#2b3238"/>
+      <rect x="326" y="504" width="68" height="20" rx="4" fill="url(#buttonFace)"/>
+      <path d="M329 506 L391 506" stroke="#ffffff" stroke-width="1.1" stroke-opacity="0.5"/>
+      <text x="360" y="518" font-size="9">RE-ZERO</text>
+    </g>
+    <g filter="url(#panelShadow)">
+      <rect x="402" y="501" width="76" height="28" rx="5" fill="#2b3238"/>
+      <rect x="406" y="504" width="68" height="20" rx="4" fill="url(#buttonFace)"/>
+      <path d="M409 506 L471 506" stroke="#ffffff" stroke-width="1.1" stroke-opacity="0.5"/>
+      <text x="440" y="518" font-size="9">CAL</text>
+    </g>
+  </g>
+  <g>
+    <path d="M226 102 L574 102 C594 102 610 119 610 139 L610 342 C610 358 597 371 581 371 L219 371 C203 371 190 358 190 342 L190 139 C190 119 206 102 226 102 Z" fill="url(#glassGradient)" stroke="#b9d0db" stroke-width="2.5" stroke-opacity="0.64"/>
+    <path d="M225 116 L342 98 L342 360 L210 354 C203 354 202 346 202 338 L202 140 C202 128 211 118 225 116 Z" fill="url(#glassSideGradient)" stroke="#e4f5fc" stroke-width="1.6" stroke-opacity="0.46"/>
+    <path d="M575 116 L458 98 L458 360 L590 354 C597 354 598 346 598 338 L598 140 C598 128 589 118 575 116 Z" fill="url(#glassSideGradient)" stroke="#e4f5fc" stroke-width="1.6" stroke-opacity="0.38"/>
+    <rect x="247" y="89" width="306" height="25" rx="9" fill="#dce4e8" opacity="0.44"/>
+    <rect x="235" y="105" width="330" height="12" rx="5" fill="#ffffff" opacity="0.25"/>
+    <path d="M252 122 C233 177 232 263 249 333" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-opacity="0.28"/>
+    <path d="M548 124 C568 187 566 273 548 333" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-opacity="0.18"/>
+    <path d="M312 106 L312 367" stroke="#ffffff" stroke-width="1.4" stroke-opacity="0.34"/>
+    <path d="M488 106 L488 367" stroke="#7ea1ae" stroke-width="1.2" stroke-opacity="0.22"/>
+    <path d="M190 344 L610 344" stroke="#d8edf5" stroke-width="2" stroke-opacity="0.42"/>
+  </g>
+  <g filter="url(#panelShadow)">
+    <rect x="362" y="326" width="76" height="42" rx="8" fill="#555f66"/>
+    <rect x="376" y="295" width="48" height="54" rx="7" fill="url(#bodyGradient)"/>
+    <ellipse cx="400" cy="291" rx="58" ry="16" fill="#20262a" opacity="0.28"/>
+    <ellipse cx="400" cy="272" rx="133" ry="37" fill="#41494f" opacity="0.44"/>
+    <ellipse cx="400" cy="262" rx="126" ry="34" fill="url(#panRadial)" stroke="#f5f7f8" stroke-width="2.2" stroke-opacity="0.55"/>
+    <ellipse cx="400" cy="257" rx="105" ry="23" fill="none" stroke="#60696f" stroke-width="1.1" stroke-opacity="0.48"/>
+    <ellipse cx="400" cy="256" rx="81" ry="15" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-opacity="0.38"/>
+    <path d="M279 256 C322 241 480 238 523 259 C484 281 319 280 279 256 Z" fill="url(#panBrush)" opacity="0.68"/>
+    <path d="M300 248 C347 260 452 261 501 248" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.32"/>
+    <path d="M290 269 C340 288 462 289 511 270" fill="none" stroke="#4f575d" stroke-width="2" stroke-opacity="0.38"/>
+  </g>
+  <g opacity="0.72">
+    <path d="M148 420 C242 438 558 438 652 420" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-opacity="0.18"/>
+    <path d="M180 394 C280 410 520 410 620 394" fill="none" stroke="#111820" stroke-width="1.4" stroke-opacity="0.28"/>
+    <rect x="118" y="452" width="560" height="8" rx="4" fill="#ffffff" opacity="0.08"/>
+  </g>
+</svg>
