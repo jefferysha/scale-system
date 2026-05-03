@@ -48,7 +48,7 @@ async def cursor_paginate(
     if len(rows) > limit:
         rows = rows[:limit]
         last = rows[-1]
-        next_cursor = encode_cursor({"id": getattr(last, "id")})
+        next_cursor = encode_cursor({"id": last.id})
     return CursorPage(items=rows, next_cursor=next_cursor)
 
 

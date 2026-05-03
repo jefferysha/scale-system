@@ -18,7 +18,7 @@ def _p(pos: str, cup_id: int = 1) -> dict:
 
 
 def test_valid_points_pass() -> None:
-    items = validate_points([_p("0.0"), _p("0.5"), _p("1.0")] if False else [_p("0.0"), _p("0.2"), _p("1.0")])
+    items = validate_points([_p("0.0"), _p("0.2"), _p("1.0")])
     assert len(items) == 3
 
 

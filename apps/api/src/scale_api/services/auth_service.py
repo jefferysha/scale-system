@@ -1,6 +1,6 @@
 """认证服务（登录 + refresh 轮换 + reuse 检测）。"""
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -107,8 +107,8 @@ class AuthService:
             client_kind=client_kind,
             user_agent=ua,
             ip_address=ip,
-            issued_at=datetime.now(timezone.utc),
-            expires_at=datetime.now(timezone.utc) + timedelta(days=s.refresh_token_ttl_days),
+            issued_at=datetime.now(UTC),
+            expires_at=datetime.now(UTC) + timedelta(days=s.refresh_token_ttl_days),
         )
         await self.tokens.create(rt)
         await self.session.commit()

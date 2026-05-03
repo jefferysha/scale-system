@@ -1,5 +1,5 @@
 """Cup 服务（CRUD + 率定历史 + 软删）."""
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -119,7 +119,7 @@ class CupService:
         self.session.add(cal)
         await self.session.flush()
         c.current_tare_g = body.tare_g
-        c.latest_calibration_date = datetime.now(timezone.utc).date()
+        c.latest_calibration_date = datetime.now(UTC).date()
         await write_audit(
             self.session,
             actor_id=actor_id,

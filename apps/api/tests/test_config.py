@@ -1,5 +1,6 @@
 """配置层测试."""
 import pytest
+
 from scale_api.core.config import Settings
 
 
