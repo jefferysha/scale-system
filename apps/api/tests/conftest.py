@@ -25,7 +25,54 @@ async def engine(pg_container):
     url = pg_container.get_connection_url().replace("psycopg2", "asyncpg")
     eng = create_async_engine(url, echo=False)
     async with eng.begin() as conn:
+        # 业务表 gin_trgm_ops + 表达式索引函数，需先扩展 + 建辅助函数
+        await conn.execute(text("CREATE EXTENSION IF NOT EXISTS pg_trgm"))
+        await conn.execute(
+            text(
+                """
+                CREATE OR REPLACE FUNCTION rec_points_cup_numbers(points jsonb)
+                RETURNS text[]
+                LANGUAGE sql
+                IMMUTABLE
+                STRICT
+                PARALLEL SAFE
+                AS $$
+                    SELECT array_agg(elem->>'cup_number')
+                    FROM jsonb_array_elements(points) AS elem
+                $$
+                """
+            )
+        )
+        await conn.execute(
+            text(
+                """
+                CREATE OR REPLACE FUNCTION rec_points_cup_ids(points jsonb)
+                RETURNS bigint[]
+                LANGUAGE sql
+                IMMUTABLE
+                STRICT
+                PARALLEL SAFE
+                AS $$
+                    SELECT array_agg((elem->>'cup_id')::bigint)
+                    FROM jsonb_array_elements(points) AS elem
+                $$
+                """
+            )
+        )
         await conn.run_sync(Base.metadata.create_all)
+        # ORM 不建表达式索引；与迁移保持一致
+        await conn.execute(
+            text(
+                "CREATE INDEX IF NOT EXISTS ix_rec_points_cup_numbers "
+                "ON weighing_records USING gin (rec_points_cup_numbers(points))"
+            )
+        )
+        await conn.execute(
+            text(
+                "CREATE INDEX IF NOT EXISTS ix_rec_points_cup_ids "
+                "ON weighing_records USING gin (rec_points_cup_ids(points))"
+            )
+        )
     yield eng
     await eng.dispose()
 
