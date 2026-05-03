@@ -1,0 +1,3 @@
+-- 启用必需扩展
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
