@@ -6,6 +6,17 @@
  */
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { RecordCreate } from '@/types/api';
+
+const mockPayload = (uid: string, extra: Partial<RecordCreate> = {}): RecordCreate => ({
+  client_uid: uid,
+  project_id: 1,
+  vertical_id: 1,
+  sample_date: '2026-05-03',
+  volume_ml: 1000,
+  points: [],
+  ...extra,
+});
 
 interface MockRow {
   client_uid: string;
@@ -99,25 +110,25 @@ describe('TauriQueue · 离线重试链路', () => {
   });
 
   it('enqueue 后 drain 能取出', async () => {
-    const q = new TauriQueue<{ a: number }>();
-    await q.enqueue({ client_uid: 'u1', payload: { a: 1 } });
+    const q = new TauriQueue();
+    await q.enqueue({ client_uid: 'u1', payload: mockPayload('u1', { project_id: 7 }) });
     const items = await q.drain(10);
     expect(items).toHaveLength(1);
     const first = items[0]!;
     expect(first.client_uid).toBe('u1');
-    expect(first.payload).toEqual({ a: 1 });
+    expect(first.payload.project_id).toBe(7);
   });
 
   it('markSynced 后不再被 drain', async () => {
     const q = new TauriQueue();
-    await q.enqueue({ client_uid: 'u1', payload: {} });
+    await q.enqueue({ client_uid: 'u1', payload: mockPayload('u1') });
     await q.markSynced(['u1']);
     expect(await q.drain(10)).toHaveLength(0);
   });
 
   it('断网重试：markFailed×5 后转 needs_review，不再被 drain', async () => {
     const q = new TauriQueue();
-    await q.enqueue({ client_uid: 'u1', payload: {} });
+    await q.enqueue({ client_uid: 'u1', payload: mockPayload('u1') });
     for (let i = 0; i < 5; i++) {
       await q.markFailed('u1', 'network down', 5);
     }
@@ -128,22 +139,25 @@ describe('TauriQueue · 离线重试链路', () => {
   });
 
   it('payload 序列化：复杂对象走 JSON 往返', async () => {
-    const q = new TauriQueue<{ nested: { v: number; tags: string[] } }>();
+    const q = new TauriQueue();
     await q.enqueue({
       client_uid: 'u1',
-      payload: { nested: { v: 42, tags: ['a', 'b'] } },
+      payload: mockPayload('u1', {
+        notes: 'tag-a tag-b',
+        water_depth_m: 9.4,
+      }),
     });
     const items = await q.drain(10);
     expect(items).toHaveLength(1);
     const item = items[0]!;
-    expect(item.payload.nested.v).toBe(42);
-    expect(item.payload.nested.tags).toEqual(['a', 'b']);
+    expect(item.payload.notes).toBe('tag-a tag-b');
+    expect(item.payload.water_depth_m).toBe(9.4);
   });
 
   it('enqueue 幂等：同 uid 重复入队只保留一条', async () => {
     const q = new TauriQueue();
-    await q.enqueue({ client_uid: 'u1', payload: { v: 1 } });
-    await q.enqueue({ client_uid: 'u1', payload: { v: 2 } });
+    await q.enqueue({ client_uid: 'u1', payload: mockPayload('u1') });
+    await q.enqueue({ client_uid: 'u1', payload: mockPayload('u1', { project_id: 999 }) });
     expect(await q.drain(10)).toHaveLength(1);
   });
 });

@@ -1,12 +1,12 @@
 /**
- * Tauri 桌面端 SubmissionQueue 实现，调 Rust 端 4+1 个 queue command。
+ * Tauri 桌面端 SubmissionQueue 实现，调 Rust 端 5 个 queue command。
  *
  * 注：Rust 端 payload 用字符串存（JSON），这里负责 stringify/parse。
  */
 
 import { invoke } from '@tauri-apps/api/core';
+import type { RecordCreate } from '@/types/api';
 import type {
-  EnqueueInput,
   PendingItem,
   PendingStatus,
   QueueCount,
@@ -41,19 +41,21 @@ const toPendingStatus = (s: string): PendingStatus => {
   return 'pending';
 };
 
-export class TauriQueue<TPayload = unknown> implements SubmissionQueue<TPayload> {
-  async enqueue(item: EnqueueInput<TPayload>): Promise<void> {
+export class TauriQueue implements SubmissionQueue {
+  async enqueue(
+    item: Omit<PendingItem, 'status' | 'attempt_count' | 'last_error' | 'created_at'>,
+  ): Promise<void> {
     await invoke('queue_enqueue', {
       clientUid: item.client_uid,
       payload: JSON.stringify(item.payload),
     });
   }
 
-  async drain(maxBatch: number): Promise<PendingItem<TPayload>[]> {
+  async drain(maxBatch: number): Promise<PendingItem[]> {
     const items = await invoke<RustPendingItem[]>('queue_drain', { max: maxBatch });
     return items.map((r) => ({
       client_uid: r.client_uid,
-      payload: safeParse<TPayload>(r.payload),
+      payload: safeParse<RecordCreate>(r.payload),
       status: toPendingStatus(r.status),
       attempt_count: r.attempt_count,
       last_error: r.last_error,
@@ -66,7 +68,7 @@ export class TauriQueue<TPayload = unknown> implements SubmissionQueue<TPayload>
   }
 
   async markFailed(uid: string, error: string, _maxAttempts: number): Promise<void> {
-    // Rust 端的 max_attempts 由 Tauri 层固定为 5，前端参数仅作占位以保持接口对称。
+    // Rust 端 max_attempts 固定为 5；前端参数仅作占位以保持接口对称。
     await invoke('queue_mark_failed', { uid, error });
   }
 
@@ -76,9 +78,5 @@ export class TauriQueue<TPayload = unknown> implements SubmissionQueue<TPayload>
 }
 
 function safeParse<T>(s: string): T {
-  try {
-    return JSON.parse(s) as T;
-  } catch {
-    return s as unknown as T;
-  }
+  return JSON.parse(s) as T;
 }
