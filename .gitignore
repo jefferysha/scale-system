@@ -1,0 +1,47 @@
+# Node
+node_modules/
+.pnpm-store/
+*.log
+dist/
+build/
+coverage/
+.turbo/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+
+# Rust
+target/
+
+# Tauri
+src-tauri/target/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Tauri build
+*.dmg
+*.msi
+*.AppImage
+
+# DB
+*.sqlite
+*.sqlite3
+pgdata/
