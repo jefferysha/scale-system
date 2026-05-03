@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { initialWeighingState, weighingReducer } from './machine';
 import type { WeighingState } from './machine.events';
+import { hasFullConfig, isStable } from './machine.guards';
 import type { WeighingConfig } from './types';
 
 const cfg: WeighingConfig = {
@@ -73,5 +74,38 @@ describe('weighingReducer', () => {
   it('ABORT returns to idle', () => {
     const s = weighingReducer({ kind: 'configured', config: cfg }, { type: 'ABORT' });
     expect(s.kind).toBe('idle');
+  });
+
+  it('WEIGHT_SAMPLE outside capturing is no-op', () => {
+    const s = weighingReducer({ kind: 'configured', config: cfg }, {
+      type: 'WEIGHT_SAMPLE', value: 1, stable: true,
+    });
+    expect(s.kind).toBe('configured');
+  });
+
+  it('RESET_FOR_NEXT_POINT from idle is no-op', () => {
+    const s = weighingReducer(initialWeighingState, {
+      type: 'RESET_FOR_NEXT_POINT', nextPos: '0.2',
+    });
+    expect(s.kind).toBe('idle');
+  });
+});
+
+describe('machine.guards', () => {
+  it('hasFullConfig returns false on partial', () => {
+    expect(hasFullConfig({})).toBe(false);
+    expect(hasFullConfig({ project: cfg.project })).toBe(false);
+    expect(hasFullConfig({ ...cfg, current_cup: null })).toBe(false);
+  });
+
+  it('hasFullConfig returns true on complete', () => {
+    expect(hasFullConfig(cfg)).toBe(true);
+  });
+
+  it('isStable requires both stable flag and 5+ samples', () => {
+    expect(isStable(4, true)).toBe(false);
+    expect(isStable(5, false)).toBe(false);
+    expect(isStable(5, true)).toBe(true);
+    expect(isStable(10, true)).toBe(true);
   });
 });
