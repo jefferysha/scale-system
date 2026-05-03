@@ -6,8 +6,9 @@ import type { RecordCreate } from '@/types/api';
  * - syncing：worker 正在 batch（drain 后 markSynced/markFailed 之前）
  * - failed：本次失败但仍可重试（attempt_count 未达阈值）
  * - needs_review：达到 max_attempts 仍失败 / 服务器返回 invalid，需人工处置
+ * - synced：已同步成功（用于审计；通常异步清理）
  */
-export type PendingStatus = 'pending' | 'syncing' | 'failed' | 'needs_review';
+export type PendingStatus = 'pending' | 'syncing' | 'failed' | 'needs_review' | 'synced';
 
 export interface PendingItem {
   client_uid: string;
@@ -29,10 +30,11 @@ export interface SubmissionQueue {
   ): Promise<void>;
   drain(maxBatch: number): Promise<PendingItem[]>;
   markSynced(uids: string[]): Promise<void>;
-  markFailed(uid: string, error: string, max_attempts: number): Promise<void>;
+  markFailed(uid: string, error: string, maxAttempts: number): Promise<void>;
   count(): Promise<QueueCount>;
   /**
    * 调试/测试用：列出全量条目。
+   * 桌面端 TauriQueue 可选实现（fallback 用 drain 模拟）。
    */
-  list(): Promise<PendingItem[]>;
+  list?(): Promise<PendingItem[]>;
 }
