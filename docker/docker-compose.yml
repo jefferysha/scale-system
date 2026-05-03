@@ -10,7 +10,8 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./init-db:/docker-entrypoint-initdb.d:ro
     ports:
-      - '5432:5432'
+      # 主机 5433 → 容器 5432，避免与本机已运行的 PostgreSQL 冲突
+      - '5433:5432'
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U ${PG_USER:-scale}']
       interval: 5s
