@@ -27,3 +27,43 @@ async def alice(session):
     session.add(u)
     await session.commit()
     return u
+
+
+@pytest_asyncio.fixture
+async def admin_token(client, session) -> str:
+    u = User(
+        username="admin_t",
+        password_hash=hash_password("strongpass!"),
+        role="admin",
+    )
+    session.add(u)
+    await session.commit()
+    r = await client.post(
+        "/api/v1/auth/login",
+        json={
+            "username": "admin_t",
+            "password": "strongpass!",
+            "client_kind": "desktop",
+        },
+    )
+    return r.json()["access_token"]
+
+
+@pytest_asyncio.fixture
+async def operator_token(client, session) -> str:
+    u = User(
+        username="oper_t",
+        password_hash=hash_password("strongpass!"),
+        role="operator",
+    )
+    session.add(u)
+    await session.commit()
+    r = await client.post(
+        "/api/v1/auth/login",
+        json={
+            "username": "oper_t",
+            "password": "strongpass!",
+            "client_kind": "desktop",
+        },
+    )
+    return r.json()["access_token"]
