@@ -1,4 +1,9 @@
 import '@testing-library/jest-dom';
+import { afterAll, afterEach, beforeAll, vi } from 'vitest';
+import { server, TEST_API_BASE_URL } from './msw-server';
+
+// 让 lib/api/client.ts 在测试中走 MSW 拦截。
+vi.stubEnv('VITE_API_BASE_URL', TEST_API_BASE_URL);
 
 // Node 25+ ships an experimental built-in `localStorage` that ends up as a
 // non-functional empty object in jsdom worker contexts. Replace it with a
@@ -40,3 +45,7 @@ const ensureStorage = (name: 'localStorage' | 'sessionStorage'): void => {
 
 ensureStorage('localStorage');
 ensureStorage('sessionStorage');
+
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
