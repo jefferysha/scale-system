@@ -1,0 +1,12 @@
+{
+  "name": "@scale/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "uv run uvicorn scale_api.main:app --reload --port 8000",
+    "test": "uv run pytest",
+    "lint": "uv run ruff check .",
+    "typecheck": "uv run mypy src",
+    "build": "echo 'Python no build'"
+  }
+}
