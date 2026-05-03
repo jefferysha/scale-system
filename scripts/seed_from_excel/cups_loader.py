@@ -1,19 +1,24 @@
 """杯库 sheet → cups + cup_calibrations."""
+
 from __future__ import annotations
 
 import sys
 from dataclasses import dataclass
 from datetime import datetime
-from decimal import Decimal
+from typing import TYPE_CHECKING
 
-from openpyxl.workbook import Workbook
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from scale_api.models.cup import Cup
 from scale_api.models.cup_calibration import CupCalibration
 
 from ._helpers import to_date, to_decimal
+
+if TYPE_CHECKING:
+    from decimal import Decimal
+
+    from openpyxl.workbook import Workbook
+    from sqlalchemy.ext.asyncio import AsyncSession
 
 BATCH = 200
 
@@ -29,7 +34,10 @@ class _PendingCal:
 
 
 async def load_cups(
-    session: AsyncSession, wb: Workbook, *, dry_run: bool,
+    session: AsyncSession,
+    wb: Workbook,
+    *,
+    dry_run: bool,
 ) -> tuple[int, int]:
     """读取"杯库" sheet，返回 (成功, 失败) 统计。
 
@@ -69,9 +77,7 @@ async def load_cups(
                 continue
 
             existing = (
-                await session.scalars(
-                    select(Cup).where(Cup.cup_number == cup_number)
-                )
+                await session.scalars(select(Cup).where(Cup.cup_number == cup_number))
             ).first()
             if existing:
                 ok += 1
@@ -95,9 +101,7 @@ async def load_cups(
                     _PendingCal(
                         cup_number=cup_number,
                         tare_g=current_tare,
-                        calibrated_at=datetime.combine(
-                            latest_date, datetime.min.time()
-                        ),
+                        calibrated_at=datetime.combine(latest_date, datetime.min.time()),
                         method="import:current",
                     )
                 )
@@ -106,9 +110,7 @@ async def load_cups(
                     _PendingCal(
                         cup_number=cup_number,
                         tare_g=prev_tare,
-                        calibrated_at=datetime.combine(
-                            prev_date, datetime.min.time()
-                        ),
+                        calibrated_at=datetime.combine(prev_date, datetime.min.time()),
                         method="import:previous",
                     )
                 )

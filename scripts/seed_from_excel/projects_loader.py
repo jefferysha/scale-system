@@ -1,19 +1,26 @@
 """项目库 sheet → projects 表."""
+
 from __future__ import annotations
 
 import sys
+from typing import TYPE_CHECKING
 
-from openpyxl.workbook import Workbook
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from scale_api.models.project import Project
 
 from ._helpers import to_date
 
+if TYPE_CHECKING:
+    from openpyxl.workbook import Workbook
+    from sqlalchemy.ext.asyncio import AsyncSession
+
 
 async def load_projects(
-    session: AsyncSession, wb: Workbook, *, dry_run: bool,
+    session: AsyncSession,
+    wb: Workbook,
+    *,
+    dry_run: bool,
 ) -> tuple[int, int]:
     """读取"项目库" sheet，返回 (成功, 失败) 统计。
 
@@ -39,9 +46,7 @@ async def load_projects(
             established_date = to_date(established_raw)
             notes = str(notes_raw).strip() if notes_raw else None
 
-            existing = (
-                await session.scalars(select(Project).where(Project.name == name))
-            ).first()
+            existing = (await session.scalars(select(Project).where(Project.name == name))).first()
             if existing:
                 ok += 1
                 continue

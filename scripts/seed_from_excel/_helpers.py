@@ -1,4 +1,5 @@
 """通用类型转换 helpers（共享于 loaders）."""
+
 from __future__ import annotations
 
 from datetime import date, datetime

@@ -1,3 +1,4 @@
+# ruff: noqa: N999  # CLI 入口，文件名故意带连字符
 """一次性从称重数据库.xlsx 导入 mock 数据到 PG。
 
 用法:
@@ -14,6 +15,7 @@
 Env:
     DATABASE_URL  默认从 apps/api/.env 读
 """
+
 from __future__ import annotations
 
 import argparse
@@ -26,14 +28,13 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "apps" / "api" / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from sqlalchemy.ext.asyncio import async_sessionmaker  # noqa: E402
-
-from scale_api.db.session import make_engine  # noqa: E402
-
 from seed_from_excel.cups_loader import load_cups  # noqa: E402
 from seed_from_excel.excel_reader import open_workbook  # noqa: E402
 from seed_from_excel.projects_loader import load_projects  # noqa: E402
 from seed_from_excel.records_loader import load_records  # noqa: E402
+from sqlalchemy.ext.asyncio import async_sessionmaker  # noqa: E402
+
+from scale_api.db.session import make_engine  # noqa: E402
 
 
 async def main(excel_path: Path, *, dry_run: bool) -> int:

@@ -1,4 +1,5 @@
 """Excel 读取统一入口."""
+
 from pathlib import Path
 
 import openpyxl

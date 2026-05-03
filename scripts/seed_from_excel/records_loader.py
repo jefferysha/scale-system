@@ -9,18 +9,16 @@
 幂等：用 uuid5(NAMESPACE_URL, "scale://import/{project_id}/{vertical_id}/{date}/{start_time}")
 稳定生成 client_uid，重跑同一份 Excel 保持一致。
 """
+
 from __future__ import annotations
 
 import sys
 import uuid
 from datetime import date as date_t
-from datetime import datetime
 from decimal import Decimal
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from openpyxl.workbook import Workbook
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from scale_api.models.cup import Cup
 from scale_api.models.project import Project
@@ -28,6 +26,10 @@ from scale_api.models.record import WeighingRecord
 from scale_api.models.vertical import Vertical
 
 from ._helpers import safe_str, to_date, to_datetime, to_decimal
+
+if TYPE_CHECKING:
+    from openpyxl.workbook import Workbook
+    from sqlalchemy.ext.asyncio import AsyncSession
 
 PROJECT_SHEETS: list[str] = ["S徐六泾断面200712", "S浙江201611"]
 
@@ -46,7 +48,10 @@ NAMESPACE = uuid.NAMESPACE_URL
 
 
 async def load_records(
-    session: AsyncSession, wb: Workbook, *, dry_run: bool,
+    session: AsyncSession,
+    wb: Workbook,
+    *,
+    dry_run: bool,
 ) -> tuple[int, int]:
     """读取项目 sheet（宽表），生成 weighing_records，返回 (成功, 失败)."""
     ok = 0
@@ -170,18 +175,14 @@ async def _process_record_row(
     )
     if vertical is None:
         # dry-run 且 vertical 不存在 → 仍计成功（模拟会建出来）
-        if dry_run:
-            return True
-        return False
+        return bool(dry_run)
 
     stable_uid = uuid.uuid5(
         NAMESPACE,
         f"scale://import/{project.id}/{vertical.id}/{sample_date}/{start_time}",
     )
     existing = (
-        await session.scalars(
-            select(WeighingRecord).where(WeighingRecord.client_uid == stable_uid)
-        )
+        await session.scalars(select(WeighingRecord).where(WeighingRecord.client_uid == stable_uid))
     ).first()
     if existing:
         return True
@@ -255,9 +256,7 @@ async def _get_or_create_vertical(
         return cache[key]
     vertical = (
         await session.scalars(
-            select(Vertical).where(
-                Vertical.project_id == project_id, Vertical.code == code
-            )
+            select(Vertical).where(Vertical.project_id == project_id, Vertical.code == code)
         )
     ).first()
     if vertical is not None:
