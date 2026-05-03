@@ -30,6 +30,12 @@ target/
 # Tauri
 src-tauri/target/
 src-tauri/gen/
+**/src-tauri/gen/
+
+# Playwright MCP / IDE 临时
+.playwright-mcp/
+playwright-report/
+test-results/
 
 # IDE
 .vscode/

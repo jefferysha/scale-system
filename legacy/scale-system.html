@@ -47,7 +47,7 @@ button{cursor:pointer;background:none;border:0;padding:0}
 
 /* ── App ─────────────────────────────── */
 .app{
-  display:grid; grid-template-rows:56px 1fr; height:100vh;
+  display:grid; grid-template-rows:46px 1fr; height:100vh;
   background:
     radial-gradient(1100px 600px at 12% -10%, var(--acc-shade), transparent 60%),
     radial-gradient(900px 500px at 110% 110%, var(--acc-shade), transparent 60%),
@@ -62,30 +62,31 @@ button{cursor:pointer;background:none;border:0;padding:0}
 /* ── Header ──────────────────────────── */
 .header{
   display:grid; grid-template-columns:auto 1fr auto; align-items:center;
-  padding:0 18px; border-bottom:1px solid var(--line);
+  padding:0 14px; border-bottom:1px solid var(--line);
   background:linear-gradient(180deg,var(--bg-1),transparent);
   backdrop-filter:saturate(140%) blur(8px);
+  position:relative; z-index:60;
 }
 .brand{display:flex;align-items:center;gap:12px}
 .brand-mark{
-  width:30px;height:30px;border-radius:8px;
+  width:26px;height:26px;border-radius:7px;
   background:conic-gradient(from 215deg,var(--acc) 0%,var(--acc-2) 33%,var(--acc) 66%,var(--acc-2) 100%);
   position:relative; box-shadow:0 0 0 1px var(--line-2), 0 6px 14px -6px var(--acc-shade);
 }
-.brand-mark::after{content:"";position:absolute;inset:6px;border-radius:5px;background:var(--bg-1);border:1px solid var(--line-2)}
-.brand-mark::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:var(--acc);box-shadow:var(--led-glow)}
+.brand-mark::after{content:"";position:absolute;inset:5px;border-radius:4px;background:var(--bg-1);border:1px solid var(--line-2)}
+.brand-mark::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;background:var(--acc);box-shadow:var(--led-glow)}
 .brand-text{display:flex;flex-direction:column;line-height:1.05}
-.brand-name{font-weight:600;font-size:14px;letter-spacing:.02em}
-.brand-tag{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-3);letter-spacing:.18em}
+.brand-name{font-weight:600;font-size:13px;letter-spacing:.02em}
+.brand-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--text-3);letter-spacing:.16em}
 
-.menu{display:flex;justify-content:center;gap:4px;margin-left:8px}
-.m-item{position:relative;padding:9px 14px;font-size:13px;color:var(--text-2);border-radius:8px;
+.menu{display:flex;justify-content:center;gap:2px;margin-left:8px}
+.m-item{position:relative;padding:7px 11px;font-size:12.5px;color:var(--text-2);border-radius:7px;
   transition:color var(--t-fast) var(--ease),background var(--t-fast) var(--ease)}
 .m-item:hover{color:var(--text);background:color-mix(in oklab,var(--bg-2) 70%,transparent)}
 .m-item .chev{margin-left:6px;opacity:.55;font-size:9px}
-.m-pop{position:absolute;left:0;top:calc(100% + 6px);min-width:160px;
+.m-pop{position:absolute;left:0;top:calc(100% + 4px);min-width:150px;
   background:var(--bg-1);border:1px solid var(--line-2);border-radius:10px;
-  padding:6px;display:none;z-index:50;box-shadow:var(--shadow-1)}
+  padding:6px;display:none;z-index:200;box-shadow:0 14px 36px -12px rgba(0,0,0,.45),var(--shadow-1)}
 .m-pop a{display:block;padding:8px 10px;border-radius:6px;color:var(--text);text-decoration:none;font-size:13px}
 .m-pop a:hover{background:var(--bg-2);color:var(--acc)}
 .m-item.open .m-pop{display:block}
@@ -111,7 +112,7 @@ button{cursor:pointer;background:none;border:0;padding:0}
 .user-role{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-3);letter-spacing:.05em}
 
 /* ── Main ───────────────────────────── */
-.main{display:grid; grid-template-columns:1.18fr 1.02fr .9fr; gap:14px; padding:14px; min-height:0}
+.main{display:grid; grid-template-columns:1.7fr .92fr .42fr; gap:6px; padding:6px; min-height:0}
 
 .panel{
   display:flex;flex-direction:column;min-height:0;
@@ -119,40 +120,53 @@ button{cursor:pointer;background:none;border:0;padding:0}
   border:1px solid var(--line); border-radius:var(--r-2);
   box-shadow:var(--shadow-1); position:relative; overflow:hidden;
 }
-.panel::before{content:"";position:absolute;left:0;right:0;top:0;height:48px;background:var(--panel-stripe);pointer-events:none}
-.panel-head{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);position:relative}
-.panel-head .led{width:7px;height:7px;border-radius:50%;background:var(--acc);box-shadow:var(--led-glow)}
-.panel-head h3{margin:0;font-size:13.5px;font-weight:600;letter-spacing:.01em}
+.panel::before{content:"";position:absolute;left:0;right:0;top:0;height:38px;background:var(--panel-stripe);pointer-events:none}
+.panel-head{display:flex;align-items:center;gap:7px;padding:5px 8px;border-bottom:1px solid var(--line);position:relative}
+.panel-head .led{width:5px;height:5px;border-radius:50%;background:var(--acc);box-shadow:var(--led-glow)}
+.panel-head h3{margin:0;font-size:11.5px;font-weight:600;letter-spacing:.01em}
 .panel-head .spacer{flex:1}
-.panel-head .h-actions{display:flex;align-items:center;gap:6px}
-.btn-ghost{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;font-size:12px;
-  border:1px solid var(--line-2);border-radius:6px;color:var(--text-2);background:var(--bg-1);
+.panel-head .h-actions{display:flex;align-items:center;gap:4px}
+.btn-ghost{display:inline-flex;align-items:center;gap:3px;padding:2px 6px;font-size:10.5px;
+  border:1px solid var(--line-2);border-radius:4px;color:var(--text-2);background:var(--bg-1);
   transition:color var(--t-fast),border-color var(--t-fast)}
 .btn-ghost:hover{color:var(--acc);border-color:var(--acc)}
-.btn-ghost svg{width:12px;height:12px}
+.btn-ghost svg{width:11px;height:11px}
 
 /* ── LEFT · Table ────────────────────── */
-.tbl-toolbar{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.tbl-toolbar .seg{display:flex;border:1px solid var(--line-2);border-radius:7px;overflow:hidden}
-.tbl-toolbar .seg button{padding:5px 10px;font-size:12px;color:var(--text-2);border-right:1px solid var(--line-2);white-space:nowrap}
-.tbl-toolbar .seg button:last-child{border-right:0}
-.tbl-toolbar .seg button:hover,.tbl-toolbar .seg button.active{color:var(--acc);background:var(--bg-2)}
-.tbl-toolbar .search{flex:1;min-width:140px;display:flex;align-items:center;gap:7px;padding:5px 9px;background:var(--bg-2);border:1px solid var(--line);border-radius:7px;color:var(--text-3)}
-.tbl-toolbar .search input{flex:1;border:0;background:transparent;outline:none;font-size:12px;color:var(--text);min-width:0}
-.tbl-toolbar .search svg{width:13px;height:13px}
-.tbl-toolbar .stat{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-3);white-space:nowrap}
-.tbl-toolbar .stat b{color:var(--acc);font-weight:500}
+.tbl-toolbar{display:flex;align-items:center;gap:8px;padding:6px 11px;border-bottom:1px solid var(--line)}
+.t-stat{flex:1;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t-stat b{color:var(--acc);font-weight:500}
+.t-toggle{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;font-size:11.5px;
+  border:1px solid var(--line-2);border-radius:5px;color:var(--text-2);background:var(--bg-1);
+  transition:color var(--t-fast),border-color var(--t-fast)}
+.t-toggle:hover{color:var(--acc);border-color:var(--acc)}
+.t-toggle.on{color:var(--acc);border-color:var(--acc);background:var(--acc-shade)}
+.t-toggle svg{width:11px;height:11px}
+.t-toggle .chev{font-size:9px;transition:transform var(--t-fast) var(--ease)}
+.t-toggle.on .chev{transform:rotate(180deg)}
+
+.tbl-filters{padding:7px 11px;border-bottom:1px solid var(--line);background:var(--bg-2);
+  display:flex;gap:7px;align-items:center;animation:slideDown .22s var(--ease)}
+.tbl-filters[hidden]{display:none}
+@keyframes slideDown{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+.tbl-filters .seg{display:flex;border:1px solid var(--line-2);border-radius:6px;overflow:hidden;flex-shrink:0}
+.tbl-filters .seg button{padding:4px 9px;font-size:11.5px;color:var(--text-2);border-right:1px solid var(--line-2);white-space:nowrap}
+.tbl-filters .seg button:last-child{border-right:0}
+.tbl-filters .seg button:hover,.tbl-filters .seg button.active{color:var(--acc);background:var(--bg-1)}
+.tbl-filters .search{flex:1;min-width:0;display:flex;align-items:center;gap:6px;padding:4px 8px;background:var(--bg-1);border:1px solid var(--line);border-radius:6px;color:var(--text-3)}
+.tbl-filters .search input{flex:1;border:0;background:transparent;outline:none;font-size:11.5px;color:var(--text);min-width:0}
+.tbl-filters .search svg{width:11px;height:11px}
 
 .tbl-wrap{flex:1;min-height:0;overflow:auto;position:relative}
-.tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;table-layout:fixed}
+.tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:11.5px;table-layout:fixed}
 .tbl th,.tbl td{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tbl thead th{
   position:sticky;top:0;z-index:2;text-align:left;font-weight:500;
-  font-size:11px;color:var(--text-3);
-  padding:9px 8px;background:var(--bg-2);border-bottom:1px solid var(--line-2);
+  font-size:10.5px;color:var(--text-3);
+  padding:7px 7px;background:var(--bg-2);border-bottom:1px solid var(--line-2);
 }
 .tbl thead th.num-col{text-align:right}
-.tbl tbody td{padding:8px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tbl tbody td{padding:6px 7px;border-bottom:1px solid var(--line);vertical-align:middle}
 .tbl tbody tr:hover td{background:color-mix(in oklab,var(--acc-shade) 70%,var(--bg-1))}
 .tbl tbody tr.fresh td{animation:flash 1.2s ease-out 1}
 @keyframes flash{0%{background:color-mix(in oklab,var(--acc) 25%,var(--bg-1))}100%{background:transparent}}
@@ -167,78 +181,150 @@ button{cursor:pointer;background:none;border:0;padding:0}
 .tbl tr.empty td{padding:32px;text-align:center;color:var(--text-3);font-size:12px}
 
 /* fixed col widths */
-.tbl col.c-time{width:120px}
-.tbl col.c-proj{width:130px}
-.tbl col.c-cup{width:80px}
-.tbl col.c-dep{width:60px}
-.tbl col.c-pt{width:50px}
-.tbl col.c-conc{width:90px}
-.tbl col.c-act{width:74px}
+.tbl col.c-time{width:108px}
+.tbl col.c-proj{width:118px}
+.tbl col.c-cup{width:74px}
+.tbl col.c-dep{width:54px}
+.tbl col.c-pt{width:44px}
+.tbl col.c-conc{width:78px}
+.tbl col.c-act{width:64px}
 
 /* ── MIDDLE · Balance + cells + vbars ── */
-.middle-stack{display:grid;grid-template-rows:1.5fr auto 1fr;height:100%;min-height:0}
-.balance-stage{position:relative;padding:14px;display:flex;align-items:center;justify-content:center;
-  background:radial-gradient(ellipse at 50% 35%,color-mix(in oklab,var(--bg-2) 70%,var(--acc-shade)),transparent 65%);
-  border-bottom:1px solid var(--line); min-height:0}
-.balance-stage object{width:100%;height:100%;max-height:100%;display:block;
-  filter:drop-shadow(0 18px 28px rgba(0,0,0,.35))}
-[data-theme="light"] .balance-stage object{filter:drop-shadow(0 18px 28px rgba(20,40,80,.18))}
-.balance-state{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:7px;
-  padding:4px 10px;border:1px solid var(--line-2);border-radius:999px;background:var(--bg-1);
-  font-size:11.5px;color:var(--text-2)}
-.balance-state .d{width:6px;height:6px;border-radius:50%;background:var(--text-3)}
+.middle-stack{display:grid;grid-template-rows:1.45fr auto .85fr;height:100%;min-height:0}
+.balance-stage{position:relative;padding:4px;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 50% 38%,color-mix(in oklab,var(--bg-2) 70%,var(--acc-shade)),transparent 65%);
+  border-bottom:1px solid var(--line); min-height:0; overflow:hidden}
+.balance-img-wrap{position:relative;height:100%;aspect-ratio:1/1;max-width:100%;max-height:100%;
+  display:flex;align-items:center;justify-content:center;
+  container-type:inline-size}
+.balance-img-wrap img{width:100%;height:100%;object-fit:contain;display:block;user-select:none;
+  -webkit-user-drag:none;pointer-events:none}
+/* 深色主题:把 PNG 白色背景剔透,显出深色画布 */
+[data-theme="dark"] .balance-img-wrap img{filter:url(#whiteKey) drop-shadow(0 16px 26px rgba(0,0,0,.55))}
+[data-theme="light"] .balance-img-wrap img{filter:drop-shadow(0 14px 22px rgba(20,40,80,.18))}
+/* 覆盖 PNG 上烘焙的 LCD 字符,叠一层动态数字 */
+.lcd-mask{position:absolute;left:33%;right:33%;top:69.8%;bottom:21.8%;
+  background:#020a06;display:flex;align-items:center;justify-content:center;gap:.2em;
+  border-radius:.6cqi;pointer-events:none;overflow:hidden;
+  box-shadow:inset 0 0 5px rgba(0,0,0,.7);padding:0 1.4cqi}
+.lcd-mask::before{content:"88.8888";position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  font-family:'JetBrains Mono','IBM Plex Mono',monospace;font-weight:800;
+  font-size:4.4cqi;letter-spacing:.05em;color:rgba(60,255,140,.05)}
+.lcd-mask .digits{position:relative;z-index:1;
+  font-family:'JetBrains Mono','IBM Plex Mono',monospace;font-weight:800;
+  font-size:4.4cqi;letter-spacing:.05em;color:#3dff85;line-height:1;
+  text-shadow:0 0 4px rgba(61,255,133,.7),0 0 10px rgba(61,255,133,.35)}
+.lcd-mask .u{position:relative;z-index:1;font-size:2.4cqi;color:#3dff85;line-height:1;
+  font-family:'JetBrains Mono',monospace;opacity:.9;text-shadow:0 0 3px rgba(61,255,133,.5)}
+.lcd-mask .stable-led{position:absolute;left:5%;top:50%;transform:translateY(-50%);
+  width:1.2cqi;height:1.2cqi;border-radius:50%;background:#1a3a26;transition:all .2s}
+.lcd-mask .stable-led.on{background:#3dff85;box-shadow:0 0 4px #3dff85,0 0 9px rgba(61,255,133,.6)}
+
+.balance-state{position:absolute;top:9px;left:9px;display:flex;align-items:center;gap:6px;
+  padding:3px 9px;border:1px solid var(--line-2);border-radius:999px;background:var(--bg-1);
+  font-size:11px;color:var(--text-2);z-index:2}
+.balance-state .d{width:5px;height:5px;border-radius:50%;background:var(--text-3)}
 .balance-state.idle .d{background:var(--text-3)}
 .balance-state.weighing .d{background:var(--warn);box-shadow:0 0 8px var(--warn);animation:pulse .8s ease-in-out infinite}
 .balance-state.stable .d{background:var(--acc);box-shadow:var(--led-glow)}
-.balance-readout{position:absolute;right:14px;top:12px;font-family:'JetBrains Mono',monospace;color:var(--text-3);font-size:11px}
+.balance-readout{position:absolute;right:10px;top:9px;font-family:'JetBrains Mono',monospace;color:var(--text-3);font-size:10.5px;z-index:2}
 
 .acquire-grid{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
-.f-cell{padding:13px 16px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:6px;min-width:0;position:relative}
+.f-cell{padding:5px 7px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:2px;min-width:0;position:relative}
 .f-cell:nth-child(3n){border-right:0}
 .f-cell:nth-last-child(-n+3){border-bottom:0}
-.f-cell .lab{font-size:12px;color:var(--text-3);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.f-cell .val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:var(--text);line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.f-cell .val .u{font-size:11.5px;color:var(--text-3);font-weight:400;margin-left:4px}
+.f-cell .lab{font-size:9.5px;color:var(--text-3);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.f-cell .val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--text);line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.f-cell .val .u{font-size:9px;color:var(--text-3);font-weight:400;margin-left:2px}
 .f-cell.acc .val{color:var(--acc)}
 .f-cell.acc::after{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--acc);box-shadow:0 0 8px var(--acc)}
-.f-cell .delta{font-size:10.5px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.f-cell .delta{font-size:9px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-.viz-block{padding:14px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.viz-block{padding:5px 7px 6px;display:flex;flex-direction:column;gap:3px;min-height:0}
 .viz-head{display:flex;align-items:center;justify-content:space-between}
-.viz-head .t{font-size:12.5px;color:var(--text-2);font-weight:500}
-.viz-head .meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-3)}
+.viz-head .t{font-size:10.5px;color:var(--text-2);font-weight:500}
+.viz-head .meta{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--text-3)}
 .viz-svg{flex:1;width:100%;min-height:0}
 
 /* ── RIGHT · Config ──────────────────── */
-.cfg{padding:14px;display:flex;flex-direction:column;gap:10px;flex:1;overflow:auto}
-.cfg-section{display:flex;flex-direction:column;gap:7px}
-.cfg-h{font-size:11.5px;color:var(--text-3);letter-spacing:.04em;display:flex;align-items:center;gap:8px}
-.cfg-h::before{content:"";width:14px;height:1px;background:var(--line-2)}
+.cfg{padding:6px 7px;display:flex;flex-direction:column;gap:5px;flex:1;overflow:auto}
+.cfg-section{display:flex;flex-direction:column;gap:3px}
+.cfg-h{font-size:9.5px;color:var(--text-3);letter-spacing:.05em;display:flex;align-items:center;gap:5px;text-transform:uppercase}
+.cfg-h::before{content:"";width:8px;height:1px;background:var(--line-2)}
 .cfg-h::after{content:"";flex:1;height:1px;background:var(--line)}
-.cfg-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.field{display:flex;flex-direction:column;gap:4px}
+.cfg-row{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.field{display:flex;flex-direction:column;gap:2px}
 .field.full{grid-column:1/-1}
-.field label{font-size:11.5px;color:var(--text-3)}
+.field label{font-size:9.5px;color:var(--text-3)}
 .field input,.field select{
-  padding:7px 10px;background:var(--bg-2);
-  border:1px solid var(--line);border-radius:6px;font-size:13px;color:var(--text);
-  font-family:'JetBrains Mono',monospace;outline:none;
+  padding:3px 6px;background:var(--bg-2);
+  border:1px solid var(--line);border-radius:4px;font-size:11px;color:var(--text);
+  font-family:'JetBrains Mono',monospace;outline:none;width:100%;min-width:0;
   transition:border-color var(--t-fast),box-shadow var(--t-fast)}
-.field input:focus,.field select:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-shade)}
+.field input:focus,.field select:focus{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc-shade)}
 .field input:disabled,.field select:disabled{opacity:.55;cursor:not-allowed}
-.radio-group{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.radio-group{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
 .radio-group label{
-  display:flex;align-items:center;justify-content:center;gap:5px;
-  padding:6px 0;font-size:12px;
-  border:1px solid var(--line);border-radius:6px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:3px;
+  padding:3px 0;font-size:10.5px;
+  border:1px solid var(--line);border-radius:4px;cursor:pointer;
   transition:color var(--t-fast),border-color var(--t-fast),background var(--t-fast)}
 .radio-group input{display:none}
 .radio-group label:has(input:checked){border-color:var(--acc);background:var(--acc-shade);color:var(--acc)}
-.checkbox{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-2);cursor:pointer;padding:4px 0}
-.checkbox input{accent-color:var(--acc);width:14px;height:14px}
+.checkbox{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-2);cursor:pointer;padding:2px 0}
+.checkbox input{accent-color:var(--acc);width:12px;height:12px}
 
-.btn{display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 14px;
-  border-radius:8px;font-weight:600;font-size:13.5px;letter-spacing:.04em;
+/* ── Custom Dropdown / Combobox ─────── */
+.cdd,.cmb{position:relative;width:100%;min-width:0}
+.cdd-btn{
+  width:100%;padding:3px 6px;background:var(--bg-2);
+  border:1px solid var(--line);border-radius:4px;font-size:11px;color:var(--text);
+  font-family:'JetBrains Mono',monospace;
+  display:flex;align-items:center;justify-content:space-between;gap:5px;
+  cursor:pointer;text-align:left;outline:none;
+  transition:border-color var(--t-fast),box-shadow var(--t-fast);
+}
+.cdd-btn:hover{border-color:var(--line-2)}
+.cdd.open .cdd-btn,.cmb.open input{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc-shade)}
+.cdd-val{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cdd-btn .chev{font-size:9px;opacity:.55;flex:none;transition:transform var(--t-fast)}
+.cdd.open .cdd-btn .chev{transform:rotate(180deg)}
+
+.cmb input{
+  width:100%;padding:3px 22px 3px 6px;background:var(--bg-2);
+  border:1px solid var(--line);border-radius:4px;font-size:11px;color:var(--text);
+  font-family:'JetBrains Mono',monospace;outline:none;
+  transition:border-color var(--t-fast),box-shadow var(--t-fast);
+}
+.cmb-chev{position:absolute;right:7px;top:50%;transform:translateY(-50%);
+  font-size:9px;color:var(--text-3);pointer-events:none;transition:transform var(--t-fast)}
+.cmb.open .cmb-chev{transform:translateY(-50%) rotate(180deg)}
+
+.cdd-list{
+  position:fixed;z-index:300;
+  background:var(--bg-1);border:1px solid var(--line-2);border-radius:6px;
+  box-shadow:0 14px 36px -12px rgba(0,0,0,.45),var(--shadow-1);
+  max-height:220px;overflow:auto;padding:3px;
+  font-family:'JetBrains Mono',monospace;
+}
+.cdd-list[hidden]{display:none}
+.cdd-list a{
+  display:block;padding:5px 8px;font-size:11px;color:var(--text);
+  text-decoration:none;border-radius:3px;cursor:pointer;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.cdd-list a:hover,.cdd-list a.active{background:var(--acc-shade);color:var(--acc)}
+.cdd-list a.selected{color:var(--acc);font-weight:600}
+.cdd-list a.selected::before{content:"✓ ";opacity:.8}
+.cdd-list .empty{padding:8px;color:var(--text-3);text-align:center;font-size:10.5px}
+
+/* convert dropdown wrapper in header */
+.h-dd{position:relative;display:inline-block}
+.h-dd .btn-ghost .chev{font-size:9px;margin-left:2px;opacity:.6}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:5px;padding:5px 8px;
+  border-radius:6px;font-weight:600;font-size:11.5px;letter-spacing:.04em;
   transition:all var(--t-fast) var(--ease)}
 .btn.primary{background:var(--acc);color:var(--bg-0);border:1px solid var(--acc)}
 .btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px -8px var(--acc)}
@@ -247,8 +333,8 @@ button{cursor:pointer;background:none;border:0;padding:0}
 .btn.outline{background:transparent;color:var(--text);border:1px solid var(--line-2)}
 .btn.outline:hover{color:var(--acc);border-color:var(--acc)}
 .btn:disabled{cursor:not-allowed;opacity:.5}
-.btn svg{width:14px;height:14px}
-.btn-bar{display:grid;grid-template-columns:1fr auto;gap:8px;padding:14px;border-top:1px solid var(--line);background:linear-gradient(180deg,transparent,var(--bg-1))}
+.btn svg{width:12px;height:12px}
+.btn-bar{display:grid;grid-template-columns:1fr;gap:5px;padding:5px 7px;border-top:1px solid var(--line);background:linear-gradient(180deg,transparent,var(--bg-1))}
 
 /* ── Login ──────────────────────────── */
 .login{position:fixed;inset:0;z-index:99;display:none;align-items:center;justify-content:center;
@@ -276,6 +362,34 @@ body[data-role="operator"] .perm-admin{opacity:.4;pointer-events:none;filter:sat
 </style>
 </head>
 <body data-role="operator">
+
+<!-- 把 PNG 中近白色像素剔透:alpha = clamp(5 - 5/3·(R+G+B)) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="whiteKey" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="
+      1 0 0 0 0
+      0 1 0 0 0
+      0 0 1 0 0
+      -1.667 -1.667 -1.667 0 5"/>
+  </filter>
+</svg>
+
+<!-- ════ NEW PROJECT MODAL ════ -->
+<div class="login" id="newProjModal">
+  <div class="login-card">
+    <div class="login-head">
+      <h2>新建项目</h2>
+      <p>填写项目名称后开始</p>
+    </div>
+    <div class="login-body">
+      <div class="field"><label>项目名称</label><input id="newProjName" placeholder="例:S徐六泾断面定线比测202607" /></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+        <button class="btn outline" id="newProjCancel">取 消</button>
+        <button class="btn primary" id="newProjOk">确 定</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ════ LOGIN ════ -->
 <div class="login" id="loginOverlay">
@@ -362,12 +476,25 @@ body[data-role="operator"] .perm-admin{opacity:.4;pointer-events:none;filter:sat
         <h3>数据表格</h3>
         <div class="spacer"></div>
         <div class="h-actions">
-          <button class="btn-ghost" id="exportTxt">转文本</button>
-          <button class="btn-ghost" id="exportXls">转 Excel</button>
+          <button class="btn-ghost perm-write" id="newTblBtn">＋ 新建</button>
+          <div class="h-dd" id="convertDd">
+            <button class="btn-ghost" id="convertBtn">转换 <span class="chev">▾</span></button>
+            <div class="cdd-list" id="convertList" hidden>
+              <a data-fmt="txt">转文本</a>
+              <a data-fmt="xls">转 Excel</a>
+            </div>
+          </div>
           <button class="btn-ghost perm-admin" id="clearTbl">清空</button>
         </div>
       </div>
       <div class="tbl-toolbar">
+        <span class="t-stat">合计 <b id="rowCount">0</b> 条 · 均值 <b id="cMean">—</b></span>
+        <button class="t-toggle" id="tToggle" type="button">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 4h12M4 8h8M6 12h4"/></svg>
+          筛选 <span class="chev">▾</span>
+        </button>
+      </div>
+      <div class="tbl-filters" id="tFilters" hidden>
         <div class="seg">
           <button data-flt="all" class="active">全部</button>
           <button data-flt="徐六泾">徐六泾</button>
@@ -378,7 +505,6 @@ body[data-role="operator"] .perm-admin{opacity:.4;pointer-events:none;filter:sat
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="4.5"/><path d="M11 11l3 3"/></svg>
           <input id="srch" placeholder="按杯号 / 日期 / 项目搜索" />
         </div>
-        <span class="stat">合计 <b id="rowCount">0</b> 条 · 含沙量均值 <b id="cMean">—</b></span>
       </div>
       <div class="tbl-wrap">
         <table class="tbl">
@@ -427,8 +553,15 @@ body[data-role="operator"] .perm-admin{opacity:.4;pointer-events:none;filter:sat
         <!-- 1) 大天平 -->
         <div class="balance-stage">
           <div class="balance-state idle" id="balState"><span class="d"></span><span id="balStateTxt">待机</span></div>
-          <div class="balance-readout" id="balRO">实时</div>
-          <object id="balanceObj" type="image/svg+xml" data="balance.svg" aria-label="电子天平"></object>
+          <div class="balance-readout">实时</div>
+          <div class="balance-img-wrap">
+            <img src="balance.png" alt="电子天平" />
+            <div class="lcd-mask">
+              <span class="stable-led" id="lcdLed"></span>
+              <span class="digits" id="lcdDigits">0.0000</span>
+              <span class="u">g</span>
+            </div>
+          </div>
         </div>
 
         <!-- 2) 6 个指标 横排 -->
@@ -490,28 +623,43 @@ body[data-role="operator"] .perm-admin{opacity:.4;pointer-events:none;filter:sat
           <div class="cfg-h">项目信息</div>
           <div class="field full">
             <label>称重项目</label>
-            <select id="cfgProject">
-              <option>S徐六泾断面定线比测202603</option>
-              <option>S徐六泾断面定点连测202604</option>
-              <option>横向 · 北支测线 202605</option>
-              <option>OBS · 浊度比测 202606</option>
-            </select>
+            <div class="cmb" id="cmbProject">
+              <input id="cfgProject" autocomplete="off" placeholder="输入或选择..." value="S徐六泾断面定线比测202603" />
+              <span class="cmb-chev">▾</span>
+              <div class="cdd-list" hidden></div>
+            </div>
           </div>
           <div class="cfg-row">
-            <div class="field"><label>垂线号</label><select id="cfgVline"><option>V-01</option><option>V-02</option><option>V-03</option><option>V-04</option><option>V-05</option></select></div>
+            <div class="field">
+              <label>垂线号</label>
+              <div class="cdd" data-target="cfgVline">
+                <button type="button" class="cdd-btn"><span class="cdd-val">V-01</span><span class="chev">▾</span></button>
+                <div class="cdd-list" hidden>
+                  <a data-val="V-01" class="selected">V-01</a>
+                  <a data-val="V-02">V-02</a>
+                  <a data-val="V-03">V-03</a>
+                  <a data-val="V-04">V-04</a>
+                  <a data-val="V-05">V-05</a>
+                </div>
+              </div>
+              <input type="hidden" id="cfgVline" value="V-01" />
+            </div>
             <div class="field"><label>容积 mL</label><input id="cfgVol" value="500" /></div>
           </div>
           <div class="cfg-row">
-            <div class="field"><label>瓶型</label><select id="cfgBottle"><option>1000</option><option>500</option><option>250</option></select></div>
-            <div class="field"><label>水深 m</label><input id="cfgDepth" value="9.40" /></div>
-          </div>
-          <div class="field full">
-            <label>类型</label>
-            <div class="radio-group">
-              <label><input type="radio" name="kind" value="徐六泾" checked /><span>徐六泾</span></label>
-              <label><input type="radio" name="kind" value="横向" /><span>横向</span></label>
-              <label><input type="radio" name="kind" value="OBS" /><span>OBS</span></label>
+            <div class="field">
+              <label>瓶型</label>
+              <div class="cdd" data-target="cfgBottle">
+                <button type="button" class="cdd-btn"><span class="cdd-val">1000</span><span class="chev">▾</span></button>
+                <div class="cdd-list" hidden>
+                  <a data-val="1000" class="selected">1000</a>
+                  <a data-val="500">500</a>
+                  <a data-val="250">250</a>
+                </div>
+              </div>
+              <input type="hidden" id="cfgBottle" value="1000" />
             </div>
+            <div class="field"><label>水深 m</label><input id="cfgDepth" value="9.40" /></div>
           </div>
         </div>
 
@@ -522,7 +670,21 @@ body[data-role="operator"] .perm-admin{opacity:.4;pointer-events:none;filter:sat
             <div class="field"><label>结束时间</label><input id="cfgEnd" placeholder="自动" /></div>
           </div>
           <div class="cfg-row">
-            <div class="field"><label>点次</label><select id="cfgPoint"><option>0.0</option><option>0.2</option><option>0.4</option><option>0.6</option><option>0.8</option><option>1.0</option></select></div>
+            <div class="field">
+              <label>点次</label>
+              <div class="cdd" data-target="cfgPoint">
+                <button type="button" class="cdd-btn"><span class="cdd-val">0.0</span><span class="chev">▾</span></button>
+                <div class="cdd-list" hidden>
+                  <a data-val="0.0" class="selected">0.0</a>
+                  <a data-val="0.2">0.2</a>
+                  <a data-val="0.4">0.4</a>
+                  <a data-val="0.6">0.6</a>
+                  <a data-val="0.8">0.8</a>
+                  <a data-val="1.0">1.0</a>
+                </div>
+              </div>
+              <input type="hidden" id="cfgPoint" value="0.0" />
+            </div>
             <div class="field"><label>杯号</label><input id="cfgCup" value="C-1024" /></div>
           </div>
           <div class="cfg-row">
@@ -552,8 +714,6 @@ const setTheme = (t) => {
   root.dataset.theme = t;
   document.getElementById('themeDark').classList.toggle('on', t === 'dark');
   document.getElementById('themeLight').classList.toggle('on', t === 'light');
-  // 重新着色 SVG 内的 LCD 数字
-  paintBalanceColors();
   drawVbars();
 };
 document.getElementById('themeDark').onclick = () => setTheme('dark');
@@ -597,62 +757,11 @@ const VBARS = {0.0:null,0.2:null,0.4:null,0.6:null,0.8:null,1.0:null};
 // balance live
 let weighing = false, stable = false;
 let liveW = 0, targetW = 135.0, tareW = 35.248, volMl = 500;
-let balanceDoc = null;
-const balObj = document.getElementById('balanceObj');
-balObj.addEventListener('load', () => {
-  balanceDoc = balObj.contentDocument;
-  // 1) 把 LCD 数字字号放大,占据更显眼的位置
-  enlargeBalanceLcd();
-  // 2) 把 SVG 里的英文按钮文字汉化
-  zhBalanceLabels();
-  paintBalanceColors();
-  updateBalanceLcd('0.0000 g');
-});
-
-const enlargeBalanceLcd = () => {
-  if (!balanceDoc) return;
-  const t = balanceDoc.getElementById('weight-display');
-  if (!t) return;
-  t.setAttribute('font-size', '52');
-  t.setAttribute('y', '478');
-  t.setAttribute('letter-spacing', '2');
-  t.setAttribute('font-weight', '800');
-  // 缩小下方 STABLE 标签
-  const sub = t.parentNode.querySelector('text:not(#weight-display)');
-  if (sub) { sub.setAttribute('font-size','9'); sub.setAttribute('y','493'); }
-};
-
-const zhBalanceLabels = () => {
-  if (!balanceDoc) return;
-  const repl = (eng, zh) => {
-    [...balanceDoc.querySelectorAll('text')].forEach(n => {
-      if (n.textContent.trim() === eng) n.textContent = zh;
-    });
-  };
-  repl('TARE', '去皮');
-  repl('ON/OFF', '开关');
-  repl('PRINT', '打印');
-  repl('UNIT', '单位');
-  repl('RE-ZERO', '归零');
-  repl('CAL', '校准');
-  repl('STABLE', '稳定');
-};
-
-const paintBalanceColors = () => {
-  if (!balanceDoc) return;
-  const acc = getCss('--acc');
-  const t = balanceDoc.getElementById('weight-display');
-  if (t) t.setAttribute('fill', acc);
-  // 状态点
-  [...balanceDoc.querySelectorAll('circle[fill]')].forEach(c => {
-    if (c.getAttribute('cx') === '495' && c.getAttribute('r') === '3') c.setAttribute('fill', acc);
-  });
-};
-
-const updateBalanceLcd = (txt) => {
-  if (!balanceDoc) return;
-  const t = balanceDoc.getElementById('weight-display');
-  if (t) t.textContent = txt;
+const lcdDigits = document.getElementById('lcdDigits');
+const lcdLed = document.getElementById('lcdLed');
+const updateBalanceLcd = (val) => {
+  lcdDigits.textContent = Number(val).toFixed(4);
+  lcdLed.classList.toggle('on', stable);
 };
 
 // live cells
@@ -666,7 +775,7 @@ const refreshLive = () => {
   const sand = Math.max(0, liveW - tareW);
   $('liveSand').textContent = fmt(sand);
   $('liveConc').textContent = volMl > 0 ? fmt((sand * 1000) / (volMl/1000) / 1000, 1) : '—';
-  updateBalanceLcd(fmt(liveW) + ' g');
+  updateBalanceLcd(liveW);
 };
 
 const setupFromCfg = () => {
@@ -735,7 +844,7 @@ commitBtn.onclick = () => {
   const cup  = $('cfgCup').value;
   const dep  = parseFloat($('cfgDepth').value) || 0;
   const pt   = $('cfgPoint').value;
-  const kind = document.querySelector('input[name="kind"]:checked').value;
+  const kind = '徐六泾';
   const sand = Math.max(0, liveW - tareW);
   const conc = volMl > 0 ? (sand * 1000 / (volMl / 1000)) / 1000 : 0;
 
@@ -750,8 +859,9 @@ commitBtn.onclick = () => {
   VBARS[pt] = conc;
 
   $('cfgCup').value = nextCup(cup);
-  const ptSel = $('cfgPoint');
-  if (ptSel.selectedIndex < ptSel.options.length - 1) ptSel.selectedIndex += 1;
+  const POINTS = ['0.0','0.2','0.4','0.6','0.8','1.0'];
+  const curIdx = POINTS.indexOf(pt);
+  if (curIdx >= 0 && curIdx < POINTS.length - 1) setCddValue('cfgPoint', POINTS[curIdx + 1]);
 
   stopWeighing(true);
   liveW = 0; refreshLive();
@@ -820,25 +930,33 @@ const renderTable = () => {
 };
 const shortProj = p => p.length > 12 ? p.slice(0,12) + '…' : p;
 
-document.querySelectorAll('.tbl-toolbar .seg button').forEach(b => {
+document.querySelectorAll('.tbl-filters .seg button').forEach(b => {
   b.onclick = () => {
-    document.querySelectorAll('.tbl-toolbar .seg button').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tbl-filters .seg button').forEach(x => x.classList.remove('active'));
     b.classList.add('active'); tFlt = b.dataset.flt; renderTable();
   };
 });
 $('srch').oninput = e => { tQ = e.target.value.trim().toLowerCase(); renderTable(); };
 $('clearTbl').onclick = () => { ROWS.length = 0; Object.keys(VBARS).forEach(k => VBARS[k] = null); redrawAll(); };
 
-// vertical bars (垂线示意图) — 全宽展示
+// filter collapse
+const tToggle = $('tToggle'), tFilters = $('tFilters');
+tToggle.onclick = () => {
+  const open = !tFilters.hidden;
+  tFilters.hidden = open;
+  tToggle.classList.toggle('on', !open);
+};
+
+// vertical bars (垂线示意图) — 纯柱状图
 const vbarSvg = $('vbarSvg');
 const drawVbars = () => {
-  const W = 560, H = 200, PAD_L = 32, PAD_R = 18, PAD_T = 16, PAD_B = 30;
+  const W = 560, H = 200, PAD_L = 32, PAD_R = 14, PAD_T = 14, PAD_B = 26;
   const points = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0];
   const acc = getCss('--acc'), warn = getCss('--warn'),
         line = getCss('--line'), line2 = getCss('--line-2'),
-        text3 = getCss('--text-3'), text = getCss('--text'),
-        bg2 = getCss('--bg-2');
+        text3 = getCss('--text-3'), text = getCss('--text');
   const colW = (W - PAD_L - PAD_R) / points.length;
+  const barW = Math.min(36, colW * 0.55);
   const vals = points.map(p => VBARS[p]);
   const maxV = Math.max(0.1, ...vals.filter(v => v != null).concat([0]));
 
@@ -846,7 +964,6 @@ const drawVbars = () => {
     <line x1="${PAD_L-3}" y1="${PAD_T-4}" x2="${PAD_L-3}" y2="${H-PAD_B+4}" stroke="${line2}" />
     <line x1="${PAD_L-3}" y1="${H-PAD_B}" x2="${W-PAD_R+3}" y2="${H-PAD_B}" stroke="${line2}" />
   `;
-  // y 轴刻度
   for (let i = 0; i <= 4; i++) {
     const y = PAD_T + (H - PAD_T - PAD_B) * i / 4;
     const v = maxV * (1 - i/4);
@@ -854,7 +971,7 @@ const drawVbars = () => {
     svg += `<text x="${PAD_L-6}" y="${y+3}" text-anchor="end" font-family="JetBrains Mono" font-size="9.5" fill="${text3}">${fmt(v,0)}</text>`;
   }
   svg += `<text x="${PAD_L-26}" y="${PAD_T-4}" font-family="JetBrains Mono" font-size="9.5" fill="${text3}">mg/L</text>`;
-  svg += `<text x="${W-PAD_R}" y="${H-8}" text-anchor="end" font-family="JetBrains Mono" font-size="9.5" fill="${text3}">点位</text>`;
+  svg += `<text x="${W-PAD_R}" y="${H-6}" text-anchor="end" font-family="JetBrains Mono" font-size="9.5" fill="${text3}">点位</text>`;
 
   points.forEach((p,i) => {
     const cx = PAD_L + colW*i + colW/2;
@@ -863,16 +980,13 @@ const drawVbars = () => {
       const h = (v / maxV) * (H - PAD_T - PAD_B);
       const y = H - PAD_B - h;
       const fill = (v / maxV) > 0.7 ? warn : acc;
-      svg += `<rect x="${cx-18}" y="${y}" width="36" height="${h}" rx="3" fill="${fill}" opacity=".22"/>`;
-      svg += `<rect x="${cx-10}" y="${y}" width="20" height="${h}" rx="2" fill="${fill}"/>`;
-      svg += `<circle cx="${cx}" cy="${y}" r="4" fill="${fill}"/>`;
-      svg += `<text x="${cx}" y="${y-7}" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="${text}">${fmt(v,0)}</text>`;
+      svg += `<rect x="${cx - barW/2}" y="${y}" width="${barW}" height="${h}" rx="2" fill="${fill}"/>`;
+      svg += `<text x="${cx}" y="${y-5}" text-anchor="middle" font-family="JetBrains Mono" font-size="10.5" font-weight="600" fill="${text}">${fmt(v,0)}</text>`;
     } else {
-      svg += `<line x1="${cx}" y1="${PAD_T}" x2="${cx}" y2="${H-PAD_B}" stroke="${line2}" stroke-dasharray="2 3" opacity=".5"/>`;
-      svg += `<circle cx="${cx}" cy="${H-PAD_B}" r="3" fill="${line2}"/>`;
-      svg += `<text x="${cx}" y="${H-PAD_B-10}" text-anchor="middle" font-family="JetBrains Mono" font-size="9.5" fill="${text3}">未采</text>`;
+      svg += `<rect x="${cx - barW/2}" y="${H-PAD_B-3}" width="${barW}" height="3" fill="${line2}" opacity=".5"/>`;
+      svg += `<text x="${cx}" y="${H-PAD_B-8}" text-anchor="middle" font-family="JetBrains Mono" font-size="9.5" fill="${text3}">—</text>`;
     }
-    svg += `<text x="${cx}" y="${H-PAD_B+15}" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="${text3}">${p.toFixed(1)}</text>`;
+    svg += `<text x="${cx}" y="${H-PAD_B+13}" text-anchor="middle" font-family="JetBrains Mono" font-size="10.5" fill="${text3}">${p.toFixed(1)}</text>`;
   });
   vbarSvg.innerHTML = svg;
 };
@@ -880,9 +994,153 @@ const drawVbars = () => {
 function getCss(v){ return getComputedStyle(root).getPropertyValue(v).trim(); }
 const redrawAll = () => { renderTable(); drawVbars(); };
 
+// ── projects (combobox source) ──────────
+const PROJECTS = [
+  'S徐六泾断面定线比测202603',
+  'S徐六泾断面定点连测202604',
+  '横向 · 北支测线 202605',
+  'OBS · 浊度比测 202606',
+];
+
+// ── custom dropdown / combobox ──────────
+const closeAllDD = () => {
+  document.querySelectorAll('.cdd.open,.cmb.open,.h-dd.open').forEach(d => d.classList.remove('open'));
+  document.querySelectorAll('.cdd-list').forEach(l => l.hidden = true);
+};
+const positionList = (anchor, list) => {
+  const r = anchor.getBoundingClientRect();
+  const want = Math.max(r.width, 130);
+  list.style.left = r.left + 'px';
+  list.style.top  = (r.bottom + 2) + 'px';
+  list.style.minWidth = want + 'px';
+};
+const setCddValue = (targetId, val) => {
+  const cdd = document.querySelector(`.cdd[data-target="${targetId}"]`);
+  if (!cdd) return;
+  cdd.querySelectorAll('a').forEach(a => a.classList.toggle('selected', a.dataset.val === val));
+  cdd.querySelector('.cdd-val').textContent = val;
+  $(targetId).value = val;
+  $(targetId).dispatchEvent(new Event('change', { bubbles: true }));
+};
+
+document.querySelectorAll('.cdd').forEach(cdd => {
+  const btn = cdd.querySelector('.cdd-btn');
+  const list = cdd.querySelector('.cdd-list');
+  const target = cdd.dataset.target;
+  btn.onclick = e => {
+    e.stopPropagation();
+    const wasOpen = cdd.classList.contains('open');
+    closeAllDD();
+    if (!wasOpen) { cdd.classList.add('open'); positionList(btn, list); list.hidden = false; }
+  };
+  list.querySelectorAll('a').forEach(a => {
+    a.onclick = e => { e.preventDefault(); setCddValue(target, a.dataset.val); closeAllDD(); };
+  });
+});
+
+// combobox: 称重项目
+const cmbProj = document.getElementById('cmbProject');
+const projInput = $('cfgProject');
+const projList = cmbProj.querySelector('.cdd-list');
+const renderProjList = () => {
+  const q = projInput.value.trim().toLowerCase();
+  const matches = PROJECTS.filter(p => !q || p.toLowerCase().startsWith(q));
+  if (!matches.length) {
+    projList.innerHTML = '<div class="empty">无匹配 · 回车将创建新项</div>';
+  } else {
+    projList.innerHTML = matches.map(m => {
+      const sel = m === projInput.value ? ' selected' : '';
+      return `<a data-val="${m}" class="${sel.trim()}">${m}</a>`;
+    }).join('');
+    projList.querySelectorAll('a').forEach(a => {
+      a.onmousedown = e => {
+        e.preventDefault();
+        projInput.value = a.dataset.val;
+        $('liveProj').textContent = a.dataset.val;
+        $('setupReady').textContent = '已就绪';
+        closeAllDD();
+      };
+    });
+  }
+};
+const openProjList = () => {
+  closeAllDD();
+  cmbProj.classList.add('open');
+  renderProjList();
+  positionList(projInput, projList);
+  projList.hidden = false;
+};
+projInput.onfocus = openProjList;
+projInput.onclick = openProjList;
+projInput.oninput = () => { if (!cmbProj.classList.contains('open')) openProjList(); else renderProjList(); };
+projInput.onkeydown = e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const v = projInput.value.trim();
+    if (v && !PROJECTS.includes(v)) PROJECTS.unshift(v);
+    $('liveProj').textContent = v;
+    $('setupReady').textContent = '已就绪';
+    closeAllDD();
+    projInput.blur();
+  } else if (e.key === 'Escape') {
+    closeAllDD();
+    projInput.blur();
+  }
+};
+
+// convert dropdown
+const convDd = $('convertDd');
+const convBtn = $('convertBtn');
+const convList = $('convertList');
+convBtn.onclick = e => {
+  e.stopPropagation();
+  const wasOpen = convDd.classList.contains('open');
+  closeAllDD();
+  if (!wasOpen) { convDd.classList.add('open'); positionList(convBtn, convList); convList.hidden = false; }
+};
+convList.querySelectorAll('a').forEach(a => {
+  a.onclick = e => {
+    e.preventDefault();
+    closeAllDD();
+    const fmt = a.dataset.fmt;
+    $('liveStatus').textContent = fmt === 'xls' ? '已导出 Excel（演示）' : '已导出文本（演示）';
+  };
+});
+
+// new project modal
+const newBtn = $('newTblBtn');
+const npModal = $('newProjModal');
+const npName = $('newProjName');
+newBtn.onclick = () => {
+  npName.value = '';
+  npModal.classList.add('show');
+  setTimeout(() => npName.focus(), 60);
+};
+$('newProjCancel').onclick = () => npModal.classList.remove('show');
+$('newProjOk').onclick = () => {
+  const name = npName.value.trim();
+  if (!name) { npName.focus(); return; }
+  if (!PROJECTS.includes(name)) PROJECTS.unshift(name);
+  projInput.value = name;
+  $('liveProj').textContent = name;
+  $('setupReady').textContent = '已就绪';
+  npModal.classList.remove('show');
+};
+npName.onkeydown = e => {
+  if (e.key === 'Enter') { e.preventDefault(); $('newProjOk').click(); }
+  else if (e.key === 'Escape') { e.preventDefault(); $('newProjCancel').click(); }
+};
+
+// global close handlers
+document.addEventListener('click', e => {
+  if (!e.target.closest('.cdd,.cmb,.cdd-list,.h-dd')) closeAllDD();
+});
+window.addEventListener('resize', closeAllDD);
+document.addEventListener('scroll', closeAllDD, true);
+
 // boot
 redrawAll();
-['cfgProject','cfgCup','cfgDepth','cfgVol','cfgTare','cfgTarget'].forEach(id => {
+['cfgProject','cfgCup','cfgDepth','cfgVol','cfgTare','cfgTarget','cfgVline','cfgBottle','cfgPoint'].forEach(id => {
   $(id).addEventListener('change', () => $('setupReady').textContent = '已就绪');
 });
 
