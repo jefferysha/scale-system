@@ -13,7 +13,9 @@ export function Header(): React.ReactElement {
         <div className="size-7 rounded-lg bg-gradient-conic from-[var(--acc)] via-[var(--acc-2)] to-[var(--acc)]" />
         <div className="flex flex-col leading-tight">
           <span className="text-sm font-semibold">天平称重系统</span>
-          <span className="font-mono text-[10px] tracking-widest text-[var(--text-3)]">SCALE-SYSTEM</span>
+          <span className="font-mono text-[10px] tracking-widest text-[var(--text-3)]">
+            SCALE-SYSTEM
+          </span>
         </div>
         <NavMenu />
       </div>
