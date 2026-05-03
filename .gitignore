@@ -6,6 +6,12 @@ dist/
 build/
 coverage/
 .turbo/
+*.tsbuildinfo
+# 编译产物（保留 .ts 源；不提交并行 .js/.d.ts 副本）
+vite.config.js
+vite.config.d.ts
+vitest.config.js
+vitest.config.d.ts
 
 # Python
 __pycache__/
