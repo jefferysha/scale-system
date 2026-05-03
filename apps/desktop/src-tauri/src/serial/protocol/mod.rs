@@ -10,11 +10,11 @@ pub trait Protocol: Send + Sync {
 }
 
 /// 根据 `protocol_type` 返回一个具体协议实现。
-pub fn from_type(name: &str) -> Box<dyn Protocol> {
-    match name {
-        // 暂统一走 generic（手写解析覆盖了 mettler/sartorius/ohaus 的常见输出）。
-        _ => Box::new(generic::Generic),
-    }
+///
+/// 暂统一走 generic（手写解析覆盖了 mettler/sartorius/ohaus 的常见输出）。
+/// 后续若需要差异化，把这里改成 match 即可。
+pub fn from_type(_name: &str) -> Box<dyn Protocol> {
+    Box::new(generic::Generic)
 }
 
 #[cfg(test)]
