@@ -1,19 +1,24 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
-import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
+import { server as globalServer } from '@/test/msw-server';
 import { api, setAccessToken, setRefreshFn } from './client';
 import { ApiError } from './error';
 
-const server = setupServer();
+// 复用全局 MSW server，避免双 server 同时拦截同一 URL 造成请求被双重处理。
+const server = globalServer;
 
 describe('api client', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => {
+    // 全局 setup 已 listen；这里不重复 listen。
+  });
   afterEach(() => {
     server.resetHandlers();
     setAccessToken(null);
     setRefreshFn(null);
   });
-  afterAll(() => server.close());
+  afterAll(() => {
+    // 由全局 setup 的 afterAll 关闭。
+  });
 
   it('attaches bearer token when set', async () => {
     let captured = '';
