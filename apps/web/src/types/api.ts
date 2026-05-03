@@ -13,6 +13,9 @@ export type VerticalUpdate = schemas['VerticalUpdate'];
 export type Scale = schemas['ScaleOut'];
 export type ScaleCreate = schemas['ScaleCreate'];
 export type ScaleUpdate = schemas['ScaleUpdate'];
+export type ScaleValidateResult = schemas['ScaleValidateResult'];
+export type ScaleProbeReport = schemas['ScaleProbeReport'];
+export type ScaleProbeAck = schemas['ScaleProbeAck'];
 
 export type Cup = schemas['CupOut'];
 export type CupCreate = schemas['CupCreate'];

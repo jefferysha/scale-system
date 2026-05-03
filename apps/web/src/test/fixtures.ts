@@ -1,11 +1,4 @@
-import type {
-  Cup,
-  CupCalibration,
-  Project,
-  RecordItem,
-  Scale,
-  Vertical,
-} from '@/types/api';
+import type { Cup, CupCalibration, Project, RecordItem, Scale, Vertical } from '@/types/api';
 
 export const fxProject: Project = {
   id: 1,

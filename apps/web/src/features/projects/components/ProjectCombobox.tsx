@@ -1,11 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Check, ChevronDown } from 'lucide-react';
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from 'cmdk';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import type { Project } from '@/types/api';
 import { useProjectsInfinite } from '../hooks';
@@ -69,11 +65,7 @@ export function ProjectCombobox({
             className="h-9 w-full border-b border-[var(--line)] bg-transparent px-3 py-2 text-sm focus:outline-none"
             data-testid="project-combobox-input"
           />
-          <CommandList
-            ref={listRef}
-            onScroll={onScroll}
-            className="max-h-72 overflow-auto"
-          >
+          <CommandList ref={listRef} onScroll={onScroll} className="max-h-72 overflow-auto">
             <CommandEmpty className="px-3 py-2 text-xs text-[var(--text-3)]">
               无匹配项目
             </CommandEmpty>
@@ -88,9 +80,7 @@ export function ProjectCombobox({
                 className="flex cursor-pointer items-center gap-2 px-3 py-2 text-sm aria-selected:bg-[var(--bg-2)]"
                 data-testid={`project-combobox-item-${p.id}`}
               >
-                <Check
-                  className={`size-4 ${value?.id === p.id ? 'opacity-100' : 'opacity-0'}`}
-                />
+                <Check className={`size-4 ${value?.id === p.id ? 'opacity-100' : 'opacity-0'}`} />
                 <span className="truncate">{p.name}</span>
               </CommandItem>
             ))}

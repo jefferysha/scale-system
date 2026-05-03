@@ -1,9 +1,4 @@
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { ProjectUpdate } from '@/types/api';
 import { projectsApi } from './api';
 
@@ -38,8 +33,7 @@ export const useCreateProject = () => {
 export const useUpdateProject = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, body }: { id: number; body: ProjectUpdate }) =>
-      projectsApi.update(id, body),
+    mutationFn: ({ id, body }: { id: number; body: ProjectUpdate }) => projectsApi.update(id, body),
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: projectsKeys.all });
     },

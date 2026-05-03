@@ -3,12 +3,7 @@ import { toast } from 'sonner';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useCurrentUser } from '@/features/auth/hooks';
 import { isApiError } from '@/lib/api/error';
 import type { Project, ProjectCreate, ProjectUpdate } from '@/types/api';
@@ -23,9 +18,7 @@ import { ProjectForm } from './ProjectForm';
 export default function ProjectList(): React.ReactElement {
   const [q, setQ] = useState('');
   const [dialog, setDialog] = useState<
-    | { kind: 'closed' }
-    | { kind: 'create' }
-    | { kind: 'edit'; project: Project }
+    { kind: 'closed' } | { kind: 'create' } | { kind: 'edit'; project: Project }
   >({ kind: 'closed' });
   const { data: user } = useCurrentUser();
   const isAdmin = user?.role === 'admin';
@@ -129,11 +122,7 @@ export default function ProjectList(): React.ReactElement {
                         >
                           <Pencil className="size-4" />
                         </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => void handleDelete(p.id)}
-                        >
+                        <Button variant="ghost" size="sm" onClick={() => void handleDelete(p.id)}>
                           <Trash2 className="size-4" />
                         </Button>
                       </div>
