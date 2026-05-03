@@ -1349,3 +1349,76 @@ git commit -m "test(api): Phase 2 全部测试通过 + 覆盖率验证"
 合 main，进入 Phase 5（前端 CRUD 页面，依赖本 phase 的 API）。
 
 如执行中发现 spec 与实际数据有差异（含沙量公式、JSONB 字段），把修正记到本 plan 末尾的"实际执行偏差"章节，避免下次重跑踩坑。
+
+---
+
+## 实际执行偏差（Phase 2 实施时）
+
+### D1. JSONB 表达式索引必须用 IMMUTABLE 函数包装
+
+**Spec 原文**（Task 2.3）：
+```sql
+CREATE INDEX ix_rec_points_cup_numbers ON weighing_records
+USING gin ((ARRAY(SELECT jsonb_array_elements(points)->>'cup_number')))
+```
+
+**实际执行错误**：PostgreSQL 16 不允许子查询直接出现在索引表达式里，会报 `cannot use subquery in index expression`。
+
+**修正**：在迁移里先建两个 `IMMUTABLE STRICT PARALLEL SAFE` 的 SQL 函数，再用函数表达式建 GIN 索引：
+
+```sql
+CREATE OR REPLACE FUNCTION rec_points_cup_numbers(points jsonb)
+RETURNS text[] LANGUAGE sql IMMUTABLE STRICT PARALLEL SAFE AS $$
+    SELECT array_agg(elem->>'cup_number') FROM jsonb_array_elements(points) AS elem
+$$;
+CREATE INDEX ix_rec_points_cup_numbers ON weighing_records
+USING gin (rec_points_cup_numbers(points));
+```
+
+`rec_points_cup_ids(points jsonb) RETURNS bigint[]` 同理。downgrade 镜像里在 `DROP INDEX` 之后再 `DROP FUNCTION ... CASCADE`。
+
+**测试库（testcontainers）补丁**：因为 `Base.metadata.create_all` 不走迁移，conftest.py 需要在容器初始化时手工：
+1. `CREATE EXTENSION IF NOT EXISTS pg_trgm`
+2. 创建上述两个 SQL 函数
+3. 创建表后再 `CREATE INDEX ix_rec_points_cup_numbers/cup_ids` 表达式索引
+
+### D2. CursorPage[ORM] 不能直接作为 service 返回类型
+
+**Spec 原文**（Task 2.5）：
+```python
+async def list_paged(...) -> CursorPage[Project]:
+```
+
+**问题**：`CursorPage` 是 Pydantic BaseModel，参数化 ORM 类型 `Project` 时 Pydantic 会触发 `PydanticSchemaGenerationError`。
+
+**修正**：所有 service `list_paged` 类型注解改为 `CursorPage[Any]`，仅在 API 层 `response_model=CursorPage[ProjectOut]` 做转换。
+
+### D3. records 路由子路由 path 不能为空字符串
+
+**问题**：FastAPI 在 `prefix="/records"` 的 router 上 `@router.get("")` 会抛 `Prefix and path cannot be both empty`。
+
+**修正**：list/create 端点用 `@router.get("/")` / `@router.post("/")` 显式带斜杠。
+
+### D4. 含沙量公式量纲对齐
+
+**Spec §1.1 公式**：`含沙量 mg/L = (湿重 - 杯重) / 容积mL × 1000`
+
+**实测样本**（plan 提到的 c0=0.3109 mg/L, 杯 325 重 ~50.6112g, volume_ml=1000）：
+- 反推 sand_g = 0.3109 × 1000 / 1000 = 0.3109 g
+- 即 wet_weight_g = 50.6112 + 0.3109 = 50.9221 g
+
+**结论**：spec 公式直接成立，**无需修正**。`compute_concentration_mg_l(50.9221, 50.6112, 1000) == Decimal("0.3109")` 已写为单测验证。
+
+文件：`apps/api/src/scale_api/services/record_calculator.py:21-30`、单测 `tests/services/test_record_calculator.py::test_concentration_with_excel_sample`。
+
+### D5. records_query.py 路由路径斜杠
+
+**对外 API**：列表是 `GET /api/v1/records/`（带尾斜杠），不是 `GET /api/v1/records`。前端调用需注意；OpenAPI 已生成正确路径。
+
+### D6. 路由覆盖率提升靠 service 单测
+
+**问题**：仅靠 ASGI 路由测试，service 内部行覆盖率统计不全（疑似 coverage 跨 event-loop 跟踪丢失），整体 79.88% 卡在阈值之下。
+
+**修正**：新增 `tests/services/test_business_services.py`（13 个用例）直接驱动 service 类，最终覆盖率达到 90.15%。
+
+
