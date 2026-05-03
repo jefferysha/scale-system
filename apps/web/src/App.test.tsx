@@ -1,9 +1,20 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import { describe, expect, it } from 'vitest';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { MemoryRouter } from 'react-router-dom';
+import { queryClient } from './lib/api/query-client';
+import LoginPage from './app/routes/login';
 
-describe('App', () => {
-  it('renders the system title', () => {
-    render(<App />);
-    expect(screen.getByText('天平称重系统')).toBeInTheDocument();
+describe('LoginPage', () => {
+  it('renders username/password fields', () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <LoginPage />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+    expect(screen.getByLabelText('用户名')).toBeInTheDocument();
+    expect(screen.getByLabelText('密码')).toBeInTheDocument();
   });
 });

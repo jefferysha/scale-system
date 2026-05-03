@@ -54,3 +54,8 @@ Thumbs.db
 *.sqlite
 *.sqlite3
 pgdata/
+
+# Playwright
+playwright-report/
+test-results/
+.playwright/
