@@ -1622,3 +1622,65 @@ git commit -m "feat(shared-types): 从 OpenAPI 自动生成 TS 类型"
 ## 下一步
 
 合并到 main，启动 Phase 2（业务实体 CRUD）。Phase 2 plan 在 Phase 1 完成后再细写，避免类型契约假设漂移。
+
+---
+
+## 实际执行偏差与修正（实施后回灌）
+
+> **本节由实际执行 agent 在 2026-05-03 完成 Phase 1 后回灌**。下次重跑此 plan 请直接按修正后的版本写，避免重复踩坑。
+
+### D1 · Docker PG 端口冲突（5432 被占）
+**症状**：本机若装了 brew `postgresql@15` 或 14，5432 会被本地服务占用，docker compose `up -d pg` 起来后无法连接。
+**修正**：`docker/docker-compose.yml` 端口映射改为 `5433:5432`，`apps/api/.env.example` 的 `DATABASE_URL` 同步用 `localhost:5433`。Plan 中所有 `localhost:5432` 都改成 `localhost:5433`。
+
+### D2 · 缺失依赖（plan 没列全运行时所需）
+**症状**：装完 plan 列出的依赖后 `uv run pytest` 报：
+- `greenlet` 缺：SQLAlchemy 异步模式下需要
+- `bcrypt>=4.1` 不兼容 `passlib==1.7.4`：要钉 `bcrypt<4.1`
+- `email-validator` 缺：Pydantic `EmailStr` 字段需要
+- `psycopg[binary]` 缺：Alembic offline 模式 + 备份场景需要
+
+**修正**：在 Task 1.1 的 `pyproject.toml` `dependencies` 段补：
+```toml
+"greenlet>=3.1.0",
+"bcrypt<4.1",
+"email-validator>=2.2.0",
+```
+并在 `[project.optional-dependencies].dev` 加 `"psycopg[binary]>=3.2.0"`。
+
+### D3 · `pydantic-settings` v2 list[str] JSON 解析问题
+**症状**：环境变量 `ALLOWED_ORIGINS=http://a.com,http://b.com` 加载时被 v2 当成 JSON 解析，报 `Invalid JSON`。
+**修正**：`core/config.py` 中 `allowed_origins` 改用 `NoDecode` 标注，让自定义 validator 接管：
+```python
+from typing import Annotated
+from pydantic_settings import NoDecode
+allowed_origins: Annotated[list[str], NoDecode] = Field(default_factory=lambda: ["http://localhost:5173"])
+```
+
+### D4 · 测试隔离不足
+**症状**：plan 给的 `session` fixture 仅 `rollback`，但 service/api 测试中包含 `commit`（business code 提交事务），导致后续测试看到上一条遗留数据，`UNIQUE` 冲突。
+**修正**：`tests/conftest.py` 在 `yield session` 后追加 `TRUNCATE` 所有表：
+```python
+async with sm() as s:
+    yield s
+    await s.rollback()
+    async with engine.begin() as conn:
+        await conn.execute(text("TRUNCATE users, refresh_tokens, audit_logs RESTART IDENTITY CASCADE"))
+```
+
+### D5 · `pytest-asyncio` event loop scope 冲突
+**症状**：`session`-scoped engine fixture 与 `function`-scoped session fixture 跨 event loop，报 `Future attached to a different loop`。
+**修正**：`pyproject.toml` 的 `[tool.pytest.ini_options]` 加：
+```toml
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+```
+
+### D6 · plan 中 `op` 用户名违反 schema
+**症状**：Task 1.9 测试用 `username="op"` (2 字符)，但 `UserCreate` schema 限定 `min_length=3`，登录响应 500。
+**修正**：把 `op` 改成 `oper`（4 字符），其余测试逻辑不变。
+
+### D7 · 本地 8000 端口可能被占
+**症状**：用户机器上常有其他服务占 8000，`uvicorn ... --port 8000` 启动失败。
+**修正**：Task 1.10 的启动验证步骤改用 `--port 18000`，OpenAPI 抓取 URL 同步改成 `http://localhost:18000/openapi.json`。或在文档中提示"如 8000 被占请改任意空闲端口"。
+
