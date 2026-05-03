@@ -1,3 +1,9 @@
+import CupList from '@/features/cups/components/CupList';
+
 export default function CupsPage(): React.ReactElement {
-  return <div className="p-4">杯库管理（Task 5.4 中）</div>;
+  return (
+    <div className="p-4">
+      <CupList />
+    </div>
+  );
 }

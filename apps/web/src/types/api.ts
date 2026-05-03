@@ -21,6 +21,7 @@ export type Cup = schemas['CupOut'];
 export type CupCreate = schemas['CupCreate'];
 export type CupUpdate = schemas['CupUpdate'];
 export type CupCalibration = schemas['CupCalibrationOut'];
+export type CupCalibrationCreate = schemas['CupCalibrationCreate'];
 
 export type RecordItem = schemas['RecordOut'];
 export type RecordCreate = schemas['RecordCreate'];
