@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
 import { BalanceStage } from '@/features/weighing/components/BalanceStage';
 import { ConfigPanel } from '@/features/weighing/components/ConfigPanel';
+import { PendingBanner } from '@/features/weighing/components/PendingBanner';
 import { PointGrid } from '@/features/weighing/components/PointGrid';
 import { RecordsTable } from '@/features/weighing/components/RecordsTable';
 import { VerticalLineViz } from '@/features/weighing/components/VerticalLineViz';
@@ -140,7 +141,10 @@ export default function WeighingPage(): React.ReactElement {
 
   return (
     <div className="grid h-full grid-cols-[1.7fr_0.92fr_0.42fr] gap-2 p-2">
-      <RecordsTable filter={filter} />
+      <div className="flex flex-col gap-2">
+        <PendingBanner />
+        <RecordsTable filter={filter} />
+      </div>
       <div className="flex flex-col gap-2">
         <BalanceStage />
         <PointGrid
