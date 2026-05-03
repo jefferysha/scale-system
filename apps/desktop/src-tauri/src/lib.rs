@@ -2,6 +2,8 @@
 //!
 //! 仅做 OS 桥接（串口、本地队列、安全存储）。业务逻辑放前端 React。
 
+mod serial;
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tracing_subscriber::fmt()
