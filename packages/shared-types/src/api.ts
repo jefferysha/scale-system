@@ -125,10 +125,425 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Projects */
+        get: operations["list_projects_api_v1_projects_get"];
+        put?: never;
+        /** Create Project */
+        post: operations["create_project_api_v1_projects_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update Project */
+        put: operations["update_project_api_v1_projects__project_id__put"];
+        post?: never;
+        /** Delete Project */
+        delete: operations["delete_project_api_v1_projects__project_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/verticals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Verticals */
+        get: operations["list_verticals_api_v1_projects__project_id__verticals_get"];
+        put?: never;
+        /** Create Vertical */
+        post: operations["create_vertical_api_v1_projects__project_id__verticals_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/verticals/{vertical_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update Vertical */
+        put: operations["update_vertical_api_v1_verticals__vertical_id__put"];
+        post?: never;
+        /** Delete Vertical */
+        delete: operations["delete_vertical_api_v1_verticals__vertical_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/scales": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Scales */
+        get: operations["list_scales_api_v1_scales_get"];
+        put?: never;
+        /** Create Scale */
+        post: operations["create_scale_api_v1_scales_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/scales/{scale_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Scale */
+        get: operations["get_scale_api_v1_scales__scale_id__get"];
+        /** Update Scale */
+        put: operations["update_scale_api_v1_scales__scale_id__put"];
+        post?: never;
+        /** Delete Scale */
+        delete: operations["delete_scale_api_v1_scales__scale_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/scales/{scale_id}/validate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Validate Scale Config */
+        post: operations["validate_scale_config_api_v1_scales__scale_id__validate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/scales/{scale_id}/probe-result": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Probe Result */
+        post: operations["post_probe_result_api_v1_scales__scale_id__probe_result_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/cups": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Cups */
+        get: operations["list_cups_api_v1_cups_get"];
+        put?: never;
+        /** Create Cup */
+        post: operations["create_cup_api_v1_cups_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/cups/{cup_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Cup */
+        get: operations["get_cup_api_v1_cups__cup_id__get"];
+        /** Update Cup */
+        put: operations["update_cup_api_v1_cups__cup_id__put"];
+        post?: never;
+        /** Delete Cup */
+        delete: operations["delete_cup_api_v1_cups__cup_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/cups/{cup_id}/calibrate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Calibrate Cup */
+        post: operations["calibrate_cup_api_v1_cups__cup_id__calibrate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/cups/{cup_id}/calibrations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Calibrations */
+        get: operations["list_calibrations_api_v1_cups__cup_id__calibrations_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/records/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Records */
+        get: operations["list_records_api_v1_records__get"];
+        put?: never;
+        /**
+         * Create Record
+         * @description 单条录入。重复 client_uid 返回原记录（200/201 由现状决定）.
+         */
+        post: operations["create_record_api_v1_records__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/records/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Export Records
+         * @description CSV 导出（Excel 留 P2）.
+         */
+        get: operations["export_records_api_v1_records_export_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/records/{record_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Record */
+        get: operations["get_record_api_v1_records__record_id__get"];
+        /** Update Record */
+        put: operations["update_record_api_v1_records__record_id__put"];
+        post?: never;
+        /** Delete Record */
+        delete: operations["delete_record_api_v1_records__record_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/records/batch": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Batch Records
+         * @description 批量同步：双端共用入口。每条独立处理。
+         */
+        post: operations["batch_records_api_v1_records_batch_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** BatchItemResult */
+        BatchItemResult: {
+            /**
+             * Client Uid
+             * Format: uuid
+             */
+            client_uid: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "created" | "duplicate" | "invalid";
+            /** Id */
+            id?: number | null;
+            /** Error */
+            error?: string | null;
+        };
+        /** BatchRequest */
+        BatchRequest: {
+            /** Records */
+            records: components["schemas"]["RecordCreate"][];
+        };
+        /** BatchResponse */
+        BatchResponse: {
+            /** Results */
+            results: components["schemas"]["BatchItemResult"][];
+        };
+        /** CupCalibrationCreate */
+        CupCalibrationCreate: {
+            /** Tare G */
+            tare_g: number | string;
+            /** Method */
+            method?: string | null;
+            /** Notes */
+            notes?: string | null;
+        };
+        /** CupCalibrationOut */
+        CupCalibrationOut: {
+            /** Id */
+            id: number;
+            /** Cup Id */
+            cup_id: number;
+            /** Tare G */
+            tare_g: string;
+            /**
+             * Calibrated At
+             * Format: date-time
+             */
+            calibrated_at: string;
+            /** Calibrated By */
+            calibrated_by: number | null;
+            /** Method */
+            method: string | null;
+            /** Notes */
+            notes: string | null;
+        };
+        /** CupCreate */
+        CupCreate: {
+            /** Cup Number */
+            cup_number: string;
+            /** Current Tare G */
+            current_tare_g: number | string;
+            /** Notes */
+            notes?: string | null;
+            /**
+             * Is Active
+             * @default true
+             */
+            is_active: boolean;
+        };
+        /** CupOut */
+        CupOut: {
+            /** Cup Number */
+            cup_number: string;
+            /** Current Tare G */
+            current_tare_g: string;
+            /** Notes */
+            notes?: string | null;
+            /**
+             * Is Active
+             * @default true
+             */
+            is_active: boolean;
+            /** Id */
+            id: number;
+            /** Latest Calibration Date */
+            latest_calibration_date: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** CupUpdate */
+        CupUpdate: {
+            /** Cup Number */
+            cup_number?: string | null;
+            /** Notes */
+            notes?: string | null;
+            /** Is Active */
+            is_active?: boolean | null;
+        };
+        /** CursorPage[ProjectOut] */
+        CursorPage_ProjectOut_: {
+            /** Items */
+            items: components["schemas"]["ProjectOut"][];
+            /** Next Cursor */
+            next_cursor?: string | null;
+        };
+        /** CursorPage[RecordOut] */
+        CursorPage_RecordOut_: {
+            /** Items */
+            items: components["schemas"]["RecordOut"][];
+            /** Next Cursor */
+            next_cursor?: string | null;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -146,6 +561,172 @@ export interface components {
              */
             client_kind: string;
         };
+        /** OffsetPage[CupOut] */
+        OffsetPage_CupOut_: {
+            /** Items */
+            items: components["schemas"]["CupOut"][];
+            /** Total */
+            total: number;
+            /** Page */
+            page: number;
+            /** Size */
+            size: number;
+        };
+        /** ProjectCreate */
+        ProjectCreate: {
+            /** Name */
+            name: string;
+            /** Established Date */
+            established_date?: string | null;
+            /** Notes */
+            notes?: string | null;
+            /**
+             * Is Active
+             * @default true
+             */
+            is_active: boolean;
+        };
+        /** ProjectOut */
+        ProjectOut: {
+            /** Name */
+            name: string;
+            /** Established Date */
+            established_date?: string | null;
+            /** Notes */
+            notes?: string | null;
+            /**
+             * Is Active
+             * @default true
+             */
+            is_active: boolean;
+            /** Id */
+            id: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** ProjectUpdate */
+        ProjectUpdate: {
+            /** Name */
+            name?: string | null;
+            /** Established Date */
+            established_date?: string | null;
+            /** Notes */
+            notes?: string | null;
+            /** Is Active */
+            is_active?: boolean | null;
+        };
+        /** RecordCreate */
+        RecordCreate: {
+            /**
+             * Client Uid
+             * Format: uuid
+             */
+            client_uid: string;
+            /** Project Id */
+            project_id: number;
+            /** Vertical Id */
+            vertical_id: number;
+            /** Tide Type */
+            tide_type?: ("大潮" | "小潮" | "平潮") | null;
+            /**
+             * Sample Date
+             * Format: date
+             */
+            sample_date: string;
+            /** Water Depth M */
+            water_depth_m?: number | string | null;
+            /** Start Time */
+            start_time?: string | null;
+            /** End Time */
+            end_time?: string | null;
+            /** Volume Ml */
+            volume_ml: number | string;
+            /** Points */
+            points: components["schemas"]["RecordPointIn"][];
+            /** Notes */
+            notes?: string | null;
+        };
+        /** RecordOut */
+        RecordOut: {
+            /** Id */
+            id: number;
+            /**
+             * Client Uid
+             * Format: uuid
+             */
+            client_uid: string;
+            /** Project Id */
+            project_id: number;
+            /** Vertical Id */
+            vertical_id: number;
+            /** Tide Type */
+            tide_type: string | null;
+            /**
+             * Sample Date
+             * Format: date
+             */
+            sample_date: string;
+            /** Water Depth M */
+            water_depth_m: string | null;
+            /** Start Time */
+            start_time: string | null;
+            /** End Time */
+            end_time: string | null;
+            /** Volume Ml */
+            volume_ml: string | null;
+            /** Points */
+            points: {
+                [key: string]: unknown;
+            }[];
+            /** Computed Avg Concentration */
+            computed_avg_concentration: string | null;
+            /** Notes */
+            notes: string | null;
+            /** Operator Id */
+            operator_id: number | null;
+            /** Source */
+            source: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** RecordPointIn */
+        RecordPointIn: {
+            /** Pos */
+            pos: string;
+            /** Cup Id */
+            cup_id: number;
+            /** Cup Number */
+            cup_number: string;
+            /** Cup Tare G */
+            cup_tare_g: number | string;
+            /** Wet Weight G */
+            wet_weight_g: number | string;
+            /** Weighed At */
+            weighed_at?: string | null;
+        };
+        /** RecordUpdate */
+        RecordUpdate: {
+            /** Notes */
+            notes?: string | null;
+            /** Tide Type */
+            tide_type?: ("大潮" | "小潮" | "平潮") | null;
+        };
         /**
          * RefreshRequest
          * @description desktop 用 body 发；web 浏览器自动带 cookie，body 仅含 csrf_token.
@@ -155,6 +736,198 @@ export interface components {
             refresh_token?: string | null;
             /** Csrf Token */
             csrf_token?: string | null;
+        };
+        /** ScaleCreate */
+        ScaleCreate: {
+            /** Name */
+            name: string;
+            /** Model */
+            model?: string | null;
+            /**
+             * Protocol Type
+             * @default generic
+             * @enum {string}
+             */
+            protocol_type: "generic" | "mettler" | "sartorius";
+            /**
+             * Baud Rate
+             * @default 9600
+             */
+            baud_rate: number;
+            /**
+             * Data Bits
+             * @default 8
+             */
+            data_bits: number;
+            /**
+             * Parity
+             * @default none
+             * @enum {string}
+             */
+            parity: "none" | "odd" | "even";
+            /**
+             * Stop Bits
+             * @default 1
+             */
+            stop_bits: number;
+            /**
+             * Flow Control
+             * @default none
+             * @enum {string}
+             */
+            flow_control: "none" | "rtscts" | "xonxoff";
+            /**
+             * Read Timeout Ms
+             * @default 1000
+             */
+            read_timeout_ms: number;
+            /**
+             * Decimal Places
+             * @default 4
+             */
+            decimal_places: number;
+            /**
+             * Unit Default
+             * @default g
+             * @enum {string}
+             */
+            unit_default: "g" | "kg" | "mg";
+            /** Notes */
+            notes?: string | null;
+            /**
+             * Is Active
+             * @default true
+             */
+            is_active: boolean;
+        };
+        /** ScaleOut */
+        ScaleOut: {
+            /** Name */
+            name: string;
+            /** Model */
+            model?: string | null;
+            /**
+             * Protocol Type
+             * @default generic
+             * @enum {string}
+             */
+            protocol_type: "generic" | "mettler" | "sartorius";
+            /**
+             * Baud Rate
+             * @default 9600
+             */
+            baud_rate: number;
+            /**
+             * Data Bits
+             * @default 8
+             */
+            data_bits: number;
+            /**
+             * Parity
+             * @default none
+             * @enum {string}
+             */
+            parity: "none" | "odd" | "even";
+            /**
+             * Stop Bits
+             * @default 1
+             */
+            stop_bits: number;
+            /**
+             * Flow Control
+             * @default none
+             * @enum {string}
+             */
+            flow_control: "none" | "rtscts" | "xonxoff";
+            /**
+             * Read Timeout Ms
+             * @default 1000
+             */
+            read_timeout_ms: number;
+            /**
+             * Decimal Places
+             * @default 4
+             */
+            decimal_places: number;
+            /**
+             * Unit Default
+             * @default g
+             * @enum {string}
+             */
+            unit_default: "g" | "kg" | "mg";
+            /** Notes */
+            notes?: string | null;
+            /**
+             * Is Active
+             * @default true
+             */
+            is_active: boolean;
+            /** Id */
+            id: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** ScaleProbeAck */
+        ScaleProbeAck: {
+            /** Recorded */
+            recorded: boolean;
+        };
+        /** ScaleProbeReport */
+        ScaleProbeReport: {
+            /** Ok */
+            ok: boolean;
+            /** Samples Count */
+            samples_count: number;
+            /** Samples */
+            samples?: {
+                [key: string]: unknown;
+            }[] | null;
+            /** Error */
+            error?: string | null;
+        };
+        /** ScaleUpdate */
+        ScaleUpdate: {
+            /** Name */
+            name?: string | null;
+            /** Model */
+            model?: string | null;
+            /** Protocol Type */
+            protocol_type?: ("generic" | "mettler" | "sartorius") | null;
+            /** Baud Rate */
+            baud_rate?: number | null;
+            /** Data Bits */
+            data_bits?: number | null;
+            /** Parity */
+            parity?: ("none" | "odd" | "even") | null;
+            /** Stop Bits */
+            stop_bits?: number | null;
+            /** Flow Control */
+            flow_control?: ("none" | "rtscts" | "xonxoff") | null;
+            /** Read Timeout Ms */
+            read_timeout_ms?: number | null;
+            /** Decimal Places */
+            decimal_places?: number | null;
+            /** Unit Default */
+            unit_default?: ("g" | "kg" | "mg") | null;
+            /** Notes */
+            notes?: string | null;
+            /** Is Active */
+            is_active?: boolean | null;
+        };
+        /** ScaleValidateResult */
+        ScaleValidateResult: {
+            /** Ok */
+            ok: boolean;
+            /** Warnings */
+            warnings?: string[];
         };
         /** TokenResponse */
         TokenResponse: {
@@ -236,6 +1009,53 @@ export interface components {
             input?: unknown;
             /** Context */
             ctx?: Record<string, never>;
+        };
+        /** VerticalCreate */
+        VerticalCreate: {
+            /** Code */
+            code: string;
+            /** Label */
+            label?: string | null;
+            /**
+             * Sort Order
+             * @default 0
+             */
+            sort_order: number;
+        };
+        /** VerticalOut */
+        VerticalOut: {
+            /** Code */
+            code: string;
+            /** Label */
+            label?: string | null;
+            /**
+             * Sort Order
+             * @default 0
+             */
+            sort_order: number;
+            /** Id */
+            id: number;
+            /** Project Id */
+            project_id: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** VerticalUpdate */
+        VerticalUpdate: {
+            /** Code */
+            code?: string | null;
+            /** Label */
+            label?: string | null;
+            /** Sort Order */
+            sort_order?: number | null;
         };
     };
     responses: never;
@@ -520,6 +1340,1009 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_projects_api_v1_projects_get: {
+        parameters: {
+            query?: {
+                q?: string | null;
+                is_active?: boolean | null;
+                limit?: number;
+                cursor?: string | null;
+            };
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CursorPage_ProjectOut_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_project_api_v1_projects_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProjectCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProjectOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_project_api_v1_projects__project_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProjectUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProjectOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_project_api_v1_projects__project_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_verticals_api_v1_projects__project_id__verticals_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerticalOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_vertical_api_v1_projects__project_id__verticals_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerticalCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerticalOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_vertical_api_v1_verticals__vertical_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                vertical_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerticalUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerticalOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_vertical_api_v1_verticals__vertical_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                vertical_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_scales_api_v1_scales_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScaleOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_scale_api_v1_scales_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScaleCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScaleOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_scale_api_v1_scales__scale_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                scale_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScaleOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_scale_api_v1_scales__scale_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                scale_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScaleUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScaleOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_scale_api_v1_scales__scale_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                scale_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    validate_scale_config_api_v1_scales__scale_id__validate_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                scale_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScaleValidateResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_probe_result_api_v1_scales__scale_id__probe_result_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                scale_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScaleProbeReport"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScaleProbeAck"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_cups_api_v1_cups_get: {
+        parameters: {
+            query?: {
+                q?: string | null;
+                is_active?: boolean | null;
+                page?: number;
+                size?: number;
+            };
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OffsetPage_CupOut_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_cup_api_v1_cups_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CupCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CupOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_cup_api_v1_cups__cup_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                cup_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CupOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_cup_api_v1_cups__cup_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                cup_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CupUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CupOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_cup_api_v1_cups__cup_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                cup_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    calibrate_cup_api_v1_cups__cup_id__calibrate_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                cup_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CupCalibrationCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CupCalibrationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_calibrations_api_v1_cups__cup_id__calibrations_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                cup_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CupCalibrationOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_records_api_v1_records__get: {
+        parameters: {
+            query?: {
+                project_id?: number | null;
+                vertical_id?: number | null;
+                date_from?: string | null;
+                date_to?: string | null;
+                cup_number?: string | null;
+                q?: string | null;
+                limit?: number;
+                cursor?: string | null;
+            };
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CursorPage_RecordOut_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_record_api_v1_records__post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecordCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecordOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    export_records_api_v1_records_export_get: {
+        parameters: {
+            query?: {
+                project_id?: number | null;
+                vertical_id?: number | null;
+                date_from?: string | null;
+                date_to?: string | null;
+            };
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_record_api_v1_records__record_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                record_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecordOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_record_api_v1_records__record_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                record_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecordUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecordOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_record_api_v1_records__record_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                record_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    batch_records_api_v1_records_batch_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BatchRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BatchResponse"];
+                };
             };
             /** @description Validation Error */
             422: {
