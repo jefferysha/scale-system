@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 from scale_api.api.v1 import auth as auth_v1
 from scale_api.api.v1 import projects as projects_v1
 from scale_api.api.v1 import users as users_v1
+from scale_api.api.v1 import verticals as verticals_v1
 from scale_api.core.config import get_settings
 from scale_api.core.exceptions import BusinessError
 
@@ -42,3 +43,4 @@ async def health() -> dict[str, str]:
 app.include_router(auth_v1.router, prefix="/api/v1")
 app.include_router(users_v1.router, prefix="/api/v1")
 app.include_router(projects_v1.router, prefix="/api/v1")
+app.include_router(verticals_v1.router, prefix="/api/v1")
