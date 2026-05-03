@@ -9,7 +9,7 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "generate": "echo 'TODO: 接 openapi-typescript'",
+    "generate": "bash scripts/generate.sh",
     "test": "echo 'no tests yet'",
     "lint": "echo 'no lint yet'",
     "typecheck": "tsc --noEmit",
