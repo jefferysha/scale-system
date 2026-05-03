@@ -1,16 +1,22 @@
 import type { SerialAdapter } from './serial/adapter';
+import { MockSerialAdapter } from './serial/mock-serial';
 import { UnsupportedSerialAdapter } from './serial/unsupported-serial';
 
 export const isTauri = (): boolean =>
   typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
 
+export const isMockSerial = (): boolean =>
+  import.meta.env.DEV &&
+  typeof window !== 'undefined' &&
+  new URLSearchParams(window.location.search).get('mock') === '1';
+
 let cached: SerialAdapter | null = null;
 
 export const getSerialAdapter = (): SerialAdapter => {
   if (cached) return cached;
-  // Phase 6 替换：Tauri 时返回 TauriSerialAdapter；
-  // Phase 4/5 替换：浏览器有 navigator.serial 时返回 BrowserSerialAdapter
-  cached = new UnsupportedSerialAdapter();
+  if (isMockSerial()) cached = new MockSerialAdapter();
+  else if (isTauri()) cached = new UnsupportedSerialAdapter(); // Phase 6 替换为 TauriSerialAdapter
+  else cached = new UnsupportedSerialAdapter(); // Phase 5 后会接 BrowserSerialAdapter
   return cached;
 };
 
