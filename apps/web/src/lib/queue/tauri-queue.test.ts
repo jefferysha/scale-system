@@ -51,7 +51,10 @@ const makeFakeRustQueue = () => {
       case 'queue_drain': {
         const max = args.max ?? 0;
         return rows
-          .filter((r) => (r.status === 'pending' || r.status === 'failed') && r.attempt_count < MAX_ATTEMPTS)
+          .filter(
+            (r) =>
+              (r.status === 'pending' || r.status === 'failed') && r.attempt_count < MAX_ATTEMPTS,
+          )
           .slice(0, max);
       }
       case 'queue_mark_synced': {
@@ -100,8 +103,9 @@ describe('TauriQueue · 离线重试链路', () => {
     await q.enqueue({ client_uid: 'u1', payload: { a: 1 } });
     const items = await q.drain(10);
     expect(items).toHaveLength(1);
-    expect(items[0].client_uid).toBe('u1');
-    expect(items[0].payload).toEqual({ a: 1 });
+    const first = items[0]!;
+    expect(first.client_uid).toBe('u1');
+    expect(first.payload).toEqual({ a: 1 });
   });
 
   it('markSynced 后不再被 drain', async () => {
@@ -129,7 +133,9 @@ describe('TauriQueue · 离线重试链路', () => {
       client_uid: 'u1',
       payload: { nested: { v: 42, tags: ['a', 'b'] } },
     });
-    const [item] = await q.drain(10);
+    const items = await q.drain(10);
+    expect(items).toHaveLength(1);
+    const item = items[0]!;
     expect(item.payload.nested.v).toBe(42);
     expect(item.payload.nested.tags).toEqual(['a', 'b']);
   });

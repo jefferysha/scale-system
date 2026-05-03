@@ -113,9 +113,7 @@ export class TauriSerialAdapter implements SerialAdapter {
   }
 
   onStatus(handler: (s: ConnectionState) => void): () => void {
-    return makeUnlistener(
-      listen<ConnectionState>('scale-status', (e) => handler(e.payload)),
-    );
+    return makeUnlistener(listen<ConnectionState>('scale-status', (e) => handler(e.payload)));
   }
 
   onError(handler: (e: SerialError) => void): () => void {
