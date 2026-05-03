@@ -6,12 +6,7 @@ import type { ReactNode } from 'react';
 import { createElement } from 'react';
 import { server, TEST_API_BASE_URL } from '@/test/msw-server';
 import { fxCup, fxCupCalibration } from '@/test/fixtures';
-import {
-  useCalibrateCup,
-  useCalibrations,
-  useCreateCup,
-  useCups,
-} from './hooks';
+import { useCalibrateCup, useCalibrations, useCreateCup, useCups } from './hooks';
 
 const wrapper = (qc: QueryClient) =>
   function Wrapper({ children }: { children: ReactNode }) {

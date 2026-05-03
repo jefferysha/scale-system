@@ -98,9 +98,7 @@ export function RecordDetailDrawer({ record, onClose }: Props): React.ReactEleme
                 <tr key={idx} className="border-t border-[var(--line)]">
                   <td className="px-2 py-1 font-mono">{String(p.pos ?? '')}</td>
                   <td className="px-2 py-1 font-mono">{String(p.cup_number ?? '—')}</td>
-                  <td className="px-2 py-1 text-right font-mono">
-                    {String(p.cup_tare_g ?? '—')}
-                  </td>
+                  <td className="px-2 py-1 text-right font-mono">{String(p.cup_tare_g ?? '—')}</td>
                   <td className="px-2 py-1 text-right font-mono">
                     {String(p.wet_weight_g ?? '—')}
                   </td>

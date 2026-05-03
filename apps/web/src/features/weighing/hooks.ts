@@ -1,8 +1,4 @@
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { RecordCreate, RecordItem } from '@/types/api';
 import { api } from '@/lib/api/client';
 import { getSubmissionQueue } from '@/lib/platform';
@@ -13,10 +9,7 @@ export const weighingKeys = {
     ['records', 'weighing', filter] as const,
 };
 
-export const useWeighingRecordsLive = (filter: {
-  project_id?: number;
-  vertical_id?: number;
-}) =>
+export const useWeighingRecordsLive = (filter: { project_id?: number; vertical_id?: number }) =>
   useInfiniteQuery({
     queryKey: weighingKeys.records(filter),
     queryFn: ({ pageParam }) =>

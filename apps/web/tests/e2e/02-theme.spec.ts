@@ -8,9 +8,7 @@ test.describe('E2E-02 切换主题', () => {
     // 切到另一个主题
     const target = before === 'light' ? '深色' : '浅色';
     await loggedInPage.getByRole('button', { name: target }).click();
-    await expect
-      .poll(async () => html.getAttribute('data-theme'))
-      .not.toBe(before);
+    await expect.poll(async () => html.getAttribute('data-theme')).not.toBe(before);
 
     const after = await html.getAttribute('data-theme');
     await loggedInPage.reload();

@@ -17,7 +17,8 @@ let cached: SerialAdapter | null = null;
 export const getSerialAdapter = (): SerialAdapter => {
   if (cached) return cached;
   if (isMockSerial()) cached = new MockSerialAdapter();
-  else if (isTauri()) cached = new UnsupportedSerialAdapter(); // Phase 6 替换为 TauriSerialAdapter
+  else if (isTauri())
+    cached = new UnsupportedSerialAdapter(); // Phase 6 替换为 TauriSerialAdapter
   else cached = new UnsupportedSerialAdapter(); // Phase 5 后会接 BrowserSerialAdapter
   return cached;
 };

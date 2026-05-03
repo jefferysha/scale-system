@@ -12,7 +12,9 @@ import { test as base, type Page, expect } from '@playwright/test';
 
 interface Fixtures {
   loggedInPage: Page;
-  navWithin: (target: '/' | '/weighing' | '/scales' | '/projects' | '/cups' | '/records') => Promise<void>;
+  navWithin: (
+    target: '/' | '/weighing' | '/scales' | '/projects' | '/cups' | '/records',
+  ) => Promise<void>;
 }
 
 const NAV_LABEL: Record<string, string> = {
@@ -39,7 +41,9 @@ export const test = base.extend<Fixtures>({
     ): Promise<void> => {
       const label = NAV_LABEL[target];
       await page.getByRole('link', { name: label, exact: true }).click();
-      await expect.poll(() => new URL(page.url()).pathname).toMatch(target === '/' ? '/weighing' : target);
+      await expect
+        .poll(() => new URL(page.url()).pathname)
+        .toMatch(target === '/' ? '/weighing' : target);
     };
     await use(fn);
   },

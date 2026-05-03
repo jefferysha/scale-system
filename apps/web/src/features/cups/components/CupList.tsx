@@ -3,21 +3,11 @@ import { toast } from 'sonner';
 import { Plus, Pencil, Trash2, Scale, History } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useCurrentUser } from '@/features/auth/hooks';
 import { isApiError } from '@/lib/api/error';
 import type { Cup, CupCreate, CupUpdate } from '@/types/api';
-import {
-  useCreateCup,
-  useCups,
-  useDeleteCup,
-  useUpdateCup,
-} from '../hooks';
+import { useCreateCup, useCups, useDeleteCup, useUpdateCup } from '../hooks';
 import { CupForm } from './CupForm';
 import { CalibrationDialog } from './CalibrationDialog';
 import { CalibrationHistoryDrawer } from './CalibrationHistoryDrawer';
@@ -49,10 +39,7 @@ export default function CupList(): React.ReactElement {
   const updateM = useUpdateCup();
   const deleteM = useDeleteCup();
 
-  const handleSave = async (
-    body: CupCreate | CupUpdate,
-    edit: Cup | null,
-  ): Promise<void> => {
+  const handleSave = async (body: CupCreate | CupUpdate, edit: Cup | null): Promise<void> => {
     try {
       if (edit) {
         await updateM.mutateAsync({ id: edit.id, body: body as CupUpdate });
@@ -158,11 +145,7 @@ export default function CupList(): React.ReactElement {
                           >
                             <Pencil className="size-4" />
                           </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => void handleDelete(c.id)}
-                          >
+                          <Button variant="ghost" size="sm" onClick={() => void handleDelete(c.id)}>
                             <Trash2 className="size-4" />
                           </Button>
                         </>

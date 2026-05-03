@@ -23,9 +23,7 @@ export function CalibrationHistoryDrawer({ cup, onClose }: Props): React.ReactEl
     >
       <header className="flex items-center justify-between border-b border-[var(--line)] px-4 py-3">
         <div>
-          <h3 className="text-sm font-semibold text-[var(--text)]">
-            率定历史 — {cup.cup_number}
-          </h3>
+          <h3 className="text-sm font-semibold text-[var(--text)]">率定历史 — {cup.cup_number}</h3>
           <p className="text-xs text-[var(--text-3)]">最近 {rows.length} 条</p>
         </div>
         <Button variant="ghost" size="icon" onClick={onClose}>
@@ -52,9 +50,7 @@ export function CalibrationHistoryDrawer({ cup, onClose }: Props): React.ReactEl
                   </span>
                 </div>
                 <div className="mt-1 text-[var(--text-2)]">{c.method ?? '—'}</div>
-                {c.notes ? (
-                  <div className="mt-1 text-[var(--text-3)]">{c.notes}</div>
-                ) : null}
+                {c.notes ? <div className="mt-1 text-[var(--text-3)]">{c.notes}</div> : null}
               </li>
             ))}
           </ul>

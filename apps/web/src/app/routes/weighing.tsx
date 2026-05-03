@@ -78,10 +78,7 @@ export default function WeighingPage(): React.ReactElement {
     dispatch({ type: 'START_CAPTURE' });
   };
 
-  const buildRecordCreate = (
-    cfg: WeighingConfig,
-    allPoints: RecordPoint[],
-  ): RecordCreate => ({
+  const buildRecordCreate = (cfg: WeighingConfig, allPoints: RecordPoint[]): RecordCreate => ({
     client_uid: uuidv4(),
     project_id: cfg.project!.id,
     vertical_id: cfg.vertical!.id,

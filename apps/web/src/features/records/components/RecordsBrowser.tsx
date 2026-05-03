@@ -5,10 +5,7 @@ import { isApiError } from '@/lib/api/error';
 import type { RecordItem } from '@/types/api';
 import { useDeleteRecord, useExportRecords, useRecordsInfinite } from '../hooks';
 import { RecordsBrowserColumns } from './RecordsBrowserColumns';
-import {
-  RecordsBrowserFilters,
-  type RecordsFilterState,
-} from './RecordsBrowserFilters';
+import { RecordsBrowserFilters, type RecordsFilterState } from './RecordsBrowserFilters';
 import { RecordsBrowserRowActions } from './RecordsBrowserRowActions';
 import { RecordDetailDrawer } from './RecordDetailDrawer';
 

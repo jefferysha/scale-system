@@ -6,13 +6,7 @@ import { Select } from '@/components/ui/select';
 import { ProjectCombobox } from '@/features/projects/components/ProjectCombobox';
 import { useVerticalsByProject } from '@/features/projects/hooks';
 import { useCups } from '@/features/cups/hooks';
-import type {
-  CupLite,
-  PointPosition,
-  ProjectLite,
-  VerticalLite,
-  WeighingConfig,
-} from '../types';
+import type { CupLite, PointPosition, ProjectLite, VerticalLite, WeighingConfig } from '../types';
 
 interface Props {
   config: Partial<WeighingConfig>;
@@ -82,9 +76,7 @@ export function ConfigPanel({
                 }
               : null
           }
-          onChange={(p) =>
-            onChange({ ...config, project: p ? toLite(p) : null, vertical: null })
-          }
+          onChange={(p) => onChange({ ...config, project: p ? toLite(p) : null, vertical: null })}
         />
       </div>
 
@@ -158,9 +150,7 @@ export function ConfigPanel({
           <Select
             id="cfg-pos"
             value={config.current_pos ?? '0.0'}
-            onChange={(e) =>
-              onChange({ ...config, current_pos: e.target.value as PointPosition })
-            }
+            onChange={(e) => onChange({ ...config, current_pos: e.target.value as PointPosition })}
           >
             {POSITIONS.map((p) => (
               <option key={p} value={p}>
@@ -213,9 +203,7 @@ export function ConfigPanel({
             id="cfg-target"
             type="number"
             value={config.target_wet_weight_g ?? ''}
-            onChange={(e) =>
-              onChange({ ...config, target_wet_weight_g: Number(e.target.value) })
-            }
+            onChange={(e) => onChange({ ...config, target_wet_weight_g: Number(e.target.value) })}
           />
         </div>
       </div>

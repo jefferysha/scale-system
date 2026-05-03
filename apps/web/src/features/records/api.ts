@@ -1,10 +1,5 @@
 import { api } from '@/lib/api/client';
-import type {
-  CursorPageRecord,
-  RecordCreate,
-  RecordItem,
-  RecordUpdate,
-} from '@/types/api';
+import type { CursorPageRecord, RecordCreate, RecordItem, RecordUpdate } from '@/types/api';
 
 export interface RecordListParams {
   project_id?: number;

@@ -32,11 +32,7 @@ export const startSyncWorker = (queue: SubmissionQueue): SyncWorkerHandle => {
         if (result.status === 'created' || result.status === 'duplicate') {
           synced.push(result.client_uid);
         } else {
-          await queue.markFailed(
-            result.client_uid,
-            result.error ?? 'invalid',
-            MAX_ATTEMPTS,
-          );
+          await queue.markFailed(result.client_uid, result.error ?? 'invalid', MAX_ATTEMPTS);
         }
       }
       await queue.markSynced(synced);

@@ -40,7 +40,10 @@ describe('records hooks', () => {
 
   it('useDeleteRecord 成功后 invalidate', async () => {
     server.use(
-      http.delete(`${TEST_API_BASE_URL}/records/100`, () => new HttpResponse(null, { status: 204 })),
+      http.delete(
+        `${TEST_API_BASE_URL}/records/100`,
+        () => new HttpResponse(null, { status: 204 }),
+      ),
     );
     const qc = newQc();
     const spy = vi.spyOn(qc, 'invalidateQueries');

@@ -1,10 +1,5 @@
 import { get, set } from 'idb-keyval';
-import type {
-  PendingItem,
-  PendingStatus,
-  QueueCount,
-  SubmissionQueue,
-} from './submission-queue';
+import type { PendingItem, PendingStatus, QueueCount, SubmissionQueue } from './submission-queue';
 
 const STORE_KEY = 'pending_records_v1';
 
