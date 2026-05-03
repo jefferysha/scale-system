@@ -23,3 +23,15 @@ pnpm --filter web dev
 ```
 
 详见各子项目 README.md 和 CLAUDE.md。
+
+## 快速验证脚手架
+
+```bash
+pnpm install
+pnpm typecheck
+pnpm --filter @scale/web test
+pnpm --filter @scale/web build
+cd apps/api && uv sync --all-extras && uv run pytest && cd ../..
+cargo test --manifest-path apps/desktop/src-tauri/Cargo.toml
+docker compose -f docker/docker-compose.yml up -d pg
+```
