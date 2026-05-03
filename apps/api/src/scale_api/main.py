@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from scale_api.api.v1 import auth as auth_v1
+from scale_api.api.v1 import cups as cups_v1
 from scale_api.api.v1 import projects as projects_v1
 from scale_api.api.v1 import scales as scales_v1
 from scale_api.api.v1 import users as users_v1
@@ -46,3 +47,4 @@ app.include_router(users_v1.router, prefix="/api/v1")
 app.include_router(projects_v1.router, prefix="/api/v1")
 app.include_router(verticals_v1.router, prefix="/api/v1")
 app.include_router(scales_v1.router, prefix="/api/v1")
+app.include_router(cups_v1.router, prefix="/api/v1")
