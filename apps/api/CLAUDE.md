@@ -43,6 +43,7 @@ uv run ruff format .                          # 格式化
 uv run mypy src                               # 类型检查
 uv run alembic revision --autogenerate -m "msg"  # 生成迁移
 uv run alembic upgrade head                   # 应用迁移
+uv run python scripts/seed.py                 # dev 用：建 admin/admin123!（幂等）
 ```
 
 ## 复杂模块拆分（spec §6.4）
