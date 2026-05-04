@@ -16,6 +16,12 @@ export const setRefreshFn = (fn: RefreshFn | null): void => {
   refreshFn = fn;
 };
 
+interface ScaleAxiosConfig extends InternalAxiosRequestConfig {
+  _retried?: boolean;
+  /** true 时拦截器不触发 401 自动 refresh，避免 refresh 端点本身死循环。 */
+  _skipAuthRefresh?: boolean;
+}
+
 const api: AxiosInstance = axios.create({
   baseURL,
   withCredentials: true,
@@ -30,15 +36,25 @@ api.interceptors.request.use((cfg: InternalAxiosRequestConfig) => {
 api.interceptors.response.use(
   (r) => r,
   async (err) => {
-    const original = err.config;
-    if (err.response?.status === 401 && !original?._retried && refreshFn) {
+    const original = err.config as ScaleAxiosConfig | undefined;
+    const isAuthEndpoint =
+      typeof original?.url === 'string' && /\/auth\/(refresh|login|logout)/.test(original.url);
+    const skipRefresh = original?._skipAuthRefresh || isAuthEndpoint;
+
+    if (
+      err.response?.status === 401 &&
+      original &&
+      !original._retried &&
+      !skipRefresh &&
+      refreshFn
+    ) {
       original._retried = true;
       refreshing ??= refreshFn();
       const newToken = await refreshing;
       refreshing = null;
       if (newToken) {
         accessToken = newToken;
-        original.headers.Authorization = `Bearer ${newToken}`;
+        original.headers.set('Authorization', `Bearer ${newToken}`);
         return api.request(original);
       }
     }
