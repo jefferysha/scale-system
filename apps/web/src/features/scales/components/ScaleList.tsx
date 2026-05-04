@@ -104,9 +104,11 @@ export default function ScaleList(): React.ReactElement {
                         variant="ghost"
                         size="sm"
                         onClick={() => setProbe(s)}
+                        aria-label={`探测 ${s.name} 连接`}
+                        title="探测连接"
                         data-testid={`scale-probe-${s.id}`}
                       >
-                        <Cable className="size-4" />
+                        <Cable className="size-4" aria-hidden="true" />
                       </Button>
                       {isAdmin ? (
                         <>
@@ -114,11 +116,19 @@ export default function ScaleList(): React.ReactElement {
                             variant="ghost"
                             size="sm"
                             onClick={() => setDialog({ kind: 'edit', scale: s })}
+                            aria-label={`编辑 ${s.name}`}
+                            title="编辑"
                           >
-                            <Pencil className="size-4" />
+                            <Pencil className="size-4" aria-hidden="true" />
                           </Button>
-                          <Button variant="ghost" size="sm" onClick={() => void handleDelete(s.id)}>
-                            <Trash2 className="size-4" />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => void handleDelete(s.id)}
+                            aria-label={`删除 ${s.name}`}
+                            title="删除"
+                          >
+                            <Trash2 className="size-4" aria-hidden="true" />
                           </Button>
                         </>
                       ) : null}

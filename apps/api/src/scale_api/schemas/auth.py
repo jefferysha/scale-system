@@ -20,7 +20,8 @@ class TokenResponse(BaseModel):
 
 
 class RefreshRequest(BaseModel):
-    """desktop 用 body 发；web 浏览器自动带 cookie，body 仅含 csrf_token."""
+    """desktop 用 body 发；web 优先 cookie，HTTP 部署兜底走 body。"""
 
     refresh_token: str | None = None
     csrf_token: str | None = None
+    client_kind: str | None = Field(default=None, pattern="^(web|desktop)$")

@@ -124,17 +124,21 @@ export default function CupList(): React.ReactElement {
                         variant="ghost"
                         size="sm"
                         onClick={() => setCalibrate(c)}
+                        aria-label={`率定杯 ${c.cup_number}`}
+                        title="率定"
                         data-testid={`cup-calibrate-${c.id}`}
                       >
-                        <Scale className="size-4" />
+                        <Scale className="size-4" aria-hidden="true" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => setHistory(c)}
+                        aria-label={`查看 ${c.cup_number} 率定历史`}
+                        title="率定历史"
                         data-testid={`cup-history-${c.id}`}
                       >
-                        <History className="size-4" />
+                        <History className="size-4" aria-hidden="true" />
                       </Button>
                       {isAdmin ? (
                         <>
@@ -142,11 +146,19 @@ export default function CupList(): React.ReactElement {
                             variant="ghost"
                             size="sm"
                             onClick={() => setDialog({ kind: 'edit', cup: c })}
+                            aria-label={`编辑 ${c.cup_number}`}
+                            title="编辑"
                           >
-                            <Pencil className="size-4" />
+                            <Pencil className="size-4" aria-hidden="true" />
                           </Button>
-                          <Button variant="ghost" size="sm" onClick={() => void handleDelete(c.id)}>
-                            <Trash2 className="size-4" />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => void handleDelete(c.id)}
+                            aria-label={`删除 ${c.cup_number}`}
+                            title="删除"
+                          >
+                            <Trash2 className="size-4" aria-hidden="true" />
                           </Button>
                         </>
                       ) : null}

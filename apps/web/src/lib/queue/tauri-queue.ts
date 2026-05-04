@@ -6,12 +6,7 @@
 
 import { invoke } from '@tauri-apps/api/core';
 import type { RecordCreate } from '@/types/api';
-import type {
-  PendingItem,
-  PendingStatus,
-  QueueCount,
-  SubmissionQueue,
-} from './submission-queue';
+import type { PendingItem, PendingStatus, QueueCount, SubmissionQueue } from './submission-queue';
 
 interface RustPendingItem {
   client_uid: string;

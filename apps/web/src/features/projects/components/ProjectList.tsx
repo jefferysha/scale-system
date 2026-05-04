@@ -119,11 +119,19 @@ export default function ProjectList(): React.ReactElement {
                           variant="ghost"
                           size="sm"
                           onClick={() => setDialog({ kind: 'edit', project: p })}
+                          aria-label={`编辑项目 ${p.name}`}
+                          title="编辑"
                         >
-                          <Pencil className="size-4" />
+                          <Pencil className="size-4" aria-hidden="true" />
                         </Button>
-                        <Button variant="ghost" size="sm" onClick={() => void handleDelete(p.id)}>
-                          <Trash2 className="size-4" />
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => void handleDelete(p.id)}
+                          aria-label={`删除项目 ${p.name}`}
+                          title="删除"
+                        >
+                          <Trash2 className="size-4" aria-hidden="true" />
                         </Button>
                       </div>
                     ) : null}

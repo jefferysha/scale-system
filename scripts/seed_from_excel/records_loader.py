@@ -187,6 +187,14 @@ async def _process_record_row(
     if existing:
         return True
 
+    # 计算平均含沙量（avg of points[*].concentration_mg_l）
+    concs = [
+        Decimal(p["concentration_mg_l"])
+        for p in points
+        if p.get("concentration_mg_l") is not None
+    ]
+    avg_conc = (sum(concs) / Decimal(len(concs))) if concs else None
+
     if not dry_run:
         session.add(
             WeighingRecord(
@@ -200,6 +208,7 @@ async def _process_record_row(
                 end_time=end_time,
                 volume_ml=volume_ml,
                 points=points,
+                computed_avg_concentration=avg_conc,
                 source="import",
             )
         )

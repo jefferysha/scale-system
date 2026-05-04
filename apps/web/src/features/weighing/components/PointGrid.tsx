@@ -71,23 +71,23 @@ export function PointGrid({
   ];
 
   return (
-    <div className="grid grid-cols-3 gap-2 lg:grid-cols-6">
+    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
       {cells.map((c) => (
         <div
           key={c.label}
           className={cn(
-            'flex flex-col gap-1 rounded-lg border border-[var(--line)] bg-[var(--bg-2)] p-3',
+            'flex min-w-0 flex-col gap-1 rounded-lg border border-[var(--line)] bg-[var(--bg-2)] px-3 py-2',
             c.accent && 'border-[var(--acc)]/40 bg-[var(--acc-shade)]',
           )}
         >
           <span className="text-[10px] uppercase tracking-wider text-[var(--text-3)]">
             {c.label}
           </span>
-          <span className="font-mono text-base tabular-nums text-[var(--text)]">
-            {c.value}
-            {c.unit && <span className="ml-1 text-xs text-[var(--text-2)]">{c.unit}</span>}
+          <span className="flex items-baseline gap-1 font-mono tabular-nums text-[var(--text)]">
+            <span className="text-sm">{c.value}</span>
+            {c.unit && <span className="text-[10px] text-[var(--text-2)]">{c.unit}</span>}
           </span>
-          <span className="text-[10px] text-[var(--text-3)]">{c.delta}</span>
+          <span className="truncate text-[10px] text-[var(--text-3)]">{c.delta}</span>
         </div>
       ))}
     </div>
