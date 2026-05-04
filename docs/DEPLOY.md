@@ -140,81 +140,61 @@ RUN pnpm config set registry https://registry.npmmirror.com
 
 ---
 
-## 6 · 串口接入：本地真天平 / 生产远程网关
+## 6 · 串口接入：浏览器 Web Serial 直连
 
-### 6.1 传输层抽象（同一份代码三种部署）
+### 6.1 架构
 
-后端通过环境变量 `SCALE_DEFAULT_TRANSPORT` 配置串口连接 URL，pyserial 原生支持：
+天平不再经后端读取，**浏览器（含 Tauri webview）通过 Web Serial API 直接读 USB 串口**，业务后端纯无状态，可任意托管：
 
-| URL 形式 | 用途 | 部署形态 |
+```
+天平 USB → 浏览器（navigator.serial） → 前端解析 → 录入时 POST → 后端 API → DB
+```
+
+后端不再依赖 `pyserial` / `pyserial-asyncio-fast`，没有 WebSocket / 串口模块；从前的 `SCALE_DEFAULT_TRANSPORT`、`socat` 桥、`ser2net` 网关全部不再需要。
+
+### 6.2 浏览器要求
+
+| 项 | 要求 |
+|---|---|
+| 浏览器 | Chrome / Edge / Opera（Chromium 系）；Safari、Firefox 不支持 |
+| 协议 | HTTPS（或 `localhost` / `127.0.0.1` 特例） |
+| 用户授权 | 首次必须用户点击"添加设备"按钮在浏览器原生选择器里选中端口；之后页面加载会自动恢复 |
+| OS 驱动 | 装好 USB 转串口驱动（CH340 / FTDI / Prolific 等） |
+
+### 6.3 本地开发
+
+Vite dev server 默认 `http://localhost:5173`，`localhost` 是浏览器 secure context 特例，**HTTP 即可使用 Web Serial**，无需 mkcert / HTTPS 配置：
+
+```bash
+pnpm dev
+# 打开 http://localhost:5173/scales → 点"添加设备" → 选中天平 → 探测
+```
+
+如需局域网测试（手机/平板访问 `http://192.168.x.x:5173`），加 `vite-plugin-mkcert`：
+
+```bash
+pnpm add -D vite-plugin-mkcert
+```
+
+```ts
+// vite.config.ts
+import mkcert from 'vite-plugin-mkcert';
+export default { plugins: [mkcert()], server: { host: true } };
+```
+
+### 6.4 生产部署
+
+| 平台 | HTTPS | 是否可直接用 Web Serial |
 |---|---|---|
-| `serial:///dev/cu.usbserial-AB01` | 本地直读 USB | API 进程跑在天平所在机器（**Linux Docker `--device`** 也可） |
-| `socket://host:port` | 通过 TCP 桥读串口 | **Mac/Win Docker** + 宿主机 socat / 跨网段 ser2net |
-| `loop://` | 内存回环 | 单元测试 |
+| Vercel | ✅ 自动 | ✅ |
+| Zeabur | ✅ 自动 | ✅ |
+| 自托管（Nginx + Let's Encrypt） | 需要配置 | ✅ |
 
-代码层 0 改动，只换 ENV。
-
-### 6.2 macOS / Windows Docker 接真天平（首选方案）
-
-Mac/Win Docker Desktop 跑在 Hypervisor 虚拟机里，**USB 设备透传不进容器**——这是 Apple/MS 设计如此。**业界标准做法是用宿主机 socat 起 TCP 桥**。
-
-```bash
-# 一次安装 socat
-brew install socat   # macOS
-# 或 sudo apt install socat   # Linux
-
-# 插上天平，找端口
-ls /dev/cu.usbserial-* /dev/cu.SLAB_* /dev/cu.usbmodem*
-# 假设结果: /dev/cu.usbserial-AB01
-
-# 起桥（前台跑，Ctrl-C 停）
-./scripts/dev/serial-bridge.sh /dev/cu.usbserial-AB01
-
-# 也可设置波特率/帧格式：
-BAUD=4800 PARITY=even DATA_BITS=7 ./scripts/dev/serial-bridge.sh /dev/cu.usbserial-AB01
-```
-
-桥跑起来后，docker container 内 API 通过 `socket://host.docker.internal:6500` 透明读到真天平字节流。在 `docker/.env` 中加：
-
-```bash
-SCALE_DEFAULT_TRANSPORT=socket://host.docker.internal:6500
-```
-
-`docker-compose.yml` 给 api 服务加 `extra_hosts`（Linux 上才需要，Mac/Win Docker 自带）：
-
-```yaml
-api:
-  extra_hosts:
-    - "host.docker.internal:host-gateway"
-```
-
-### 6.3 Linux Docker 接真天平
-
-Linux Docker 支持 USB 设备直通，更简单：
-
-```yaml
-api:
-  devices:
-    - "/dev/ttyUSB0:/dev/ttyUSB0"
-  environment:
-    SCALE_DEFAULT_TRANSPORT: "serial:///dev/ttyUSB0"
-```
-
-### 6.4 生产远程网关（多站点）
-
-天平所在工作站跑 `ser2net`（socat 的工业版，支持 systemd），把串口暴露成 TCP；中心服务器的 API container 通过 TCP 读：
-
-```bash
-# 在天平所在机器（Linux/Win，安装 ser2net）
-ser2net -d -C "6500:raw:0:/dev/ttyUSB0:9600 8DATABITS NONE 1STOPBIT"
-
-# 中心服务器 API ENV
-SCALE_DEFAULT_TRANSPORT=tcp://workstation.local:6500
-```
+后端 Docker 镜像不再需要 `--device` 透传或 `extra_hosts`，普通无状态容器即可。
 
 ### 6.5 不接硬件时
 
-不传 `SCALE_DEFAULT_TRANSPORT` 时后端仅启用 REST/WS endpoints 但所有连接尝试会返回 `UNCONFIGURED` 错误，前端 Header 会显示离线状态。
+浏览器若不支持 Web Serial（Safari / Firefox / SSR），前端自动 fallback 到 `UnsupportedSerialAdapter`，UI 显示离线状态；通过 `?mock=1` 查询参数可启用 `MockSerialAdapter` 做演示。
 
 ---
 
@@ -228,3 +208,107 @@ docker compose up -d
 # alembic 自动 upgrade head；如要回滚 schema：
 docker compose exec api alembic downgrade -1
 ```
+
+---
+
+## 8 · Zeabur 部署（云托管 · 推荐生产用）
+
+### 8.1 拓扑
+
+```
+Zeabur Project
+├── postgres   ← Marketplace 模板（PostgreSQL 16）
+├── api        ← Dockerfile.api（Python uvicorn）
+└── web        ← Dockerfile.web（nginx + dist + /api 反代）
+```
+
+串口由用户浏览器 Web Serial API 直读（见 §6），云端不需任何串口逻辑。
+
+### 8.2 服务 1 · PostgreSQL
+
+Zeabur 控制台 → **Add Service** → **Marketplace** → **PostgreSQL 16** → 一键部署。
+
+部署后 Variables 标签会自动注入：`POSTGRES_HOST` / `POSTGRES_PORT` / `POSTGRES_USERNAME` / `POSTGRES_PASSWORD` / `POSTGRES_DATABASE`。
+
+### 8.3 服务 2 · API
+
+| 字段 | 值 |
+|---|---|
+| Source | GitHub repo |
+| Root Directory | `/` |
+| Dockerfile Path | `docker/Dockerfile.api` |
+| Build Context | `.` |
+| Port | `8000` |
+| Health Check | `/health` |
+
+**环境变量**：
+
+```bash
+# 注意 driver 必须是 asyncpg
+DATABASE_URL=postgresql+asyncpg://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}
+JWT_SECRET=<openssl rand -hex 32 生成的真值>
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_TTL_MINUTES=30
+REFRESH_TOKEN_TTL_DAYS=7
+ALLOWED_ORIGINS=https://<web 服务的 Zeabur 域名>
+APP_ENV=production
+LOG_LEVEL=INFO
+```
+
+> Dockerfile.api 启动命令自带 `alembic upgrade head`，第一次部署会自动建表。
+
+部署后 → **Networking** 标签开启 **Public Network** → 拿到 `https://api-xxx.zeabur.app`。
+
+跑 seed：服务详情 → **Console** → 运行：
+```bash
+python /app/scripts/seed.py
+```
+
+### 8.4 服务 3 · Web（nginx 反代同源方案）
+
+| 字段 | 值 |
+|---|---|
+| Source | GitHub repo |
+| Dockerfile Path | `docker/Dockerfile.web` |
+| Build Context | `.` |
+| Port | `80` |
+
+**Build Args**（构建时注入前端）：
+```
+VITE_API_BASE_URL=/api/v1
+```
+
+**环境变量**（运行时注入 nginx）：
+```bash
+# 指向 api 服务的 Zeabur 内网地址 + 端口
+# 推荐用 Service Reference：在 Variables 里点 "Add from Reference" → 选 api 服务
+API_UPSTREAM=${API_HOST}:${API_PORT}
+# 或手动填，例如：
+# API_UPSTREAM=scale-api.zeabur.internal:8000
+```
+
+> nginx 容器启动时由 envsubst 把 `${API_UPSTREAM}` 替换进 `/etc/nginx/conf.d/default.conf`，
+> 浏览器访问 web 域名即同源拿到 `/api`，**无 CORS、无跨站 cookie 问题**。
+
+部署后 → **Networking** → **Public Network** → 拿到 `https://web-xxx.zeabur.app`。
+
+回到 api 服务把 `ALLOWED_ORIGINS` 改成 web 真实域名 → restart。
+
+### 8.5 验证
+
+- [ ] `https://web-xxx.zeabur.app` 主页正常
+- [ ] `https://web-xxx.zeabur.app/health` 返回 200（说明 nginx 反代通到 api）
+- [ ] 登录页用 seed 用户登入成功
+- [ ] **地址栏是 `https://`**（关键，否则 Web Serial 不工作）
+- [ ] Chrome 打开称重页 → 点"连接天平" → 系统授权框 → 选 USB → 数据进来
+- [ ] 称重数据落到 Zeabur PG（**Console** 进容器查 records 表）
+
+### 8.6 常见坑
+
+| 现象 | 原因 | 修复 |
+|---|---|---|
+| Web Serial 按钮无反应 | 不是 HTTPS 或非 Chromium 浏览器 | 用 Chrome 访问 `.zeabur.app` 域名 |
+| `/api` 返回 502 | `API_UPSTREAM` 没注入或写错 | Console 里 `cat /etc/nginx/conf.d/default.conf` 检查替换结果 |
+| api 卡在启动 | `DATABASE_URL` 用了 `postgresql://` 而非 `postgresql+asyncpg://` | 改环境变量 driver |
+| 登录成功但 refresh 401 | nginx 反代时 cookie 没透传 | 已在 nginx.conf 配 `proxy_pass_header Set-Cookie`，确认 envsubst 没破坏配置 |
+| nginx 启动报 `unknown variable "uri"` | envsubst 误替换 nginx 内置变量 | Dockerfile.web 已设 `NGINX_ENVSUBST_FILTER=^API_` 白名单，确认未被覆盖 |

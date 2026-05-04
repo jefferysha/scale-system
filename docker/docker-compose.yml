@@ -36,12 +36,6 @@ services:
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:8080}
       APP_ENV: production
       LOG_LEVEL: INFO
-      # 串口 transport：默认通过宿主机 socat 桥接 host.docker.internal:6500
-      # 可在 docker/.env 中改成 serial:// 或 tcp:// 等其它形态
-      SCALE_DEFAULT_TRANSPORT: ${SCALE_DEFAULT_TRANSPORT:-socket://host.docker.internal:6500}
-    extra_hosts:
-      # Linux Docker 也能解析 host.docker.internal（Mac/Win 自带）
-      - "host.docker.internal:host-gateway"
     ports:
       - '${API_PORT:-8000}:8000'
     restart: unless-stopped
@@ -62,6 +56,10 @@ services:
     depends_on:
       api:
         condition: service_healthy
+    environment:
+      # nginx /api 反代上游：compose 内部网络用 service 名 api:8000
+      # Zeabur 部署时通过环境变量覆盖为内网域名:8000
+      API_UPSTREAM: ${API_UPSTREAM:-api:8000}
     ports:
       - '${WEB_PORT:-8080}:80'
     restart: unless-stopped
