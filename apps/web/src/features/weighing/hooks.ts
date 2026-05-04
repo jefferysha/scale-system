@@ -4,19 +4,25 @@ import { api } from '@/lib/api/client';
 import { getSubmissionQueue } from '@/lib/platform';
 import { weighingApi } from './api';
 
+interface RecordsFilter {
+  project_id?: number;
+  vertical_id?: number;
+  limit?: number;
+}
+
 export const weighingKeys = {
-  records: (filter: { project_id?: number; vertical_id?: number }) =>
-    ['records', 'weighing', filter] as const,
+  records: (filter: RecordsFilter) => ['records', 'weighing', filter] as const,
 };
 
-export const useWeighingRecordsLive = (filter: { project_id?: number; vertical_id?: number }) =>
+export const useWeighingRecordsLive = (filter: RecordsFilter) =>
   useInfiniteQuery({
     queryKey: weighingKeys.records(filter),
     queryFn: ({ pageParam }) =>
       weighingApi.fetchRecordsByFilter({
-        ...filter,
+        project_id: filter.project_id,
+        vertical_id: filter.vertical_id,
         cursor: pageParam ?? null,
-        limit: 50,
+        limit: filter.limit ?? 20,
       }),
     initialPageParam: null as string | null,
     getNextPageParam: (last) => last.next_cursor ?? null,

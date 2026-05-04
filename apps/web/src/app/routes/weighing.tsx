@@ -137,8 +137,8 @@ export default function WeighingPage(): React.ReactElement {
   const committedPositions = new Set(committedPoints.map((p) => p.pos));
 
   return (
-    <div className="grid h-full grid-cols-[1.7fr_0.92fr_0.42fr] gap-2 p-2">
-      <div className="flex flex-col gap-2">
+    <div className="grid h-full grid-cols-[1fr_1.15fr_0.78fr] gap-2 p-2">
+      <div className="flex min-h-0 flex-col gap-2">
         <PendingBanner />
         <RecordsTable filter={filter} />
       </div>

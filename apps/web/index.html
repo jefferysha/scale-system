@@ -12,6 +12,18 @@
     <title>天平称重系统</title>
   </head>
   <body>
+    <!-- 把 PNG 中近白色像素剔透：alpha = clamp(5 - 5/3·(R+G+B))，深色主题用 url(#whiteKey) -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <filter id="whiteKey" color-interpolation-filters="sRGB">
+        <feColorMatrix
+          type="matrix"
+          values="1 0 0 0 0
+                  0 1 0 0 0
+                  0 0 1 0 0
+                  -1.667 -1.667 -1.667 0 5"
+        />
+      </filter>
+    </svg>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

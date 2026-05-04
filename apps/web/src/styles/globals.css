@@ -42,3 +42,11 @@ body {
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.01em;
 }
+
+/* balance.png 去白底：深色主题用 SVG filter，浅色保留原图 */
+[data-theme='dark'] .balance-png {
+  filter: url(#whiteKey) drop-shadow(0 16px 26px rgba(0, 0, 0, 0.55));
+}
+[data-theme='light'] .balance-png {
+  filter: drop-shadow(0 14px 22px rgba(20, 40, 80, 0.18));
+}

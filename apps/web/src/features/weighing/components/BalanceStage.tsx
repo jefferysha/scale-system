@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { BalanceImage } from './BalanceImage';
 import { ConnectionStatusBadge } from './ConnectionStatusBadge';
-import { SamplesHealthIndicator } from './SamplesHealthIndicator';
 import { useScaleStreamStore } from '@/stores/scale-stream-store';
 import { getSerialAdapter } from '@/lib/platform';
 
@@ -29,15 +28,19 @@ export function BalanceStage(): React.ReactElement {
   const stable = lastWeight?.stable ?? false;
 
   return (
-    <section className="relative flex flex-col gap-3 rounded-xl border border-[var(--line)] bg-gradient-to-b from-[var(--bg-1)] to-[var(--bg-2)] p-4">
-      <header className="flex items-center justify-between">
+    <section className="relative flex min-h-0 flex-1 flex-col rounded-xl border border-[var(--line)] bg-gradient-to-b from-[var(--bg-1)] to-[var(--bg-2)] p-3">
+      <header className="flex items-center justify-between pb-1">
         <ConnectionStatusBadge state={connection} />
-        <span className="text-xs text-[var(--text-3)]">实时</span>
+        <span
+          className="font-mono text-[10px] tracking-wider text-[var(--text-3)]"
+          data-testid="samples-per-sec"
+        >
+          {samplesPerSec} sps
+        </span>
       </header>
-      <BalanceImage digits={digits} stable={stable} />
-      <footer className="flex justify-end">
-        <SamplesHealthIndicator sps={samplesPerSec} />
-      </footer>
+      <div className="flex min-h-0 flex-1 items-center justify-center">
+        <BalanceImage digits={digits} stable={stable} />
+      </div>
     </section>
   );
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select } from '@/components/ui/select';
+import { SelectBox, type SelectOption } from '@/components/ui/select-box';
 import { ProjectCombobox } from '@/features/projects/components/ProjectCombobox';
 import { useVerticalsByProject } from '@/features/projects/hooks';
 import { useCups } from '@/features/cups/hooks';
@@ -18,6 +18,12 @@ interface Props {
 }
 
 const POSITIONS: PointPosition[] = ['0.0', '0.2', '0.4', '0.6', '0.8', '1.0'];
+const POSITION_OPTIONS: SelectOption[] = POSITIONS.map((p) => ({ value: p, label: p }));
+const BOTTLE_OPTIONS: SelectOption[] = [
+  { value: '1000', label: '1000' },
+  { value: '500', label: '500' },
+  { value: '250', label: '250' },
+];
 
 const toLite = (p: {
   id: number;
@@ -44,7 +50,6 @@ export function ConfigPanel({
   const { data: cupsPage } = useCups({ q: cupSearch || undefined, page: 1, size: 20 });
   const cups = cupsPage?.items ?? [];
 
-  // 当当前项目变更后，垂线选择被清空。
   useEffect(() => {
     if (
       config.vertical &&
@@ -56,11 +61,20 @@ export function ConfigPanel({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [verticals.length, config.project?.id]);
 
+  const verticalOptions: SelectOption[] = verticals.map((v) => ({
+    value: String(v.id),
+    label: `${v.code}${v.label ? ' · ' + v.label : ''}`,
+  }));
+  const cupOptions: SelectOption[] = cups.map((c) => ({
+    value: String(c.id),
+    label: c.cup_number,
+  }));
+
   return (
-    <section className="flex flex-col gap-4 rounded-xl border border-[var(--line)] bg-[var(--bg-1)] p-4">
+    <section className="flex flex-col gap-3 rounded-xl border border-[var(--line)] bg-[var(--bg-1)] p-4">
       <h3 className="text-sm font-semibold text-[var(--text)]">称重设置</h3>
 
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         <Label>称重项目</Label>
         <ProjectCombobox
           value={
@@ -80,31 +94,26 @@ export function ConfigPanel({
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-2">
+      <div className="grid grid-cols-2 gap-2">
+        <div className="space-y-1.5">
           <Label htmlFor="cfg-vertical">垂线号</Label>
-          <Select
+          <SelectBox
             id="cfg-vertical"
-            value={config.vertical?.id ?? ''}
+            value={config.vertical?.id !== undefined ? String(config.vertical.id) : ''}
             disabled={!config.project}
-            onChange={(e) => {
-              const v = verticals.find((x) => x.id === Number(e.target.value));
+            placeholder="—"
+            options={verticalOptions}
+            onChange={(val) => {
+              const v = verticals.find((x) => x.id === Number(val));
               const lite: VerticalLite | null = v
                 ? { id: v.id, project_id: v.project_id, code: v.code, label: v.label ?? null }
                 : null;
               onChange({ ...config, vertical: lite });
             }}
-          >
-            <option value="">—</option>
-            {verticals.map((v) => (
-              <option key={v.id} value={v.id}>
-                {v.code}
-                {v.label ? ` · ${v.label}` : ''}
-              </option>
-            ))}
-          </Select>
+            testId="cfg-vertical"
+          />
         </div>
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <Label htmlFor="cfg-volume">容积 mL</Label>
           <Input
             id="cfg-volume"
@@ -115,24 +124,22 @@ export function ConfigPanel({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-2">
+      <div className="grid grid-cols-2 gap-2">
+        <div className="space-y-1.5">
           <Label htmlFor="cfg-bottle">瓶型</Label>
-          <Select
+          <SelectBox
             id="cfg-bottle"
-            value={bottle}
-            onChange={(e) => {
-              const b = Number(e.target.value) as 1000 | 500 | 250;
+            value={String(bottle)}
+            options={BOTTLE_OPTIONS}
+            onChange={(val) => {
+              const b = Number(val) as 1000 | 500 | 250;
               setBottle(b);
               onChange({ ...config, bottle: b });
             }}
-          >
-            <option value="1000">1000</option>
-            <option value="500">500</option>
-            <option value="250">250</option>
-          </Select>
+            testId="cfg-bottle"
+          />
         </div>
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <Label htmlFor="cfg-depth">水深 m</Label>
           <Input
             id="cfg-depth"
@@ -144,22 +151,18 @@ export function ConfigPanel({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-2">
+      <div className="grid grid-cols-2 gap-2">
+        <div className="space-y-1.5">
           <Label htmlFor="cfg-pos">点次</Label>
-          <Select
+          <SelectBox
             id="cfg-pos"
             value={config.current_pos ?? '0.0'}
-            onChange={(e) => onChange({ ...config, current_pos: e.target.value as PointPosition })}
-          >
-            {POSITIONS.map((p) => (
-              <option key={p} value={p}>
-                {p}
-              </option>
-            ))}
-          </Select>
+            options={POSITION_OPTIONS}
+            onChange={(val) => onChange({ ...config, current_pos: val as PointPosition })}
+            testId="cfg-pos"
+          />
         </div>
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <Label htmlFor="cfg-cup">杯号</Label>
           <Input
             id="cfg-cup-search"
@@ -167,11 +170,13 @@ export function ConfigPanel({
             value={cupSearch}
             onChange={(e) => setCupSearch(e.target.value)}
           />
-          <Select
+          <SelectBox
             id="cfg-cup"
-            value={config.current_cup?.id ?? ''}
-            onChange={(e) => {
-              const c = cups.find((x) => x.id === Number(e.target.value));
+            value={config.current_cup?.id !== undefined ? String(config.current_cup.id) : ''}
+            placeholder="—"
+            options={cupOptions}
+            onChange={(val) => {
+              const c = cups.find((x) => x.id === Number(val));
               const lite: CupLite | null = c
                 ? {
                     id: c.id,
@@ -181,23 +186,17 @@ export function ConfigPanel({
                 : null;
               onChange({ ...config, current_cup: lite });
             }}
-          >
-            <option value="">—</option>
-            {cups.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.cup_number}
-              </option>
-            ))}
-          </Select>
+            testId="cfg-cup"
+          />
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-2">
+      <div className="grid grid-cols-2 gap-2">
+        <div className="space-y-1.5">
           <Label htmlFor="cfg-tare">杯重 g</Label>
           <Input id="cfg-tare" value={config.current_cup?.current_tare_g ?? 0} readOnly />
         </div>
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <Label htmlFor="cfg-target">目标湿重 g</Label>
           <Input
             id="cfg-target"
@@ -208,7 +207,7 @@ export function ConfigPanel({
         </div>
       </div>
 
-      <div className="mt-2 flex gap-2">
+      <div className="mt-1 flex gap-2">
         <Button className="flex-1" onClick={onStart} disabled={!canStart}>
           开始称重
         </Button>

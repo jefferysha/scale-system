@@ -2,14 +2,10 @@ import { cn } from '@/lib/utils';
 import type { PointDraft } from '../types';
 
 interface Props {
-  /** 当前实时重量（含沙量待 commit 才填） */
   liveWeight: number;
   liveStable: boolean;
-  /** 当前选中点位 */
   currentPos: string;
-  /** 已录入的点位结果 */
   committedPoints: PointDraft[];
-  /** 配置元信息 */
   cupNumber: string | null;
   cupTareG: number | null;
   volumeMl: number;
@@ -18,11 +14,15 @@ interface Props {
 interface Cell {
   label: string;
   value: string;
-  unit: string;
+  unit?: string;
   delta: string;
   accent?: boolean;
 }
 
+/**
+ * 复刻原型 .acquire-grid + .f-cell：3x2 网格无圆角分隔单元，
+ * accent 单元用左侧 2px 主色光柱突出"实时值"和"含沙量"。
+ */
 export function PointGrid({
   liveWeight,
   liveStable,
@@ -42,13 +42,8 @@ export function PointGrid({
       delta: liveStable ? '稳定' : '采集中',
       accent: true,
     },
-    { label: '杯号', value: cupNumber ?? '—', unit: '', delta: `当前 ${currentPos}` },
-    {
-      label: '杯沙重',
-      value: liveWeight.toFixed(4),
-      unit: 'g',
-      delta: '湿重',
-    },
+    { label: '杯号', value: cupNumber ?? '—', delta: `当前 ${currentPos}` },
+    { label: '杯沙重', value: liveWeight.toFixed(4), unit: 'g', delta: '湿重' },
     {
       label: '杯重',
       value: cupTareG !== null ? cupTareG.toFixed(4) : '0.0000',
@@ -71,25 +66,48 @@ export function PointGrid({
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-      {cells.map((c) => (
-        <div
-          key={c.label}
-          className={cn(
-            'flex min-w-0 flex-col gap-1 rounded-lg border border-[var(--line)] bg-[var(--bg-2)] px-3 py-2',
-            c.accent && 'border-[var(--acc)]/40 bg-[var(--acc-shade)]',
-          )}
-        >
-          <span className="text-[10px] uppercase tracking-wider text-[var(--text-3)]">
-            {c.label}
-          </span>
-          <span className="flex items-baseline gap-1 font-mono tabular-nums text-[var(--text)]">
-            <span className="text-sm">{c.value}</span>
-            {c.unit && <span className="text-[10px] text-[var(--text-2)]">{c.unit}</span>}
-          </span>
-          <span className="truncate text-[10px] text-[var(--text-3)]">{c.delta}</span>
-        </div>
-      ))}
+    <div className="grid grid-cols-3 border-y border-[var(--line)]">
+      {cells.map((c, i) => {
+        const isLastCol = (i + 1) % 3 === 0;
+        const isLastRow = i >= cells.length - 3;
+        return (
+          <div
+            key={c.label}
+            className={cn(
+              'relative flex min-w-0 flex-col gap-0.5 px-2 py-1.5',
+              !isLastCol && 'border-r border-[var(--line)]',
+              !isLastRow && 'border-b border-[var(--line)]',
+            )}
+          >
+            {c.accent ? (
+              <span
+                aria-hidden
+                className="absolute left-0 top-0 bottom-0 w-[2px] bg-[var(--acc)]"
+                style={{ boxShadow: '0 0 8px var(--acc)' }}
+              />
+            ) : null}
+            <span className="overflow-hidden truncate text-ellipsis text-[9.5px] tracking-[0.04em] text-[var(--text-3)]">
+              {c.label}
+            </span>
+            <span
+              className={cn(
+                'flex items-baseline gap-0.5 overflow-hidden truncate font-mono text-[13px] font-semibold leading-none',
+                c.accent ? 'text-[var(--acc)]' : 'text-[var(--text)]',
+              )}
+            >
+              <span className="truncate">{c.value}</span>
+              {c.unit ? (
+                <span className="ml-0.5 text-[9px] font-normal text-[var(--text-3)]">
+                  {c.unit}
+                </span>
+              ) : null}
+            </span>
+            <span className="overflow-hidden truncate text-ellipsis text-[9px] text-[var(--text-3)]">
+              {c.delta}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 }

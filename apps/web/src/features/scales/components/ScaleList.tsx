@@ -145,7 +145,7 @@ export default function ScaleList(): React.ReactElement {
         open={dialog.kind !== 'closed'}
         onOpenChange={(o) => !o && setDialog({ kind: 'closed' })}
       >
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="w-[min(96vw,860px)] max-w-none p-5">
           <DialogHeader>
             <DialogTitle>{dialog.kind === 'edit' ? '编辑天平' : '新建天平'}</DialogTitle>
           </DialogHeader>

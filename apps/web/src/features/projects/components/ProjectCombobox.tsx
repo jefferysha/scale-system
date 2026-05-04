@@ -56,7 +56,13 @@ export function ProjectCombobox({
           <ChevronDown className="size-4 opacity-60" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
+      <PopoverContent
+        align="start"
+        side="bottom"
+        sideOffset={4}
+        avoidCollisions={false}
+        className="w-[var(--radix-popover-trigger-width)] min-w-[260px] p-0"
+      >
         <Command shouldFilter={false} className="flex flex-col">
           <CommandInput
             value={q}
