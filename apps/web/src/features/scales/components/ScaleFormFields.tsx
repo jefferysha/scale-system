@@ -68,7 +68,9 @@ export function ScaleFormFields({ form, group }: Props): React.ReactElement {
             value={watch('protocol_type')}
             options={PROTOCOL_OPTIONS}
             onChange={(v) =>
-              setValue('protocol_type', v as ScaleFormValues['protocol_type'], { shouldDirty: true })
+              setValue('protocol_type', v as ScaleFormValues['protocol_type'], {
+                shouldDirty: true,
+              })
             }
           />
         </div>

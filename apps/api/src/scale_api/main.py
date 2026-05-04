@@ -8,7 +8,6 @@ from scale_api.api.v1 import cups as cups_v1
 from scale_api.api.v1 import projects as projects_v1
 from scale_api.api.v1 import records as records_v1
 from scale_api.api.v1 import scales as scales_v1
-from scale_api.api.v1 import serial_ws as serial_v1
 from scale_api.api.v1 import users as users_v1
 from scale_api.api.v1 import verticals as verticals_v1
 from scale_api.core.config import get_settings
@@ -51,12 +50,3 @@ app.include_router(verticals_v1.router, prefix="/api/v1")
 app.include_router(scales_v1.router, prefix="/api/v1")
 app.include_router(cups_v1.router, prefix="/api/v1")
 app.include_router(records_v1.router, prefix="/api/v1")
-app.include_router(serial_v1.router, prefix="/api/v1")
-
-
-@app.on_event("shutdown")
-async def _close_serial_connections() -> None:
-    """关停时回收所有串口连接。"""
-    from scale_api.serial.connection_manager import get_connection_manager
-
-    await get_connection_manager().shutdown()

@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
-import { getSerialAdapter, setActiveScaleId } from '@/lib/platform';
+import { getSerialAdapter } from '@/lib/platform';
 import type { ProbeResult, ScaleConfig, SerialPortInfo } from '@/lib/serial/adapter';
 import { isApiError } from '@/lib/api/error';
 
@@ -32,15 +32,30 @@ export function ScaleProbePanel({
   const [running, setRunning] = useState(false);
   const [result, setResult] = useState<ProbeResult | null>(null);
 
+  const adapter = getSerialAdapter();
+  const canRequestPermission = typeof adapter.requestPermission === 'function';
+
+  const refreshPorts = useCallback(async (): Promise<SerialPortInfo[]> => {
+    const ps = await adapter.listPorts();
+    setPorts(ps);
+    const first = ps[0];
+    if (first) setSelected((cur) => cur || first.id);
+    return ps;
+  }, [adapter]);
+
   useEffect(() => {
-    setActiveScaleId(scaleId);
-    const adapter = getSerialAdapter();
-    void adapter.listPorts().then((ps) => {
-      setPorts(ps);
-      const first = ps[0];
-      if (first) setSelected((cur) => cur || first.id);
-    });
-  }, [scaleId]);
+    void refreshPorts();
+    // scaleId 变化时刷新一次端口列表（虽然 Web Serial 不感知 scaleId，但保持兼容）
+  }, [scaleId, refreshPorts]);
+
+  const handleRequestPermission = async (): Promise<void> => {
+    if (!adapter.requestPermission) return;
+    const info = await adapter.requestPermission();
+    if (info) {
+      await refreshPorts();
+      setSelected(info.id);
+    }
+  };
 
   // 配置改了就清结果
   useEffect(() => {
@@ -60,7 +75,6 @@ export function ScaleProbePanel({
     if (!selected) return;
     setRunning(true);
     try {
-      const adapter = getSerialAdapter();
       const r = await adapter.probe(selected, config, 3000);
       setResult(r);
       onResult?.(r.ok);
@@ -103,6 +117,19 @@ export function ScaleProbePanel({
             )}
           </Select>
         </div>
+        {canRequestPermission ? (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => void handleRequestPermission()}
+            disabled={running}
+            data-testid="probe-request-permission"
+            title="Web Serial 首次连接需要在浏览器弹窗里选中天平串口"
+          >
+            添加设备
+          </Button>
+        ) : null}
         <Button
           type="button"
           variant="outline"

@@ -1,7 +1,7 @@
 //! Scale Desktop · Tauri 桥接层
 //!
 //! 仅做 OS 桥接（本地队列、安全存储）。业务逻辑放前端 React。
-//! 串口由后端 FastAPI 持有，桌面端复用前端 WebSocketSerialAdapter 通过 WS 订阅。
+//! 串口由前端 Web Serial API 直读 USB 天平，桌面端 webview 同样支持，无需 Rust 介入。
 
 mod commands;
 mod queue;

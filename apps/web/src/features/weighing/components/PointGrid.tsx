@@ -91,9 +91,10 @@ export function PointGrid({
             </span>
             <span
               className={cn(
-                'flex items-baseline gap-0.5 overflow-hidden truncate font-mono text-[13px] font-semibold leading-none',
+                'flex items-baseline gap-0.5 overflow-hidden truncate font-mono tabular-nums text-[13px] font-semibold leading-none',
                 c.accent ? 'text-[var(--acc)]' : 'text-[var(--text)]',
               )}
+              data-num
             >
               <span className="truncate">{c.value}</span>
               {c.unit ? (

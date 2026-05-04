@@ -57,17 +57,17 @@ export function Pagination({
           {totalPages ? ` · 共 ${totalPages} 页` : ''}
         </span>
       </div>
-      <nav className="flex items-center gap-1" aria-label="分页">
+      <nav className="flex items-center gap-1.5" aria-label="分页">
         <Button
           variant="outline"
           size="icon"
-          className="size-7"
+          className="size-9 sm:size-9"
           disabled={!canPrev || isLoading}
           onClick={() => onChange(page - 1)}
           aria-label="上一页"
           data-testid="page-prev"
         >
-          <ChevronLeft className="size-3.5" />
+          <ChevronLeft className="size-4" />
         </Button>
 
         {totalPages && totalPages > 0 ? (
@@ -113,13 +113,13 @@ export function Pagination({
         <Button
           variant="outline"
           size="icon"
-          className="size-7"
+          className="size-9 sm:size-9"
           disabled={!canNext || isLoading}
           onClick={() => onChange(page + 1)}
           aria-label="下一页"
           data-testid="page-next"
         >
-          <ChevronRight className="size-3.5" />
+          <ChevronRight className="size-4" />
         </Button>
       </nav>
     </div>
@@ -145,7 +145,7 @@ function PageBtn({
       data-testid={`page-${page}`}
       aria-current={active ? 'page' : undefined}
       className={cn(
-        'h-7 min-w-[28px] rounded-md border px-2 font-mono text-xs transition-colors',
+        'h-9 min-w-[36px] rounded-md border px-2.5 font-mono text-xs transition-colors',
         active
           ? 'border-[var(--acc)] bg-[var(--acc-shade)] text-[var(--acc)]'
           : 'border-[var(--line-2)] bg-[var(--bg-1)] text-[var(--text-2)] hover:border-[var(--acc)] hover:text-[var(--acc)]',

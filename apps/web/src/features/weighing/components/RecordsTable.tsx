@@ -62,7 +62,7 @@ export function RecordsTable({ filter }: Props): React.ReactElement {
         <table className="w-full font-mono text-xs">
           <thead className="sticky top-0 z-10 bg-[var(--bg-2)] text-[var(--text-3)]">
             <tr>
-              <th className="whitespace-nowrap px-2 py-1.5 text-left">日期</th>
+              <th className="w-[3.5rem] px-2 py-1.5 text-left">日期</th>
               <th className="whitespace-nowrap px-2 py-1.5 text-right">水深</th>
               {POSITIONS.map((p) => (
                 <th key={p} className="whitespace-nowrap px-2 py-1.5 text-right">
@@ -73,10 +73,28 @@ export function RecordsTable({ filter }: Props): React.ReactElement {
             </tr>
           </thead>
           <tbody>
-            {currentRows.length === 0 ? (
+            {isLoading ? (
+              Array.from({ length: 6 }).map((_, i) => (
+                <tr key={`skel-${i}`} className="border-b border-[var(--line)]">
+                  {Array.from({ length: 9 }).map((__, j) => (
+                    <td key={j} className="px-2 py-2.5">
+                      <span
+                        className="block h-3 w-full animate-pulse rounded bg-[var(--bg-2)]"
+                        aria-hidden
+                      />
+                    </td>
+                  ))}
+                </tr>
+              ))
+            ) : currentRows.length === 0 ? (
               <tr>
-                <td colSpan={9} className="px-2 py-4 text-center text-[var(--text-3)]">
-                  {filter.project_id ? '暂无记录' : '请先选择项目'}
+                <td colSpan={9} className="px-2 py-12 text-center text-[var(--text-3)]">
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="font-mono text-[10px] tracking-widest text-[var(--text-3)]">
+                      ─── EMPTY ───
+                    </span>
+                    <span>{filter.project_id ? '暂无记录' : '请先选择项目以加载历史记录'}</span>
+                  </div>
                 </td>
               </tr>
             ) : (
@@ -87,9 +105,16 @@ export function RecordsTable({ filter }: Props): React.ReactElement {
                   const pos = String(p.pos ?? '');
                   if (pos) map[pos] = { concentration_mg_l: p.concentration_mg_l };
                 }
+                const dateStr = r.sample_date ?? '';
+                const dashIdx = dateStr.indexOf('-');
+                const dateHead = dashIdx > 0 ? dateStr.slice(0, dashIdx + 1) : dateStr;
+                const dateTail = dashIdx > 0 ? dateStr.slice(dashIdx + 1) : '';
                 return (
                   <tr key={r.id} className="border-b border-[var(--line)]">
-                    <td className="whitespace-nowrap px-2 py-1.5">{r.sample_date}</td>
+                    <td className="px-2 py-1.5 leading-tight">
+                      <div>{dateHead || '—'}</div>
+                      {dateTail ? <div>{dateTail}</div> : null}
+                    </td>
                     <td className="whitespace-nowrap px-2 py-1.5 text-right">
                       {r.water_depth_m ?? '—'}
                     </td>

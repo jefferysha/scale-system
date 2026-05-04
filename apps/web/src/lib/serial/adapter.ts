@@ -66,4 +66,6 @@ export interface SerialAdapter {
   onError(handler: (e: SerialError) => void): () => void;
   probe(portId: string, config: ScaleConfig, timeoutMs: number): Promise<ProbeResult>;
   isSupported(): boolean;
+  /** Web Serial 专用：触发浏览器原生设备选择器。必须在用户手势内调用。 */
+  requestPermission?(): Promise<SerialPortInfo | null>;
 }

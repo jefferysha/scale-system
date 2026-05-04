@@ -4,12 +4,30 @@ import { NavMenu } from './NavMenu';
 import { useCurrentUser, useLogout } from '@/features/auth/hooks';
 import { Button } from '@/components/ui/button';
 import { isMockSerial, isTauri } from '@/lib/platform';
+import { useScaleStreamStore } from '@/stores/scale-stream-store';
+import type { ConnectionState } from '@/lib/serial/adapter';
+
+const STATE_TEXT: Record<
+  ConnectionState,
+  { label: string; variant: 'default' | 'success' | 'warn' | 'danger' }
+> = {
+  idle: { label: '未连接', variant: 'default' },
+  opening: { label: '连接中', variant: 'warn' },
+  connected: { label: '已连接', variant: 'success' },
+  reading: { label: '采集中', variant: 'success' },
+  disconnected: { label: '已断开', variant: 'default' },
+  error: { label: '错误', variant: 'danger' },
+};
 
 export function Header(): React.ReactElement {
   const { data: user } = useCurrentUser();
   const logout = useLogout();
   const tauri = isTauri();
   const mock = isMockSerial();
+  const connection = useScaleStreamStore((s) => s.connection);
+  const transport = mock ? 'MOCK' : tauri ? 'Web Serial · 桌面' : 'Web Serial';
+  const { label: stateLabel, variant } = STATE_TEXT[connection];
+
   return (
     <header className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-[var(--line)] bg-gradient-to-b from-[var(--bg-1)] px-4 py-2 backdrop-blur">
       <div className="flex items-center gap-3">
@@ -24,19 +42,11 @@ export function Header(): React.ReactElement {
       </div>
       <div />
       <div className="flex items-center gap-3">
-        {mock ? (
-          <StatusChip
-            label="DEMO · MOCK 串口"
-            variant="warn"
-            pulse={false}
-            className="cursor-default"
-          />
-        ) : (
-          <StatusChip
-            label={tauri ? '桌面端 · 服务端串口' : '服务端串口（WS）'}
-            variant="success"
-          />
-        )}
+        <StatusChip
+          label={`${transport} · ${stateLabel}`}
+          variant={variant}
+          pulse={connection === 'reading'}
+        />
         <ThemeToggle />
         <span className="text-xs text-[var(--text-2)]">{user?.username}</span>
         <Button variant="outline" size="sm" onClick={() => logout.mutate()}>

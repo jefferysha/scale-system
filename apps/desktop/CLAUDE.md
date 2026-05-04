@@ -7,9 +7,10 @@
 桌面端 = Tauri 壳 + 极少 Rust 桥接代码。React UI 100% 复用 `apps/web` 的代码。
 
 **Rust 部分仅做平台桥接**：
-- 串口（tokio-serial / serialport）
 - 本地 SQLite 队列（rusqlite）
 - 安全存储（OS keychain / Tauri stronghold）
+
+**串口不在 Rust 实现**：浏览器 Web Serial API 已能读 USB 天平，Tauri webview 同样支持，前端 `apps/web/src/lib/serial/web-serial.ts` 一份代码 Web/Desktop 通吃。
 
 ## 强制规则
 
@@ -32,13 +33,6 @@ pnpm lint              # cargo clippy
 pnpm typecheck         # cargo check
 ```
 
-## 串口 command 契约
+## 串口（已迁移）
 
-参考 spec §4.4 的 SerialAdapter 接口，Rust 侧需实现：
-- `list_ports() -> Vec<PortInfo>`
-- `open_serial(config, port_id) -> Result<()>`
-- `close_serial() -> Result<()>`
-- `probe_serial(config, port_id, timeout_ms) -> ProbeResult`
-
-事件 emit：
-- `scale-status`、`scale-weight`、`scale-error`
+Rust 侧不再有任何串口 command。前端 `WebSerialAdapter` 直接通过 `navigator.serial` 读 USB 天平；首次使用需在 UI 点"添加设备"触发 Chromium 原生选择器，之后端口持久化授权。

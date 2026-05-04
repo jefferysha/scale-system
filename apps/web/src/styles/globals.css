@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 @import './tokens.css';
 @import 'tailwindcss';
 
@@ -41,6 +42,32 @@ body {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.01em;
+}
+
+/* 数据型 UI：所有数字默认 tabular，避免行宽抖动 */
+[data-num] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 状态徽章 / 按钮 / 数字小幅过渡，统一节奏 */
+button,
+.status-chip,
+[data-num] {
+  transition:
+    background-color var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* balance.png 去白底：深色主题用 SVG filter，浅色保留原图 */

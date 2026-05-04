@@ -20,14 +20,6 @@ class Settings(BaseSettings):
     )
     app_env: str = "development"
     log_level: str = "INFO"
-    # ── 串口接入 ─────────────────────────────────────────────────────────
-    # 默认传输 URL，pyserial.serial_for_url 接受：
-    #   serial:///dev/ttyUSB0  本地 USB 直读（Linux Docker --device 也用这种）
-    #   socket://host:port     Mac/Win Docker 时通过 host socat 桥
-    #   tcp://host:port        生产 ser2net 远程网关
-    #   loop://                单元测试
-    # 不配置时 connect 端点返回 UNCONFIGURED。
-    scale_default_transport: str | None = Field(default=None)
 
     @field_validator("allowed_origins", mode="before")
     @classmethod

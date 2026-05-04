@@ -7,12 +7,12 @@ import { ConfigPanel } from '@/features/weighing/components/ConfigPanel';
 import { PendingBanner } from '@/features/weighing/components/PendingBanner';
 import { PointGrid } from '@/features/weighing/components/PointGrid';
 import { RecordsTable } from '@/features/weighing/components/RecordsTable';
+import { ScaleConnectControl } from '@/features/weighing/components/ScaleConnectControl';
 import { VerticalLineViz } from '@/features/weighing/components/VerticalLineViz';
 import { initialWeighingState, weighingReducer } from '@/features/weighing/machine';
 import { hasFullConfig } from '@/features/weighing/machine.guards';
 import type { PointPosition, WeighingConfig } from '@/features/weighing/types';
 import { useScaleStreamStore } from '@/stores/scale-stream-store';
-import { getSerialAdapter } from '@/lib/platform';
 import { useSubmitRecord } from '@/features/weighing/hooks';
 import { isApiError } from '@/lib/api/error';
 import type { RecordCreate, RecordPoint } from '@/types/api';
@@ -37,8 +37,18 @@ export default function WeighingPage(): React.ReactElement {
   });
   const [state, dispatch] = useReducer(weighingReducer, initialWeighingState);
   const lastWeight = useScaleStreamStore((s) => s.lastWeight);
+  const connection = useScaleStreamStore((s) => s.connection);
   const [committedPoints, setCommittedPoints] = useState<RecordPoint[]>([]);
+  const [scaleId, setScaleId] = useState<number | null>(null);
   const submitM = useSubmitRecord();
+
+  // 把串口样本桥接到状态机：capturing 期间每个新样本 → WEIGHT_SAMPLE，
+  // 到稳态后 reducer 自动切到 ready_to_commit，"录入"按钮启用。
+  useEffect(() => {
+    if (!lastWeight) return;
+    if (state.kind !== 'capturing') return;
+    dispatch({ type: 'WEIGHT_SAMPLE', value: lastWeight.value, stable: lastWeight.stable });
+  }, [lastWeight, state.kind]);
 
   // 同步 URL params。
   useEffect(() => {
@@ -55,26 +65,17 @@ export default function WeighingPage(): React.ReactElement {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config.project?.id, config.vertical?.id]);
 
-  const canStart = hasFullConfig(config) && state.kind === 'configured';
+  const isLive = connection === 'connected' || connection === 'reading';
+  const canStart = hasFullConfig(config) && state.kind === 'configured' && isLive;
   const canCommit = state.kind === 'ready_to_commit';
 
-  const onStart = async (): Promise<void> => {
+  const onStart = (): void => {
     if (!hasFullConfig(config)) return;
-    dispatch({ type: 'CONFIGURE', config });
-    const adapter = getSerialAdapter();
-    if (adapter.isSupported()) {
-      await adapter.open('mock-com3', {
-        baudRate: 9600,
-        dataBits: 8,
-        parity: 'none',
-        stopBits: 1,
-        flowControl: 'none',
-        protocolType: 'generic',
-        readTimeoutMs: 1000,
-        decimalPlaces: 4,
-        unitDefault: 'g',
-      });
+    if (!isLive) {
+      toast.error('请先在"硬件连接"区域选择天平并连接');
+      return;
     }
+    dispatch({ type: 'CONFIGURE', config });
     dispatch({ type: 'START_CAPTURE' });
   };
 
@@ -137,7 +138,7 @@ export default function WeighingPage(): React.ReactElement {
   const committedPositions = new Set(committedPoints.map((p) => p.pos));
 
   return (
-    <div className="grid h-full grid-cols-[1fr_1.15fr_0.78fr] gap-2 p-2">
+    <div className="grid h-full grid-cols-1 gap-2 p-2 lg:grid-cols-[1fr_1.15fr_0.78fr]">
       <div className="flex min-h-0 flex-col gap-2">
         <PendingBanner />
         <RecordsTable filter={filter} />
@@ -160,21 +161,22 @@ export default function WeighingPage(): React.ReactElement {
           waterDepthM={config.water_depth_m ?? null}
         />
       </div>
-      <ConfigPanel
-        config={config}
-        onChange={(cfg) => {
-          setConfig(cfg);
-          if (hasFullConfig(cfg)) dispatch({ type: 'CONFIGURE', config: cfg });
-        }}
-        onStart={() => {
-          void onStart();
-        }}
-        onCommit={() => {
-          void onCommit();
-        }}
-        canStart={canStart}
-        canCommit={canCommit}
-      />
+      <div className="flex flex-col gap-2">
+        <ScaleConnectControl scaleId={scaleId} onScaleChange={setScaleId} />
+        <ConfigPanel
+          config={config}
+          onChange={(cfg) => {
+            setConfig(cfg);
+            if (hasFullConfig(cfg)) dispatch({ type: 'CONFIGURE', config: cfg });
+          }}
+          onStart={onStart}
+          onCommit={() => {
+            void onCommit();
+          }}
+          canStart={canStart}
+          canCommit={canCommit}
+        />
+      </div>
     </div>
   );
 }

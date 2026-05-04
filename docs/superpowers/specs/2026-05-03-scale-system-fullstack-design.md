@@ -5,6 +5,8 @@
 > **作者**：jiayin（with Claude Code）
 > **范围**：把现有 1150 行单文件 HTML（`scale-system.html`）演进成 monorepo 三应用架构（Web + Desktop + API），引入中心 PostgreSQL，覆盖采集、管理、查询、E2E 测试全链路。
 
+> **🔁 架构修订（2026-05-04）**：串口接入方案已从「后端 pyserial + WebSocket 单源」切换为「浏览器 Web Serial 直连」。本文 §6.5 / §8.2 / §9 中所有"后端持串口 / `/api/v1/serial/*` / `/ws/scale/{id}` / `pyserial-asyncio-fast` / `ConnectionManager` / `Topic pubsub` / `SCALE_DEFAULT_TRANSPORT`"等内容已废弃，请以 `docs/DEPLOY.md` §6 为准。前端实现：`apps/web/src/lib/serial/web-serial.ts` + `protocol-parser.ts`。后端不再有任何串口模块或 WebSocket 路由。
+
 ---
 
 ## 1 · 背景与目标
