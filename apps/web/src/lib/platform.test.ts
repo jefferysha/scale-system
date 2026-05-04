@@ -7,13 +7,21 @@ describe('platform', () => {
     window.history.replaceState({}, '', '/');
   });
 
-  it('returns mock adapter by default in browser (无 Tauri，让 demo 可跑通)', () => {
+  it('returns WebSocket adapter by default (业界最佳：后端持有串口，前端订阅)', () => {
     __resetSerialAdapterCache();
     const a = getSerialAdapter();
-    expect(a.isSupported()).toBe(true);
+    expect(a.isSupported()).toBe(true); // WebSocket 总是 supported
+    expect(a.constructor.name).toBe('WebSocketSerialAdapter');
   });
 
-  it('returns unsupported adapter when ?nomock=1 (强制走桌面端)', () => {
+  it('?mock=1 切到 MockSerialAdapter', () => {
+    window.history.replaceState({}, '', '/?mock=1');
+    __resetSerialAdapterCache();
+    const a = getSerialAdapter();
+    expect(a.constructor.name).toBe('MockSerialAdapter');
+  });
+
+  it('?nomock=1 切到 UnsupportedSerialAdapter', () => {
     window.history.replaceState({}, '', '/?nomock=1');
     __resetSerialAdapterCache();
     const a = getSerialAdapter();

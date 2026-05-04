@@ -149,7 +149,8 @@ function PageBtn({
         active
           ? 'border-[var(--acc)] bg-[var(--acc-shade)] text-[var(--acc)]'
           : 'border-[var(--line-2)] bg-[var(--bg-1)] text-[var(--text-2)] hover:border-[var(--acc)] hover:text-[var(--acc)]',
-        disabled && 'cursor-not-allowed opacity-40 hover:border-[var(--line-2)] hover:text-[var(--text-2)]',
+        disabled &&
+          'cursor-not-allowed opacity-40 hover:border-[var(--line-2)] hover:text-[var(--text-2)]',
       )}
     >
       {page}

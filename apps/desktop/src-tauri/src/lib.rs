@@ -1,13 +1,12 @@
 //! Scale Desktop · Tauri 桥接层
 //!
-//! 仅做 OS 桥接（串口、本地队列、安全存储）。业务逻辑放前端 React。
+//! 仅做 OS 桥接（本地队列、安全存储）。业务逻辑放前端 React。
+//! 串口由后端 FastAPI 持有，桌面端复用前端 WebSocketSerialAdapter 通过 WS 订阅。
 
 mod commands;
 mod queue;
-mod serial;
 
 use commands::queue::QueueState;
-use commands::serial::SerialState;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -20,14 +19,9 @@ pub fn run() {
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
-        .manage(SerialState::default())
         .manage(QueueState::default())
         .invoke_handler(tauri::generate_handler![
             ping,
-            commands::serial::list_ports,
-            commands::serial::open_serial,
-            commands::serial::close_serial,
-            commands::serial::probe_serial,
             commands::queue::queue_enqueue,
             commands::queue::queue_drain,
             commands::queue::queue_mark_synced,

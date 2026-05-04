@@ -36,6 +36,12 @@ services:
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:8080}
       APP_ENV: production
       LOG_LEVEL: INFO
+      # 串口 transport：默认通过宿主机 socat 桥接 host.docker.internal:6500
+      # 可在 docker/.env 中改成 serial:// 或 tcp:// 等其它形态
+      SCALE_DEFAULT_TRANSPORT: ${SCALE_DEFAULT_TRANSPORT:-socket://host.docker.internal:6500}
+    extra_hosts:
+      # Linux Docker 也能解析 host.docker.internal（Mac/Win 自带）
+      - "host.docker.internal:host-gateway"
     ports:
       - '${API_PORT:-8000}:8000'
     restart: unless-stopped

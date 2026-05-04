@@ -140,7 +140,85 @@ RUN pnpm config set registry https://registry.npmmirror.com
 
 ---
 
-## 6 · 回滚
+## 6 · 串口接入：本地真天平 / 生产远程网关
+
+### 6.1 传输层抽象（同一份代码三种部署）
+
+后端通过环境变量 `SCALE_DEFAULT_TRANSPORT` 配置串口连接 URL，pyserial 原生支持：
+
+| URL 形式 | 用途 | 部署形态 |
+|---|---|---|
+| `serial:///dev/cu.usbserial-AB01` | 本地直读 USB | API 进程跑在天平所在机器（**Linux Docker `--device`** 也可） |
+| `socket://host:port` | 通过 TCP 桥读串口 | **Mac/Win Docker** + 宿主机 socat / 跨网段 ser2net |
+| `loop://` | 内存回环 | 单元测试 |
+
+代码层 0 改动，只换 ENV。
+
+### 6.2 macOS / Windows Docker 接真天平（首选方案）
+
+Mac/Win Docker Desktop 跑在 Hypervisor 虚拟机里，**USB 设备透传不进容器**——这是 Apple/MS 设计如此。**业界标准做法是用宿主机 socat 起 TCP 桥**。
+
+```bash
+# 一次安装 socat
+brew install socat   # macOS
+# 或 sudo apt install socat   # Linux
+
+# 插上天平，找端口
+ls /dev/cu.usbserial-* /dev/cu.SLAB_* /dev/cu.usbmodem*
+# 假设结果: /dev/cu.usbserial-AB01
+
+# 起桥（前台跑，Ctrl-C 停）
+./scripts/dev/serial-bridge.sh /dev/cu.usbserial-AB01
+
+# 也可设置波特率/帧格式：
+BAUD=4800 PARITY=even DATA_BITS=7 ./scripts/dev/serial-bridge.sh /dev/cu.usbserial-AB01
+```
+
+桥跑起来后，docker container 内 API 通过 `socket://host.docker.internal:6500` 透明读到真天平字节流。在 `docker/.env` 中加：
+
+```bash
+SCALE_DEFAULT_TRANSPORT=socket://host.docker.internal:6500
+```
+
+`docker-compose.yml` 给 api 服务加 `extra_hosts`（Linux 上才需要，Mac/Win Docker 自带）：
+
+```yaml
+api:
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+```
+
+### 6.3 Linux Docker 接真天平
+
+Linux Docker 支持 USB 设备直通，更简单：
+
+```yaml
+api:
+  devices:
+    - "/dev/ttyUSB0:/dev/ttyUSB0"
+  environment:
+    SCALE_DEFAULT_TRANSPORT: "serial:///dev/ttyUSB0"
+```
+
+### 6.4 生产远程网关（多站点）
+
+天平所在工作站跑 `ser2net`（socat 的工业版，支持 systemd），把串口暴露成 TCP；中心服务器的 API container 通过 TCP 读：
+
+```bash
+# 在天平所在机器（Linux/Win，安装 ser2net）
+ser2net -d -C "6500:raw:0:/dev/ttyUSB0:9600 8DATABITS NONE 1STOPBIT"
+
+# 中心服务器 API ENV
+SCALE_DEFAULT_TRANSPORT=tcp://workstation.local:6500
+```
+
+### 6.5 不接硬件时
+
+不传 `SCALE_DEFAULT_TRANSPORT` 时后端仅启用 REST/WS endpoints 但所有连接尝试会返回 `UNCONFIGURED` 错误，前端 Header 会显示离线状态。
+
+---
+
+## 7 · 回滚
 
 ```bash
 docker compose down

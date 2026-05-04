@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
-import { getSerialAdapter } from '@/lib/platform';
+import { getSerialAdapter, setActiveScaleId } from '@/lib/platform';
 import type { ProbeResult, ScaleConfig, SerialPortInfo } from '@/lib/serial/adapter';
 import { isApiError } from '@/lib/api/error';
 
@@ -33,13 +33,14 @@ export function ScaleProbePanel({
   const [result, setResult] = useState<ProbeResult | null>(null);
 
   useEffect(() => {
+    setActiveScaleId(scaleId);
     const adapter = getSerialAdapter();
     void adapter.listPorts().then((ps) => {
       setPorts(ps);
       const first = ps[0];
       if (first) setSelected((cur) => cur || first.id);
     });
-  }, []);
+  }, [scaleId]);
 
   // 配置改了就清结果
   useEffect(() => {

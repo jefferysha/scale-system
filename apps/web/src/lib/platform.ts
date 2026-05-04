@@ -3,32 +3,54 @@ import type { SubmissionQueue } from './queue/submission-queue';
 import { TauriQueue } from './queue/tauri-queue';
 import type { SerialAdapter } from './serial/adapter';
 import { MockSerialAdapter } from './serial/mock-serial';
-import { TauriSerialAdapter } from './serial/tauri-serial';
 import { UnsupportedSerialAdapter } from './serial/unsupported-serial';
+import { WebSocketSerialAdapter } from './serial/ws-serial';
 
 export const isTauri = (): boolean =>
   typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
 
 /**
- * 浏览器没有原生串口（Web Serial 仅 Chrome+HTTPS），所以非 Tauri 默认走 Mock 让 demo 完整可用。
- * 用 ?nomock=1 可强制 Unsupported 触发"请用桌面端"的错误流。
+ * 业界最佳实践：串口由后端持有，前端（Web/Tauri）都通过 WebSocket 订阅同一份事件流。
+ *
+ * 选择优先级：
+ * 1. ?mock=1     → MockSerialAdapter（单测/演示）
+ * 2. ?nomock=1   → UnsupportedSerialAdapter（强制不接，错误流测试）
+ * 3. 默认        → WebSocketSerialAdapter（Web/Tauri 统一走后端 WS）
+ *
+ * 之前的 TauriSerialAdapter（Rust serialport-rs 直读）已废弃：
+ * 协议解析逻辑在 Python 唯一一份，Tauri 端不再维护重复实现。
  */
 export const isMockSerial = (): boolean => {
   if (typeof window === 'undefined') return false;
   const params = new URLSearchParams(window.location.search);
-  if (params.get('nomock') === '1') return false;
-  if (params.get('mock') === '1') return true;
-  return !isTauri(); // 浏览器默认 mock，桌面端走真实串口
+  return params.get('mock') === '1';
 };
 
 let cached: SerialAdapter | null = null;
 
 export const getSerialAdapter = (): SerialAdapter => {
   if (cached) return cached;
-  if (isTauri()) cached = new TauriSerialAdapter();
-  else if (isMockSerial()) cached = new MockSerialAdapter();
-  else cached = new UnsupportedSerialAdapter();
+  if (typeof window !== 'undefined') {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('mock') === '1') {
+      cached = new MockSerialAdapter();
+      return cached;
+    }
+    if (params.get('nomock') === '1') {
+      cached = new UnsupportedSerialAdapter();
+      return cached;
+    }
+  }
+  cached = new WebSocketSerialAdapter();
   return cached;
+};
+
+/** WebSocketSerialAdapter 需要知道当前操作的 scale id 才能 open/probe。
+ *  非 WS 适配器调用本方法是 noop。 */
+export const setActiveScaleId = (id: number | undefined): void => {
+  if (cached instanceof WebSocketSerialAdapter) {
+    cached.setScaleId(id);
+  }
 };
 
 export const __resetSerialAdapterCache = (): void => {

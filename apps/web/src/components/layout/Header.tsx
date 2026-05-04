@@ -9,7 +9,7 @@ export function Header(): React.ReactElement {
   const { data: user } = useCurrentUser();
   const logout = useLogout();
   const tauri = isTauri();
-  const mock = !tauri && isMockSerial();
+  const mock = isMockSerial();
   return (
     <header className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-[var(--line)] bg-gradient-to-b from-[var(--bg-1)] px-4 py-2 backdrop-blur">
       <div className="flex items-center gap-3">
@@ -31,10 +31,11 @@ export function Header(): React.ReactElement {
             pulse={false}
             className="cursor-default"
           />
-        ) : tauri ? (
-          <StatusChip label="桌面端 · 真串口" variant="success" />
         ) : (
-          <StatusChip label="实时同步" variant="success" />
+          <StatusChip
+            label={tauri ? '桌面端 · 服务端串口' : '服务端串口（WS）'}
+            variant="success"
+          />
         )}
         <ThemeToggle />
         <span className="text-xs text-[var(--text-2)]">{user?.username}</span>
