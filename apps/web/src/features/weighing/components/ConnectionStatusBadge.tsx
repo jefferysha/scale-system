@@ -19,12 +19,18 @@ const variantMap: Record<ConnectionState, 'default' | 'success' | 'warn' | 'dang
   disconnected: 'default',
 };
 
-export function ConnectionStatusBadge({ state }: { state: ConnectionState }): React.ReactElement {
+interface Props {
+  state: ConnectionState;
+  className?: string;
+}
+
+export function ConnectionStatusBadge({ state, className }: Props): React.ReactElement {
   return (
     <StatusChip
       label={labelMap[state]}
       variant={variantMap[state]}
       pulse={state === 'reading' || state === 'opening'}
+      className={className}
     />
   );
 }

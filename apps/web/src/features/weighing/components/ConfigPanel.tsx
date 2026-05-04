@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { SelectBox, type SelectOption } from '@/components/ui/select-box';
 import { ProjectCombobox } from '@/features/projects/components/ProjectCombobox';
 import { useVerticalsByProject } from '@/features/projects/hooks';
-import { useCups } from '@/features/cups/hooks';
+import { CupCombobox } from '@/features/cups/components/CupCombobox';
 import type { CupLite, PointPosition, ProjectLite, VerticalLite, WeighingConfig } from '../types';
 
 interface Props {
@@ -44,11 +44,8 @@ export function ConfigPanel({
   canCommit,
 }: Props): React.ReactElement {
   const [bottle, setBottle] = useState<1000 | 500 | 250>(config.bottle ?? 1000);
-  const [cupSearch, setCupSearch] = useState('');
 
   const { data: verticals = [] } = useVerticalsByProject(config.project?.id ?? null);
-  const { data: cupsPage } = useCups({ q: cupSearch || undefined, page: 1, size: 20 });
-  const cups = cupsPage?.items ?? [];
 
   useEffect(() => {
     if (
@@ -64,10 +61,6 @@ export function ConfigPanel({
   const verticalOptions: SelectOption[] = verticals.map((v) => ({
     value: String(v.id),
     label: `${v.code}${v.label ? ' · ' + v.label : ''}`,
-  }));
-  const cupOptions: SelectOption[] = cups.map((c) => ({
-    value: String(c.id),
-    label: c.cup_number,
   }));
 
   return (
@@ -164,29 +157,9 @@ export function ConfigPanel({
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="cfg-cup">杯号</Label>
-          <Input
-            id="cfg-cup-search"
-            placeholder="搜索杯号…"
-            value={cupSearch}
-            onChange={(e) => setCupSearch(e.target.value)}
-          />
-          <SelectBox
-            id="cfg-cup"
-            value={config.current_cup?.id !== undefined ? String(config.current_cup.id) : ''}
-            placeholder="—"
-            options={cupOptions}
-            onChange={(val) => {
-              const c = cups.find((x) => x.id === Number(val));
-              const lite: CupLite | null = c
-                ? {
-                    id: c.id,
-                    cup_number: c.cup_number,
-                    current_tare_g: Number(c.current_tare_g),
-                  }
-                : null;
-              onChange({ ...config, current_cup: lite });
-            }}
-            testId="cfg-cup"
+          <CupCombobox
+            value={config.current_cup ?? null}
+            onChange={(c) => onChange({ ...config, current_cup: c as CupLite | null })}
           />
         </div>
       </div>

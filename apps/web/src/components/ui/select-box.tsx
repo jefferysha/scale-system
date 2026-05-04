@@ -92,7 +92,10 @@ export function SelectBox({
                 data-testid={testId ? `${testId}-opt-${o.value}` : undefined}
               >
                 <Check
-                  className={cn('size-3.5 flex-none', o.value === value ? 'opacity-100' : 'opacity-0')}
+                  className={cn(
+                    'size-3.5 flex-none',
+                    o.value === value ? 'opacity-100' : 'opacity-0',
+                  )}
                 />
                 <span className="flex-1 truncate">{o.label}</span>
               </button>

@@ -25,8 +25,10 @@ interface Props {
  * 我们再用本地 pageIndex 切片当前页，"上一页"等同回跳已加载的页索引。
  */
 export function RecordsTable({ filter }: Props): React.ReactElement {
-  const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
-    useWeighingRecordsLive({ ...filter, limit: PAGE_SIZE });
+  const { data, isLoading, isFetching, hasNextPage, fetchNextPage } = useWeighingRecordsLive({
+    ...filter,
+    limit: PAGE_SIZE,
+  });
   const [pageIndex, setPageIndex] = useState(0);
   const pages = data?.pages ?? [];
   const currentRows = pages[pageIndex]?.items ?? [];

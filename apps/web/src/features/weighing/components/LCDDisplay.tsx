@@ -48,9 +48,7 @@ export function LCDDisplay({
           width: '1.2cqi',
           height: '1.2cqi',
           background: stable ? '#3dff85' : '#1a3a26',
-          boxShadow: stable
-            ? '0 0 4px #3dff85, 0 0 9px rgba(61,255,133,.6)'
-            : 'none',
+          boxShadow: stable ? '0 0 4px #3dff85, 0 0 9px rgba(61,255,133,.6)' : 'none',
         }}
       />
       <span

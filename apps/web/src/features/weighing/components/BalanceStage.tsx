@@ -28,16 +28,23 @@ export function BalanceStage(): React.ReactElement {
   const stable = lastWeight?.stable ?? false;
 
   return (
-    <section className="relative flex min-h-0 flex-1 flex-col rounded-xl border border-[var(--line)] bg-gradient-to-b from-[var(--bg-1)] to-[var(--bg-2)] p-3">
-      <header className="flex items-center justify-between pb-1">
-        <ConnectionStatusBadge state={connection} />
-        <span
-          className="font-mono text-[10px] tracking-wider text-[var(--text-3)]"
-          data-testid="samples-per-sec"
-        >
-          {samplesPerSec} sps
-        </span>
-      </header>
+    <section
+      className="relative flex min-h-0 flex-1 flex-col p-1"
+      style={{
+        background:
+          'radial-gradient(ellipse at 50% 38%, color-mix(in oklab, var(--bg-2) 70%, var(--acc-shade)), transparent 65%)',
+      }}
+    >
+      <ConnectionStatusBadge
+        state={connection}
+        className="absolute left-2 top-2 z-10"
+      />
+      <span
+        className="absolute right-2 top-2 z-10 font-mono text-[10px] tracking-wider text-[var(--text-3)]"
+        data-testid="samples-per-sec"
+      >
+        {samplesPerSec} sps
+      </span>
       <div className="flex min-h-0 flex-1 items-center justify-center">
         <BalanceImage digits={digits} stable={stable} />
       </div>

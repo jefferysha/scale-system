@@ -97,9 +97,7 @@ export function PointGrid({
             >
               <span className="truncate">{c.value}</span>
               {c.unit ? (
-                <span className="ml-0.5 text-[9px] font-normal text-[var(--text-3)]">
-                  {c.unit}
-                </span>
+                <span className="ml-0.5 text-[9px] font-normal text-[var(--text-3)]">{c.unit}</span>
               ) : null}
             </span>
             <span className="overflow-hidden truncate text-ellipsis text-[9px] text-[var(--text-3)]">

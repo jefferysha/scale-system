@@ -115,10 +115,7 @@ export function ScaleProbePanel({
       </div>
 
       {result ? (
-        <div
-          className="rounded-md bg-[var(--bg-1)] p-2 text-xs"
-          data-testid="probe-result"
-        >
+        <div className="rounded-md bg-[var(--bg-1)] p-2 text-xs" data-testid="probe-result">
           {result.ok ? (
             <p className="text-[var(--ok)]">
               ✓ 成功，采集 {result.samples.length} 个样本（最后值 ≈

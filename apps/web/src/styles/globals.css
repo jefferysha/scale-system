@@ -50,3 +50,14 @@ body {
 [data-theme='light'] .balance-png {
   filter: drop-shadow(0 14px 22px rgba(20, 40, 80, 0.18));
 }
+
+/* 全局隐藏 <input type="number"> 的浏览器原生上下箭头（spinner） */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
