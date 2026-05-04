@@ -39,10 +39,12 @@ COPY apps/api/pyproject.toml /app/pyproject.toml
 COPY apps/api/scripts /app/scripts
 
 # 让 .venv 在 PATH 中
+# PORT 默认 8000，Zeabur 等托管平台会注入 PORT=8080 自动覆盖
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONPATH=/app/src \
     PYTHONUNBUFFERED=1 \
-    APP_ENV=production
+    APP_ENV=production \
+    PORT=8000
 
 USER scale
 
@@ -50,7 +52,7 @@ EXPOSE 8000
 
 # 健康检查
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
-  CMD curl -fsS http://localhost:8000/health || exit 1
+  CMD curl -fsS http://localhost:${PORT}/health || exit 1
 
 # 默认启动：先迁移 → uvicorn
-CMD ["sh", "-c", "alembic upgrade head && uvicorn scale_api.main:app --host 0.0.0.0 --port 8000 --workers 4"]
+CMD ["sh", "-c", "alembic upgrade head && uvicorn scale_api.main:app --host 0.0.0.0 --port ${PORT} --workers 4"]

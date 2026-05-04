@@ -38,14 +38,16 @@ COPY docker/nginx.conf /etc/nginx/templates/default.conf.template
 
 COPY --from=builder /build/apps/web/dist /usr/share/nginx/html
 
-# envsubst 白名单：仅替换 API_ 前缀的环境变量，避免误伤 nginx 内置 $uri / $http_upgrade 等
-ENV NGINX_ENVSUBST_FILTER="^API_"
+# envsubst 白名单：替换 API_UPSTREAM + PORT，其它（$uri / $http_upgrade 等 nginx 内置）保留
+ENV NGINX_ENVSUBST_FILTER="^(API_UPSTREAM|PORT)$"
 # 默认上游：本地 docker-compose 用；Zeabur 部署时通过环境变量覆盖
 ENV API_UPSTREAM=api:8000
+# nginx 监听端口默认 80；Zeabur 等会注入 PORT=8080 覆盖
+ENV PORT=80
 
 EXPOSE 80
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget -qO- http://localhost/ >/dev/null 2>&1 || exit 1
+  CMD wget -qO- http://localhost:${PORT}/ >/dev/null 2>&1 || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
