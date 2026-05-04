@@ -1,4 +1,4 @@
-"""Records 查询路由（list / get / export）."""
+"""Records 查询路由（list / paged / get / export）."""
 import csv
 import io
 from datetime import date
@@ -10,9 +10,9 @@ from scale_api.api.deps import CurrentUser, DBSession
 from scale_api.core.exceptions import NotFoundError
 from scale_api.repositories.record_query_builder import build_list_query
 from scale_api.repositories.record_repo import RecordRepository
-from scale_api.schemas.common import CursorPage
+from scale_api.schemas.common import CursorPage, OffsetPage
 from scale_api.schemas.record import RecordOut
-from scale_api.services.pagination import cursor_paginate
+from scale_api.services.pagination import cursor_paginate, offset_paginate
 
 router = APIRouter()
 
@@ -44,6 +44,37 @@ async def list_records(
     return CursorPage(
         items=[RecordOut.model_validate(r) for r in page.items],
         next_cursor=page.next_cursor,
+    )
+
+
+@router.get("/paged", response_model=OffsetPage[RecordOut])
+async def list_records_paged(
+    _: CurrentUser,
+    session: DBSession,
+    project_id: int | None = Query(default=None),
+    vertical_id: int | None = Query(default=None),
+    date_from: date | None = Query(default=None),
+    date_to: date | None = Query(default=None),
+    cup_number: str | None = Query(default=None),
+    q: str | None = Query(default=None),
+    page: int = Query(default=1, ge=1),
+    size: int = Query(default=20, ge=1, le=200),
+) -> OffsetPage[RecordOut]:
+    """offset 分页：返回 total / page / size，前端可显示完整 1 2 3 … N 页码。"""
+    stmt = build_list_query(
+        project_id=project_id,
+        vertical_id=vertical_id,
+        date_from=date_from,
+        date_to=date_to,
+        cup_number=cup_number,
+        q=q,
+    )
+    page_data = await offset_paginate(session, stmt, page=page, size=size)
+    return OffsetPage(
+        items=[RecordOut.model_validate(r) for r in page_data.items],
+        total=page_data.total,
+        page=page_data.page,
+        size=page_data.size,
     )
 
 

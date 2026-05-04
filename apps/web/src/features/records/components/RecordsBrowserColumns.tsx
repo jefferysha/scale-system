@@ -40,17 +40,17 @@ export function RecordsBrowserColumns({
       <table className="w-full font-mono text-xs">
         <thead className="bg-[var(--bg-2)] text-[var(--text-3)]">
           <tr>
-            <th className="px-2 py-2 text-left">日期</th>
-            <th className="px-2 py-2 text-left">项目</th>
-            <th className="px-2 py-2 text-left">垂线</th>
-            <th className="px-2 py-2 text-right">水深 m</th>
+            <th className="whitespace-nowrap px-2 py-2 text-left">日期</th>
+            <th className="whitespace-nowrap px-2 py-2 text-left">项目</th>
+            <th className="whitespace-nowrap px-2 py-2 text-left">垂线</th>
+            <th className="whitespace-nowrap px-2 py-2 text-right">水深 m</th>
             {POSITIONS.map((p) => (
-              <th key={p} className="px-2 py-2 text-right">
+              <th key={p} className="whitespace-nowrap px-2 py-2 text-right">
                 {p}
               </th>
             ))}
-            <th className="px-2 py-2 text-right">平均含沙</th>
-            <th className="px-2 py-2 text-right">操作</th>
+            <th className="whitespace-nowrap px-2 py-2 text-right">平均含沙</th>
+            <th className="whitespace-nowrap px-2 py-2 text-right">操作</th>
           </tr>
         </thead>
         <tbody>
@@ -69,19 +69,21 @@ export function RecordsBrowserColumns({
                   className="border-t border-[var(--line)] hover:bg-[var(--bg-2)]/40"
                   data-testid={`record-row-${r.id}`}
                 >
-                  <td className="px-2 py-1.5">{r.sample_date}</td>
-                  <td className="px-2 py-1.5">P-{r.project_id}</td>
-                  <td className="px-2 py-1.5">V-{r.vertical_id}</td>
-                  <td className="px-2 py-1.5 text-right">{r.water_depth_m ?? '—'}</td>
+                  <td className="whitespace-nowrap px-2 py-1.5">{r.sample_date}</td>
+                  <td className="whitespace-nowrap px-2 py-1.5">P-{r.project_id}</td>
+                  <td className="whitespace-nowrap px-2 py-1.5">V-{r.vertical_id}</td>
+                  <td className="whitespace-nowrap px-2 py-1.5 text-right">
+                    {r.water_depth_m ?? '—'}
+                  </td>
                   {POSITIONS.map((p) => (
-                    <td key={p} className="px-2 py-1.5 text-right">
+                    <td key={p} className="whitespace-nowrap px-2 py-1.5 text-right">
                       {formatPoint(pts[p]?.concentration_mg_l)}
                     </td>
                   ))}
-                  <td className="px-2 py-1.5 text-right text-[var(--acc)]">
+                  <td className="whitespace-nowrap px-2 py-1.5 text-right text-[var(--acc)]">
                     {r.computed_avg_concentration ?? '—'}
                   </td>
-                  <td className="px-2 py-1.5 text-right">
+                  <td className="whitespace-nowrap px-2 py-1.5 text-right">
                     <button
                       type="button"
                       className="text-[var(--acc)] hover:underline"

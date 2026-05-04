@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import { Pagination } from '@/components/ui/pagination';
 import { useCurrentUser } from '@/features/auth/hooks';
 import { isApiError } from '@/lib/api/error';
 import type { RecordItem } from '@/types/api';
-import { useDeleteRecord, useExportRecords, useRecordsInfinite } from '../hooks';
+import { useDeleteRecord, useExportRecords, useRecordsPaged } from '../hooks';
 import { RecordsBrowserColumns } from './RecordsBrowserColumns';
 import { RecordsBrowserFilters, type RecordsFilterState } from './RecordsBrowserFilters';
-import { RecordsBrowserRowActions } from './RecordsBrowserRowActions';
 import { RecordDetailDrawer } from './RecordDetailDrawer';
 
 const initialFilter: RecordsFilterState = {
@@ -16,6 +16,8 @@ const initialFilter: RecordsFilterState = {
   date_to: '',
   cup_number: '',
 };
+
+const PAGE_SIZE = 20;
 
 const triggerCsvDownload = (blob: Blob, filename: string): void => {
   const url = URL.createObjectURL(blob);
@@ -32,7 +34,14 @@ export default function RecordsBrowser(): React.ReactElement {
   const { data: user } = useCurrentUser();
   const isAdmin = user?.role === 'admin';
   const [filter, setFilter] = useState<RecordsFilterState>(initialFilter);
+  const [page, setPage] = useState(1);
   const [detail, setDetail] = useState<RecordItem | null>(null);
+
+  /** 过滤变更时回到第一页（防止悬空在不存在的页码） */
+  const setFilterAndReset = (next: RecordsFilterState): void => {
+    setFilter(next);
+    setPage(1);
+  };
 
   const queryParams = useMemo(
     () => ({
@@ -41,13 +50,16 @@ export default function RecordsBrowser(): React.ReactElement {
       date_from: filter.date_from || undefined,
       date_to: filter.date_to || undefined,
       cup_number: filter.cup_number || undefined,
-      limit: 50,
+      page,
+      size: PAGE_SIZE,
     }),
-    [filter],
+    [filter, page],
   );
 
-  const { data, fetchNextPage, hasNextPage, isFetching } = useRecordsInfinite(queryParams);
-  const rows = data?.pages.flatMap((p) => p.items) ?? [];
+  const { data, isFetching } = useRecordsPaged(queryParams);
+  const rows = data?.items ?? [];
+  const total = data?.total ?? 0;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   const exportM = useExportRecords();
   const deleteM = useDeleteRecord();
@@ -84,7 +96,7 @@ export default function RecordsBrowser(): React.ReactElement {
       </header>
       <RecordsBrowserFilters
         filter={filter}
-        onChange={setFilter}
+        onChange={setFilterAndReset}
         onExport={() => void onExport()}
         exporting={exportM.isPending}
       />
@@ -94,11 +106,14 @@ export default function RecordsBrowser(): React.ReactElement {
         onDelete={isAdmin ? (r) => void onDelete(r) : undefined}
         isAdmin={!!isAdmin}
       />
-      <RecordsBrowserRowActions
-        hasNext={!!hasNextPage}
-        isFetching={isFetching}
-        totalLoaded={rows.length}
-        onLoadMore={() => void fetchNextPage()}
+      <Pagination
+        page={page}
+        pageSize={PAGE_SIZE}
+        totalItems={total}
+        totalPages={totalPages}
+        isLoading={isFetching}
+        onChange={setPage}
+        className="mt-1"
       />
       <RecordDetailDrawer record={detail} onClose={() => setDetail(null)} />
     </section>

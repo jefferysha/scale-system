@@ -3,10 +3,13 @@ import { StatusChip } from '@/components/domain/StatusChip';
 import { NavMenu } from './NavMenu';
 import { useCurrentUser, useLogout } from '@/features/auth/hooks';
 import { Button } from '@/components/ui/button';
+import { isMockSerial, isTauri } from '@/lib/platform';
 
 export function Header(): React.ReactElement {
   const { data: user } = useCurrentUser();
   const logout = useLogout();
+  const tauri = isTauri();
+  const mock = !tauri && isMockSerial();
   return (
     <header className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-[var(--line)] bg-gradient-to-b from-[var(--bg-1)] px-4 py-2 backdrop-blur">
       <div className="flex items-center gap-3">
@@ -21,7 +24,18 @@ export function Header(): React.ReactElement {
       </div>
       <div />
       <div className="flex items-center gap-3">
-        <StatusChip label="实时同步" variant="success" />
+        {mock ? (
+          <StatusChip
+            label="DEMO · MOCK 串口"
+            variant="warn"
+            pulse={false}
+            className="cursor-default"
+          />
+        ) : tauri ? (
+          <StatusChip label="桌面端 · 真串口" variant="success" />
+        ) : (
+          <StatusChip label="实时同步" variant="success" />
+        )}
         <ThemeToggle />
         <span className="text-xs text-[var(--text-2)]">{user?.username}</span>
         <Button variant="outline" size="sm" onClick={() => logout.mutate()}>

@@ -1,10 +1,11 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import type { RecordListParams } from './api';
+import { keepPreviousData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { RecordListParams, RecordPagedParams } from './api';
 import { recordsApi } from './api';
 
 export const recordsKeys = {
   all: ['records'] as const,
   list: (params: Record<string, unknown>) => ['records', 'list', params] as const,
+  paged: (params: Record<string, unknown>) => ['records', 'paged', params] as const,
   detail: (id: number) => ['records', 'detail', id] as const,
 };
 
@@ -15,6 +16,13 @@ export const useRecordsInfinite = (params: RecordListParams) =>
       recordsApi.list({ ...params, cursor: pageParam ?? null, limit: params.limit ?? 50 }),
     initialPageParam: null as string | null,
     getNextPageParam: (last) => last.next_cursor ?? null,
+  });
+
+export const useRecordsPaged = (params: RecordPagedParams) =>
+  useQuery({
+    queryKey: recordsKeys.paged(params as Record<string, unknown>),
+    queryFn: () => recordsApi.paged(params),
+    placeholderData: keepPreviousData,
   });
 
 export const useDeleteRecord = () => {

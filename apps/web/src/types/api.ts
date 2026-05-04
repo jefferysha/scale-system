@@ -32,5 +32,12 @@ export type BatchResponse = schemas['BatchResponse'];
 export type CursorPageProject = schemas['CursorPage_ProjectOut_'];
 export type CursorPageRecord = schemas['CursorPage_RecordOut_'];
 export type OffsetPageCup = schemas['OffsetPage_CupOut_'];
+/** offset 分页：records/paged 端点的响应；后端 OpenAPI 未及时再生成时手写一份 */
+export interface OffsetPageRecord {
+  items: RecordItem[];
+  total: number;
+  page: number;
+  size: number;
+}
 
 export type { paths };

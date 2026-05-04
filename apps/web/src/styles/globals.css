@@ -51,13 +51,14 @@ body {
   filter: drop-shadow(0 14px 22px rgba(20, 40, 80, 0.18));
 }
 
-/* 全局隐藏 <input type="number"> 的浏览器原生上下箭头（spinner） */
-input[type='number']::-webkit-outer-spin-button,
-input[type='number']::-webkit-inner-spin-button {
+/* 默认保留 <input type="number"> 的上下箭头（spinner），让用户能用键盘/鼠标调；
+   不需要 spinner 时用 .no-spinner 类隐藏（如硬币号、表单 ID 等） */
+input[type='number'].no-spinner::-webkit-outer-spin-button,
+input[type='number'].no-spinner::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-input[type='number'] {
+input[type='number'].no-spinner {
   appearance: textfield;
   -moz-appearance: textfield;
 }

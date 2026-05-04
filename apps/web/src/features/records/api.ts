@@ -1,5 +1,11 @@
 import { api } from '@/lib/api/client';
-import type { CursorPageRecord, RecordCreate, RecordItem, RecordUpdate } from '@/types/api';
+import type {
+  CursorPageRecord,
+  OffsetPageRecord,
+  RecordCreate,
+  RecordItem,
+  RecordUpdate,
+} from '@/types/api';
 
 export interface RecordListParams {
   project_id?: number;
@@ -12,6 +18,17 @@ export interface RecordListParams {
   cursor?: string | null;
 }
 
+export interface RecordPagedParams {
+  project_id?: number;
+  vertical_id?: number;
+  date_from?: string;
+  date_to?: string;
+  cup_number?: string;
+  q?: string;
+  page?: number;
+  size?: number;
+}
+
 export interface RecordExportParams {
   project_id?: number;
   vertical_id?: number;
@@ -22,6 +39,8 @@ export interface RecordExportParams {
 export const recordsApi = {
   list: async (params: RecordListParams = {}): Promise<CursorPageRecord> =>
     (await api.get<CursorPageRecord>('/records/', { params })).data,
+  paged: async (params: RecordPagedParams = {}): Promise<OffsetPageRecord> =>
+    (await api.get<OffsetPageRecord>('/records/paged', { params })).data,
   get: async (id: number): Promise<RecordItem> =>
     (await api.get<RecordItem>(`/records/${id}`)).data,
   create: async (body: RecordCreate): Promise<RecordItem> =>

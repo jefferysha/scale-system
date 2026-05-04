@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { SectionTitle } from '@/components/ui/section-title';
 import { SelectBox, type SelectOption } from '@/components/ui/select-box';
 import { ProjectCombobox } from '@/features/projects/components/ProjectCombobox';
 import { useVerticalsByProject } from '@/features/projects/hooks';
@@ -64,30 +65,31 @@ export function ConfigPanel({
   }));
 
   return (
-    <section className="flex flex-col gap-3 rounded-xl border border-[var(--line)] bg-[var(--bg-1)] p-4">
+    <section className="flex flex-col gap-3 rounded-xl border border-[var(--line)] bg-[var(--bg-1)] p-3">
       <h3 className="text-sm font-semibold text-[var(--text)]">称重设置</h3>
 
-      <div className="space-y-1.5">
-        <Label>称重项目</Label>
-        <ProjectCombobox
-          value={
-            config.project
-              ? {
-                  id: config.project.id,
-                  name: config.project.name,
-                  established_date: config.project.established_date,
-                  notes: null,
-                  is_active: true,
-                  created_at: '',
-                  updated_at: '',
-                }
-              : null
-          }
-          onChange={(p) => onChange({ ...config, project: p ? toLite(p) : null, vertical: null })}
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-2">
+      {/* ── 项目与垂线 ── */}
+      <div className="flex flex-col gap-2">
+        <SectionTitle>项目 / 垂线</SectionTitle>
+        <div className="space-y-1.5">
+          <Label>称重项目</Label>
+          <ProjectCombobox
+            value={
+              config.project
+                ? {
+                    id: config.project.id,
+                    name: config.project.name,
+                    established_date: config.project.established_date,
+                    notes: null,
+                    is_active: true,
+                    created_at: '',
+                    updated_at: '',
+                  }
+                : null
+            }
+            onChange={(p) => onChange({ ...config, project: p ? toLite(p) : null, vertical: null })}
+          />
+        </div>
         <div className="space-y-1.5">
           <Label htmlFor="cfg-vertical">垂线号</Label>
           <SelectBox
@@ -106,55 +108,63 @@ export function ConfigPanel({
             testId="cfg-vertical"
           />
         </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="cfg-volume">容积 mL</Label>
-          <Input
-            id="cfg-volume"
-            type="number"
-            value={config.volume_ml ?? 500}
-            onChange={(e) => onChange({ ...config, volume_ml: Number(e.target.value) })}
-          />
+      </div>
+
+      {/* ── 采样参数 ── */}
+      <div className="flex flex-col gap-2">
+        <SectionTitle>采样参数</SectionTitle>
+        <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-1.5">
+            <Label htmlFor="cfg-bottle">瓶型</Label>
+            <SelectBox
+              id="cfg-bottle"
+              value={String(bottle)}
+              options={BOTTLE_OPTIONS}
+              onChange={(val) => {
+                const b = Number(val) as 1000 | 500 | 250;
+                setBottle(b);
+                onChange({ ...config, bottle: b });
+              }}
+              testId="cfg-bottle"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="cfg-volume">容积 mL</Label>
+            <Input
+              id="cfg-volume"
+              type="number"
+              step="50"
+              value={config.volume_ml ?? 500}
+              onChange={(e) => onChange({ ...config, volume_ml: Number(e.target.value) })}
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="cfg-depth">水深 m</Label>
+            <Input
+              id="cfg-depth"
+              type="number"
+              step="0.1"
+              placeholder="例 2.5"
+              value={config.water_depth_m ?? ''}
+              onChange={(e) => onChange({ ...config, water_depth_m: Number(e.target.value) })}
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="cfg-pos">点次</Label>
+            <SelectBox
+              id="cfg-pos"
+              value={config.current_pos ?? '0.0'}
+              options={POSITION_OPTIONS}
+              onChange={(val) => onChange({ ...config, current_pos: val as PointPosition })}
+              testId="cfg-pos"
+            />
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2">
-        <div className="space-y-1.5">
-          <Label htmlFor="cfg-bottle">瓶型</Label>
-          <SelectBox
-            id="cfg-bottle"
-            value={String(bottle)}
-            options={BOTTLE_OPTIONS}
-            onChange={(val) => {
-              const b = Number(val) as 1000 | 500 | 250;
-              setBottle(b);
-              onChange({ ...config, bottle: b });
-            }}
-            testId="cfg-bottle"
-          />
-        </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="cfg-depth">水深 m</Label>
-          <Input
-            id="cfg-depth"
-            type="number"
-            step="0.1"
-            value={config.water_depth_m ?? ''}
-            onChange={(e) => onChange({ ...config, water_depth_m: Number(e.target.value) })}
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-2">
-        <div className="space-y-1.5">
-          <Label htmlFor="cfg-pos">点次</Label>
-          <SelectBox
-            id="cfg-pos"
-            value={config.current_pos ?? '0.0'}
-            options={POSITION_OPTIONS}
-            onChange={(val) => onChange({ ...config, current_pos: val as PointPosition })}
-            testId="cfg-pos"
-          />
-        </div>
+      {/* ── 杯号与目标 ── */}
+      <div className="flex flex-col gap-2">
+        <SectionTitle>杯号 / 目标</SectionTitle>
         <div className="space-y-1.5">
           <Label htmlFor="cfg-cup">杯号</Label>
           <CupCombobox
@@ -162,25 +172,32 @@ export function ConfigPanel({
             onChange={(c) => onChange({ ...config, current_cup: c as CupLite | null })}
           />
         </div>
+        <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-1.5">
+            <Label htmlFor="cfg-tare">杯重 g</Label>
+            <Input
+              id="cfg-tare"
+              className="no-spinner"
+              value={config.current_cup?.current_tare_g ?? 0}
+              readOnly
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="cfg-target">目标湿重 g</Label>
+            <Input
+              id="cfg-target"
+              type="number"
+              step="0.5"
+              placeholder="—"
+              value={config.target_wet_weight_g ?? ''}
+              onChange={(e) => onChange({ ...config, target_wet_weight_g: Number(e.target.value) })}
+            />
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2">
-        <div className="space-y-1.5">
-          <Label htmlFor="cfg-tare">杯重 g</Label>
-          <Input id="cfg-tare" value={config.current_cup?.current_tare_g ?? 0} readOnly />
-        </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="cfg-target">目标湿重 g</Label>
-          <Input
-            id="cfg-target"
-            type="number"
-            value={config.target_wet_weight_g ?? ''}
-            onChange={(e) => onChange({ ...config, target_wet_weight_g: Number(e.target.value) })}
-          />
-        </div>
-      </div>
-
-      <div className="mt-1 flex gap-2">
+      {/* ── 操作按钮 ── */}
+      <div className="mt-1 flex gap-2 border-t border-[var(--line)] pt-3">
         <Button className="flex-1" onClick={onStart} disabled={!canStart}>
           开始称重
         </Button>

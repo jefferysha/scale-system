@@ -9,18 +9,25 @@ import { UnsupportedSerialAdapter } from './serial/unsupported-serial';
 export const isTauri = (): boolean =>
   typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
 
-export const isMockSerial = (): boolean =>
-  import.meta.env.DEV &&
-  typeof window !== 'undefined' &&
-  new URLSearchParams(window.location.search).get('mock') === '1';
+/**
+ * 浏览器没有原生串口（Web Serial 仅 Chrome+HTTPS），所以非 Tauri 默认走 Mock 让 demo 完整可用。
+ * 用 ?nomock=1 可强制 Unsupported 触发"请用桌面端"的错误流。
+ */
+export const isMockSerial = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('nomock') === '1') return false;
+  if (params.get('mock') === '1') return true;
+  return !isTauri(); // 浏览器默认 mock，桌面端走真实串口
+};
 
 let cached: SerialAdapter | null = null;
 
 export const getSerialAdapter = (): SerialAdapter => {
   if (cached) return cached;
-  if (isMockSerial()) cached = new MockSerialAdapter();
-  else if (isTauri()) cached = new TauriSerialAdapter();
-  else cached = new UnsupportedSerialAdapter(); // 浏览器后续可接 BrowserSerialAdapter
+  if (isTauri()) cached = new TauriSerialAdapter();
+  else if (isMockSerial()) cached = new MockSerialAdapter();
+  else cached = new UnsupportedSerialAdapter();
   return cached;
 };
 

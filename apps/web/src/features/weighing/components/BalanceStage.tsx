@@ -35,10 +35,7 @@ export function BalanceStage(): React.ReactElement {
           'radial-gradient(ellipse at 50% 38%, color-mix(in oklab, var(--bg-2) 70%, var(--acc-shade)), transparent 65%)',
       }}
     >
-      <ConnectionStatusBadge
-        state={connection}
-        className="absolute left-2 top-2 z-10"
-      />
+      <ConnectionStatusBadge state={connection} className="absolute left-2 top-2 z-10" />
       <span
         className="absolute right-2 top-2 z-10 font-mono text-[10px] tracking-wider text-[var(--text-3)]"
         data-testid="samples-per-sec"
